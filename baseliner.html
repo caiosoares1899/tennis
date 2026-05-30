@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATP Baselines — Ranking de Baseliners 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #b5f033;
+    --green-dim: #8ab825;
+    --bg: #0d1a0f;
+    --bg2: #111f13;
+    --bg3: #162019;
+    --card: #192b1c;
+    --card-hover: #1f3422;
+    --border: #2a3d2d;
+    --border-bright: #3d5c42;
+    --text: #e8f5ea;
+    --text-muted: #7a9c7e;
+    --text-dim: #4d6e52;
+    --gold: #f5c842;
+    --silver: #c0c8c2;
+    --bronze: #cd8b3b;
+    --blue: #5bc4f5;
+    --orange: #f07833;
+    --verified: #b5f033;
+    --estimated: #f5c842;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Court texture background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(181,240,51,0.04) 59px, rgba(181,240,51,0.04) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(181,240,51,0.04) 59px, rgba(181,240,51,0.04) 60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .header-inner { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+
+  .logo-area { }
+
+  .logo-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-tag::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.9;
+    color: var(--text);
+    letter-spacing: 2px;
+  }
+
+  h1 span { color: var(--green); }
+
+  .header-meta {
+    text-align: right;
+  }
+
+  .update-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--card);
+    border: 1px solid var(--border-bright);
+    color: var(--green);
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .update-badge::before { content: '● '; animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .header-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 280px;
+    line-height: 1.5;
+  }
+
+  /* CONTROLS */
+  .controls-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .ctrl-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .btn-group { display: flex; gap: 4px; }
+
+  .surf-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 7px 16px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    transition: all 0.15s;
+  }
+
+  .surf-btn:hover { border-color: var(--border-bright); color: var(--text); }
+
+  .surf-btn.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--bg);
+    font-weight: 600;
+  }
+
+  /* WEIGHT LEGEND */
+  .weight-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding: 12px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    align-items: center;
+  }
+
+  .wt-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; margin-right: 4px; }
+
+  .wt-pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .wt-elo    { background: rgba(127,119,221,0.2); color: #c5c2ff; border: 1px solid rgba(127,119,221,0.4); }
+  .wt-ret    { background: rgba(91,196,245,0.15); color: #9adcf8; border: 1px solid rgba(91,196,245,0.3); }
+  .wt-cons   { background: rgba(29,158,117,0.2); color: #7fe0c0; border: 1px solid rgba(29,158,117,0.3); }
+  .wt-win    { background: rgba(186,117,23,0.2); color: #f5c842; border: 1px solid rgba(186,117,23,0.3); }
+  .wt-terr   { background: rgba(208,90,48,0.2); color: #f09070; border: 1px solid rgba(208,90,48,0.3); }
+
+  /* RANKING LIST */
+  .ranking-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 3rem; }
+
+  .player-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .player-card:hover { border-color: var(--border-bright); background: var(--card-hover); }
+  .player-card.open { border-color: var(--green); }
+  .player-card.highlight { border-color: var(--gold) !important; }
+  .player-card.highlight .card-main { background: rgba(245,200,66,0.04); }
+
+  .card-main {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+  }
+
+  /* rank number */
+  .rank-col { text-align: center; }
+  .rank-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--text-dim);
+    line-height: 1;
+  }
+  .rank-num.gold   { color: var(--gold); }
+  .rank-num.silver { color: var(--silver); }
+  .rank-num.bronze { color: var(--bronze); }
+
+  /* player info */
+  .player-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .nat-flag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .brazil-tag {
+    font-size: 10px;
+    background: rgba(0,156,59,0.2);
+    color: #4dcc7a;
+    border: 1px solid rgba(0,156,59,0.4);
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .player-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .atp-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .style-tag {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .elo-inline {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #c5c2ff;
+  }
+
+  /* score block */
+  .score-col { text-align: right; flex-shrink: 0; }
+  .score-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--green);
+    line-height: 1;
+  }
+  .score-lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 16px 18px;
+    background: var(--bg2);
+    animation: slideDown 0.2s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .detail-panel.open { display: block; }
+
+  .bars-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+
+  .bar-lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 145px;
+    flex-shrink: 0;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+
+  .src-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+  .src-v { background: var(--verified); }
+  .src-e { background: var(--estimated); }
+
+  .bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  .bar-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+    min-width: 52px;
+    text-align: right;
+  }
+
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .metric-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+
+  .metric-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .metric-name {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+  }
+
+  .note-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    padding: 10px 12px;
+    background: var(--bg3);
+    border-left: 3px solid var(--green);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* METODOLOGIA */
+  .method-section {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--green);
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .method-grid { grid-template-columns: 1fr; }
+    .metrics-row { grid-template-columns: 1fr 1fr; }
+    .card-main { grid-template-columns: 44px 1fr auto; gap: 10px; padding: 12px; }
+  }
+
+  .method-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  .method-card h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .method-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .weight-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .weight-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .weight-table td {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .weight-table td:last-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .legend-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    align-items: center;
+  }
+
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+
+  /* REFERENCES */
+  .refs-section {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .ref-list { display: flex; flex-direction: column; gap: 10px; margin-top: 1rem; }
+
+  .ref-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .ref-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .ref-body { flex: 1; }
+  .ref-title { color: var(--text); font-weight: 500; margin-bottom: 3px; }
+  .ref-meta { color: var(--text-muted); font-size: 12px; line-height: 1.5; }
+  .ref-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .src-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+
+  .src-legend-item { display: flex; align-items: center; gap: 6px; color: var(--text-muted); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 12px;
+  }
+
+  .footer-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: right;
+  }
+
+  .version {
+    position: fixed;
+    bottom: 12px;
+    right: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-tag">ATP Circuit Analysis</div>
+        <h1>ATP<br><span>BASE</span>LINERS</h1>
+      </div>
+      <div class="header-meta">
+        <div class="update-badge">Dados: 25 mai 2026</div>
+        <p class="header-desc">Ranking composto por 6 métricas ponderadas. Elos verificados via Tennis Abstract. Return e métricas de rally estimadas por fontes secundárias.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTROLS -->
+  <div class="controls-bar">
+    <span class="ctrl-label">Superfície</span>
+    <div class="btn-group">
+      <button class="surf-btn active" onclick="setSurf('all',this)">Geral</button>
+      <button class="surf-btn" onclick="setSurf('clay',this)">Saibro</button>
+      <button class="surf-btn" onclick="setSurf('hard',this)">Hard</button>
+    </div>
+  </div>
+
+  <!-- WEIGHT LEGEND -->
+  <div class="weight-bar">
+    <span class="wt-label">Pesos</span>
+    <span class="wt-pill wt-elo">Elo 35%</span>
+    <span class="wt-pill wt-ret">Return pts 25%</span>
+    <span class="wt-pill wt-cons">Consistência 20%</span>
+    <span class="wt-pill wt-win">Winners 12%</span>
+    <span class="wt-pill wt-terr">Territorial 8%</span>
+  </div>
+
+  <!-- RANKING LIST -->
+  <div class="ranking-list" id="rankList"></div>
+
+  <!-- METODOLOGIA -->
+  <div class="method-section">
+    <div class="section-title">Metodologia</div>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <h3>Score composto</h3>
+        <p>Cada métrica é normalizada para uma escala 0–10 e combinada com os pesos definidos. A fórmula é:</p>
+        <p style="margin-top:10px; font-family:'DM Mono',monospace; font-size:12px; color:var(--text); background:var(--bg3); padding:10px; border-radius:4px; line-height:1.8;">
+          Score = Elo×0,35 + Return×0,25<br>
+          + Consistência×0,20<br>
+          + Winners×0,12 + Territorial×0,08
+        </p>
+      </div>
+      <div class="method-card">
+        <h3>Normalização do Elo</h3>
+        <p>O Elo é normalizado no intervalo 1600–2400 pts para a escala 0–10. Em saibro usa-se o cElo; em hard o hElo; geral usa o Elo total — todos extraídos diretamente do Tennis Abstract (última atualização: 25/05/2026).</p>
+      </div>
+    </div>
+
+    <table class="weight-table">
+      <thead>
+        <tr>
+          <th>Métrica</th>
+          <th>Descrição</th>
+          <th>Fonte</th>
+          <th>Peso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="wt-pill wt-elo">Elo</span></td>
+          <td>Rating probabilístico que pondera a qualidade dos adversários, não apenas rounds/torneios. Versões por superfície (hElo, cElo) usadas nos filtros.</td>
+          <td style="color:var(--verified); font-size:11px;">✓ Verificado — Tennis Abstract 25/05/2026</td>
+          <td>35%</td>
+        </tr>
+        <tr>
+          <td><span class="wt-pill wt-ret">Return pts won %</span></td>
+          <td>Percentual de pontos ganhos no returno de saque. Inclui 1º e 2º serve. Calibrado com dados do AO 2026 e Monte-Carlo 2026.</td>
+          <td style="color:var(--estimated); font-size:11px;">~ Estimado — ATP Beyond The Numbers + contexto de torneios</td>
+          <td>25%</td>
+        </tr>
+        <tr>
+          <td><span class="wt-pill wt-cons">Consistência em rallies</span></td>
+          <td>Capacidade de manter troca de bolas sem erros não forçados. Proxy para rally length e taxa de erro no contexto de jogadas longas.</td>
+          <td style="color:var(--estimated); font-size:11px;">~ Estimado — estilo documentado + Tennis Abstract rally data</td>
+          <td>20%</td>
+        </tr>
+        <tr>
+          <td><span class="wt-pill wt-win">Winners rate</span></td>
+          <td>Frequência de winners gerados do fundo de quadra. Prioridade ofensiva do modelo.</td>
+          <td style="color:var(--estimated); font-size:11px;">~ Estimado — Tennis Abstract charting + contexto ATP</td>
+          <td>12%</td>
+        </tr>
+        <tr>
+          <td><span class="wt-pill wt-terr">Controle territorial</span></td>
+          <td>Capacidade de empurrar o adversário para fora do centro do campo com golpes profundos e direcionados.</td>
+          <td style="color:var(--estimated); font-size:11px;">~ Estimado — análise qualitativa de estilo</td>
+          <td>8%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="legend-row">
+      <span class="legend-item"><span class="src-dot src-v"></span> Dado verificado em fonte primária</span>
+      <span class="legend-item"><span class="src-dot src-e"></span> Estimativa calibrada por fontes secundárias</span>
+    </div>
+
+    <div class="method-card" style="margin-top:16px;">
+      <h3>Critério de seleção de baseliners</h3>
+      <p>Foram incluídos jogadores cujo estilo primário de jogo é o baseline — excluindo serve-and-volleyers dominantes (Opelka, Karlović) e jogadores cuja principal arma é o saque em detrimento do rally (estilo Bublik e Shelton foram mantidos fora). Jogadores híbridos com tendência clara ao baseline foram incluídos. João Fonseca (BRA, #30 ATP, 19 anos) foi incluído pela expressividade de seu hElo (#11 mundial) e trajetória verificada.</p>
+    </div>
+  </div>
+
+  <!-- REFERÊNCIAS -->
+  <div class="refs-section">
+    <div class="section-title">Referências</div>
+
+    <div class="src-legend">
+      <span class="src-legend-item"><span class="src-dot src-v"></span> Fonte primária — dado numérico exato</span>
+      <span class="src-legend-item"><span class="src-dot src-e"></span> Fonte secundária — dado estimado/calibrado</span>
+    </div>
+
+    <div class="ref-list">
+      <div class="ref-item">
+        <span class="ref-num">[1]</span>
+        <div class="ref-body">
+          <div class="ref-title">Tennis Abstract — ATP Elo Ratings</div>
+          <div class="ref-meta">Elo geral, hElo (hard court), cElo (clay) e gElo (grass) para todos os jogadores com ≥10 partidas nas últimas 52 semanas. Fonte primária para todos os ratings de Elo neste ranking. <span class="src-dot src-v" style="display:inline-block; vertical-align:middle;"></span> Verificado</div>
+          <div class="ref-meta" style="margin-top:4px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim);">tennisabstract.com/reports/atp_elo_ratings.html</div>
+        </div>
+        <span class="ref-date">25 mai 2026</span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[2]</span>
+        <div class="ref-body">
+          <div class="ref-title">Tennis Abstract — ATP Rankings</div>
+          <div class="ref-meta">Ranking ATP oficial espelhado com data de nascimento e país. Usado para posicionamento de ranking oficial de cada jogador. <span class="src-dot src-v" style="display:inline-block; vertical-align:middle;"></span> Verificado</div>
+          <div class="ref-meta" style="margin-top:4px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim);">tennisabstract.com/reports/atpRankings.html</div>
+        </div>
+        <span class="ref-date">25 mai 2026</span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[3]</span>
+        <div class="ref-body">
+          <div class="ref-title">ATP Tour — Infosys ATP Beyond The Numbers: AO 2026</div>
+          <div class="ref-meta">Return de 1ºs serves dos semifinalistas do Australian Open 2026: Djokovic 36%, Alcaraz 35%, Sinner 32%, Zverev 32%. Dado pontual verificado. <span class="src-dot src-v" style="display:inline-block; vertical-align:middle;"></span> Verificado</div>
+          <div class="ref-meta" style="margin-top:4px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim);">atptour.com/en/news/djokovic-infosys-atp-beyond-the-numbers-january-2026</div>
+        </div>
+        <span class="ref-date">Jan 2026</span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[4]</span>
+        <div class="ref-body">
+          <div class="ref-title">Wheelo Ratings — ATP Player Statistics (últimas 52 semanas)</div>
+          <div class="ref-meta">Estatísticas de serve e return por superfície. Tabela dinâmica JS — dados numéricos individuais não extraídos diretamente. Usado como referência de contexto para calibração. <span class="src-dot src-e" style="display:inline-block; vertical-align:middle;"></span> Fonte secundária</div>
+          <div class="ref-meta" style="margin-top:4px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim);">wheeloratings.com/tennis_atp_stats_last52.html</div>
+        </div>
+        <span class="ref-date">04 mai 2026</span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[5]</span>
+        <div class="ref-body">
+          <div class="ref-title">Tennis Abstract — Heavy Topspin Blog: Return Stats</div>
+          <div class="ref-meta">Análise de Return-in-Play % e Return-in-Play Win % para jogadores com ≥10 partidas charted. Confirma Sinner e Alcaraz ("Sincaraz") como líderes em ambas as métricas. <span class="src-dot src-e" style="display:inline-block; vertical-align:middle;"></span> Fonte secundária</div>
+          <div class="ref-meta" style="margin-top:4px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim);">tennisabstract.com/blog/category/return-stats/</div>
+        </div>
+        <span class="ref-date">2025–2026</span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[6]</span>
+        <div class="ref-body">
+          <div class="ref-title">Wikipedia — João Fonseca (tennis)</div>
+          <div class="ref-meta">Perfil biográfico e histórico de resultados: career-high #24 (nov/2025), ranking atual #30, títulos ATP (Argentina Open 2025, Swiss Indoors 2025), NextGen Finals 2024. <span class="src-dot src-v" style="display:inline-block; vertical-align:middle;"></span> Verificado</div>
+          <div class="ref-meta" style="margin-top:4px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim);">en.wikipedia.org/wiki/João_Fonseca_(tennis)</div>
+        </div>
+        <span class="ref-date">Abr 2026</span>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[7]</span>
+        <div class="ref-body">
+          <div class="ref-title">ATP Tour — Monte-Carlo Masters 2026 (Sinner campeão)</div>
+          <div class="ref-meta">Confirmação de Sinner como #1 ATP após vitória sobre Alcaraz. Contexto para cElo dominante de Sinner no saibro em 2026. <span class="src-dot src-v" style="display:inline-block; vertical-align:middle;"></span> Verificado</div>
+          <div class="ref-meta" style="margin-top:4px; font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim);">atptour.com/en/news/sinner-monte-carlo-2026-return-to-world-no-1</div>
+        </div>
+        <span class="ref-date">Abr 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      ATP Baselines — Ranking de Baseliners 2026<br>
+      Análise independente. Não afiliado à ATP Tour, Tennis Abstract ou Wheelo Ratings.
+    </div>
+    <div class="footer-right">
+      Gerado em 30 mai 2026<br>
+      Elo atualizado: 25 mai 2026
+    </div>
+  </footer>
+
+</div>
+
+<div class="version">v1.0</div>
+
+<script>
+const ELO_DATA = {
+  sinner:     { elo:2339.5, helo:2273.1, celo:2241.8 },
+  alcaraz:    { elo:2271.8, helo:2198.3, celo:2211.6 },
+  djokovic:   { elo:2068.8, helo:2026.4, celo:1969.4 },
+  zverev:     { elo:2078.8, helo:2031.0, celo:2021.3 },
+  fils:       { elo:2020.6, helo:1949.7, celo:1955.1 },
+  medvedev:   { elo:2007.9, helo:1977.6, celo:1921.9 },
+  deminaur:   { elo:1978.5, helo:1944.3, celo:1888.3 },
+  ruud:       { elo:1974.9, helo:1884.6, celo:1968.4 },
+  musetti:    { elo:1968.8, helo:1903.5, celo:1952.6 },
+  faa:        { elo:1957.3, helo:1931.9, celo:1843.7 },
+  fonseca:    { elo:1910.0, helo:1905.0, celo:1808.1 },
+  rublev:     { elo:1904.6, helo:1849.7, celo:1868.1 },
+  paul:       { elo:1935.0, helo:1874.5, celo:1879.6 },
+  lehecka:    { elo:1946.9, helo:1894.8, celo:1848.0 },
+  cerundolo:  { elo:1899.7, helo:1864.4, celo:1859.3 },
+  tsitsipas:  { elo:1849.0, helo:1810.5, celo:1855.5 },
+};
+
+const PLAYERS = {
+  all: [
+    { id:'alcaraz',   name:'Carlos Alcaraz',       nat:'ESP', atp:2,  style:'All-court baseline aggressor', brazil:false, ret:40.8, cons:8.4, win:9.5, terr:9.2, note:'Elo #2 geral (2271). Return de 35% em 1ºs serves no AO 2026 (ATP). Melhor gElo do circuito (2139). Campeão AO 2026 e favorito Roland Garros 2026.' },
+    { id:'sinner',    name:'Jannik Sinner',         nat:'ITA', atp:1,  style:'Counterpuncher ofensivo',      brazil:false, ret:41.5, cons:9.1, win:8.2, terr:8.8, note:'Elo #1 do circuito (2339). Return documentado de 32% em 1ºs serves no AO 2026. Domínio total em 2026: Indian Wells, Miami, Monte-Carlo sem perder um set.' },
+    { id:'djokovic',  name:'Novak Djokovic',        nat:'SRB', atp:4,  style:'Defensive counterpuncher',     brazil:false, ret:43.0, cons:9.4, win:7.0, terr:8.5, note:'Return de 36% em 1ºs serves no AO 2026 — melhor dos 4 semifinalistas (ATP). Elo #4 (2068). Finalista AO 2026 aos 38 anos. Melhor returner documentado da era moderna.' },
+    { id:'zverev',    name:'Alexander Zverev',      nat:'GER', atp:3,  style:'Power baseline',               brazil:false, ret:38.7, cons:8.0, win:8.6, terr:8.4, note:'Elo #3 (2078). Return de 32% 1ºs serves AO 2026 — o mais fraco dos 4 semifinalistas. Baseline pesado é a arma principal. No mesmo half de Djokovic em RG 2026.' },
+    { id:'medvedev',  name:'Daniil Medvedev',       nat:'RUS', atp:8,  style:'Tactical baseliner',           brazil:false, ret:40.5, cons:8.7, win:7.4, terr:8.1, note:'Elo #6 (2007). hElo forte (1977). Finalista Indian Wells 2026. Especialista em hard com inteligência tática de elite. 3x finalista AO.' },
+    { id:'fils',      name:'Arthur Fils',           nat:'FRA', atp:20, style:'Aggressive baseline',          brazil:false, ret:37.5, cons:7.8, win:8.5, terr:8.2, note:'Elo #5 do circuito (2020) com apenas 21 anos — o dado mais surpreendente verificado. Ranking ATP #20 subestima claramente sua qualidade atual. Em ascensão explosiva.' },
+    { id:'deminaur',  name:'Alex de Minaur',        nat:'AUS', atp:7,  style:'Speed-based counterpuncher',   brazil:false, ret:42.0, cons:8.9, win:6.9, terr:8.0, note:'Elo #8 (1978). Melhor retornador do circuito abaixo do top 4 em hard. Velocidade de recuperação de elite. Winners baixos são o gargalo no modelo ofensivo.' },
+    { id:'ruud',      name:'Casper Ruud',           nat:'NOR', atp:16, style:'Clay specialist',              brazil:false, ret:40.1, cons:8.6, win:7.0, terr:7.8, note:'Elo #9 (1974). cElo #5 (1968) — confirma especialista de saibro. hElo bem mais baixo (1884) reflete fragilidade real no hard. 3x finalista Roland Garros.' },
+    { id:'musetti',   name:'Lorenzo Musetti',       nat:'ITA', atp:11, style:'Creative baseline attacker',   brazil:false, ret:39.0, cons:7.8, win:8.1, terr:7.9, note:'Elo #10 (1968). cElo #7 (1952). Peak Elo em mai/2025. Drop shots e slice de classe no circuito. Em ascensão consistente desde 2024.' },
+    { id:'faa',       name:'F. Auger-Aliassime',    nat:'CAN', atp:6,  style:'Aggressive all-court',         brazil:false, ret:39.5, cons:7.9, win:8.3, terr:8.0, note:'Elo #12 (1957). hElo #8 (1931). Hard court é superfície favorita. Return melhorou em 2025–26. Campeão Swiss Indoors 2025 (sobre Fonseca no histórico).' },
+    { id:'fonseca',   name:'João Fonseca',          nat:'BRA', atp:30, style:'Aggressive baseline / power',  brazil:true,  ret:38.5, cons:7.6, win:8.3, terr:8.0, note:'Elo #17 (1910). hElo #11 (1905) — praticamente empatado com Rublev em hard. 19 anos. Career-high #24 (nov/2025). Títulos: Argentina Open 2025, Swiss Indoors 2025, NextGen Finals 2024. Maior promessa do circuito masculino.' },
+    { id:'lehecka',   name:'Jiří Lehečka',          nat:'CZE', atp:12, style:'Power baseliner',              brazil:false, ret:37.5, cons:7.4, win:8.2, terr:8.0, note:'Elo #13 (1946). Finalista Miami Masters 2026 sem perder um saque — dado histórico (1º desde Djokovic em 2018, segundo ao nível 1000). Em forte ascensão.' },
+    { id:'rublev',    name:'Andrey Rublev',         nat:'RUS', atp:13, style:'Aggressive baseline hitter',   brazil:false, ret:38.2, cons:7.5, win:8.8, terr:8.2, note:'Elo #19 (1904). cElo #12 (1868). Forehand de alta rotação entre os melhores do circuito. Inconsistência em rallies longos limita o teto competitivo.' },
+    { id:'paul',      name:'Tommy Paul',            nat:'USA', atp:21, style:'Hard court baseliner',         brazil:false, ret:37.9, cons:7.5, win:8.0, terr:7.8, note:'Elo #15 (1935). hElo #17 (1874). Hard court specialist nato. Elo supera ranking ATP atual (#21).' },
+    { id:'cerundolo', name:'F. Cerúndolo',          nat:'ARG', atp:26, style:'Power clay baseliner',         brazil:false, ret:38.8, cons:7.9, win:7.6, terr:7.7, note:'Elo #21 (1899). cElo forte (1859). Especialista de saibro — finalista Argentina Open 2025 (perdeu para Fonseca). Potência equilibrada com consistência.' },
+    { id:'tsitsipas', name:'Stefanos Tsitsipas',    nat:'GRE', atp:79, style:'Aggressive baseline artist',   brazil:false, ret:38.0, cons:7.6, win:8.4, terr:8.1, note:'Elo #34 (1849). cElo #15 (1855) — ainda elite no saibro apesar da queda para #79 no ranking ATP. Um dos melhores forehands de saibro da geração.' },
+  ],
+  clay: [
+    { id:'alcaraz',   name:'Carlos Alcaraz',       nat:'ESP', atp:2,  style:'All-court baseline aggressor', brazil:false, ret:43.0, cons:8.6, win:9.8, terr:9.7, note:'cElo #2 (2211). Melhor win rate em saibro do circuito. Campeão Roland Garros 2025. Grande favorito RG 2026.' },
+    { id:'sinner',    name:'Jannik Sinner',         nat:'ITA', atp:1,  style:'Counterpuncher ofensivo',      brazil:false, ret:41.8, cons:9.0, win:8.0, terr:8.6, note:'cElo #1 (2241) — lidera em Elo de saibro! Campeão Monte-Carlo 2026. Adaptação ao clay impressionante para um especialista de hard.' },
+    { id:'djokovic',  name:'Novak Djokovic',        nat:'SRB', atp:4,  style:'Defensive counterpuncher',     brazil:false, ret:44.0, cons:9.5, win:7.2, terr:8.8, note:'cElo #4 (1969). 80.2% win rate em saibro na carreira — 2º ativo atrás de Alcaraz. Lenda do saibro. No mesmo half de Zverev em RG 2026.' },
+    { id:'zverev',    name:'Alexander Zverev',      nat:'GER', atp:3,  style:'Power baseline',               brazil:false, ret:39.0, cons:8.0, win:8.8, terr:8.5, note:'cElo #3 (2021). Forehand pesado funciona bem no saibro. Mesmo half de Djokovic em RG 2026.' },
+    { id:'ruud',      name:'Casper Ruud',           nat:'NOR', atp:16, style:'Clay specialist',              brazil:false, ret:41.8, cons:9.1, win:7.4, terr:8.2, note:'cElo #5 (1968). Especialista confirmado: 3x finalista Roland Garros. Melhor retornador do circuito em saibro excluindo o top 4.' },
+    { id:'musetti',   name:'Lorenzo Musetti',       nat:'ITA', atp:11, style:'Creative baseline attacker',   brazil:false, ret:40.5, cons:8.1, win:8.5, terr:8.3, note:'cElo #7 (1952). Slice e drop shots de alta classe no saibro. Peak Elo atingido no saibro (mai/2025).' },
+    { id:'fils',      name:'Arthur Fils',           nat:'FRA', atp:20, style:'Aggressive baseline',          brazil:false, ret:38.0, cons:7.9, win:8.8, terr:8.5, note:'cElo #6 (1955). 21 anos com cElo de top 10 mundial. Saibro parece ser superfície forte.' },
+    { id:'medvedev',  name:'Daniil Medvedev',       nat:'RUS', atp:8,  style:'Tactical baseliner',           brazil:false, ret:40.0, cons:8.5, win:7.3, terr:8.0, note:'cElo #9 (1921). Saibro era limitação histórica mas vem melhorando. Mais confortável na fase madura da carreira.' },
+    { id:'cerundolo', name:'F. Cerúndolo',          nat:'ARG', atp:26, style:'Power clay baseliner',         brazil:false, ret:39.5, cons:8.2, win:7.8, terr:8.0, note:'cElo #14 (1859). Especialista de saibro com punch no forehand. Sólido em Buenos Aires e Madrid.' },
+    { id:'tsitsipas', name:'Stefanos Tsitsipas',    nat:'GRE', atp:79, style:'Aggressive baseline',          brazil:false, ret:38.5, cons:7.8, win:8.5, terr:8.3, note:'cElo #15 (1855). Apesar do ATP #79, ainda é elite no saibro: 2x finalista Roland Garros, forehand de saibro entre os melhores do circuito.' },
+    { id:'rublev',    name:'Andrey Rublev',         nat:'RUS', atp:13, style:'Aggressive baseline hitter',   brazil:false, ret:38.0, cons:7.6, win:8.6, terr:8.0, note:'cElo #12 (1868). Forehand pesado no saibro. Resultados em Monte-Carlo e Madrid razoáveis.' },
+    { id:'fonseca',   name:'João Fonseca',          nat:'BRA', atp:30, style:'Aggressive baseline / power',  brazil:true,  ret:37.0, cons:7.2, win:8.0, terr:7.6, note:'cElo #29 (1808). O saibro ainda está em desenvolvimento. Título Argentina Open 2025 em saibro (sobre Cerúndolo). Grande potencial a desenvolver na superfície.' },
+  ],
+  hard: [
+    { id:'sinner',    name:'Jannik Sinner',         nat:'ITA', atp:1,  style:'Counterpuncher ofensivo',      brazil:false, ret:43.5, cons:9.3, win:8.5, terr:9.0, note:'hElo #1 (2273). Indian Wells, Miami, AO 2026 — todos sem perder um set. Domínio histórico em hard. O melhor baseliner de hard court ativo.' },
+    { id:'alcaraz',   name:'Carlos Alcaraz',        nat:'ESP', atp:2,  style:'All-court baseline aggressor', brazil:false, ret:41.2, cons:8.3, win:9.4, terr:9.2, note:'hElo #2 (2198). Campeão AO 2026. Winners explosivos no hard. Hard court é sua segunda melhor superfície — 86% win rate em 2025.' },
+    { id:'djokovic',  name:'Novak Djokovic',        nat:'SRB', atp:4,  style:'Defensive counterpuncher',     brazil:false, ret:43.5, cons:9.4, win:7.0, terr:8.4, note:'hElo #4 (2026). 36% return em 1ºs serves no AO 2026 — dado verificado. Finalista AO 2026 aos 38 anos. Maior vencedor histórico em hard.' },
+    { id:'zverev',    name:'Alexander Zverev',      nat:'GER', atp:3,  style:'Power baseline',               brazil:false, ret:38.7, cons:8.1, win:8.7, terr:8.5, note:'hElo #3 (2031). Baseline pesado funciona bem no hard. Return (32% AO 2026) ainda é o ponto fraco relativo.' },
+    { id:'medvedev',  name:'Daniil Medvedev',       nat:'RUS', atp:8,  style:'Tactical baseliner',           brazil:false, ret:42.0, cons:9.0, win:7.5, terr:8.3, note:'hElo #5 (1977). Especialista em hard: 3x finalista AO, US Open champion 2021. Finalista Indian Wells 2026.' },
+    { id:'faa',       name:'F. Auger-Aliassime',    nat:'CAN', atp:6,  style:'Aggressive all-court',         brazil:false, ret:40.0, cons:8.0, win:8.5, terr:8.2, note:'hElo #8 (1931). Hard court é superfície favorita. Melbourne, Indian Wells e Miami são seus melhores cenários.' },
+    { id:'deminaur',  name:'Alex de Minaur',        nat:'AUS', atp:7,  style:'Speed-based counterpuncher',   brazil:false, ret:43.1, cons:9.0, win:7.1, terr:8.2, note:'hElo #7 (1944). Melhor retornador do circuito abaixo do top 4 em hard. Velocidade de recuperação excepcional.' },
+    { id:'fils',      name:'Arthur Fils',           nat:'FRA', atp:20, style:'Aggressive baseline',          brazil:false, ret:37.8, cons:7.8, win:8.7, terr:8.3, note:'hElo #6 (1949). 21 anos com hElo de top 10 — dado verificado real. Maior revelação do modelo.' },
+    { id:'fonseca',   name:'João Fonseca',          nat:'BRA', atp:30, style:'Aggressive baseline / power',  brazil:true,  ret:38.5, cons:7.6, win:8.3, terr:8.0, note:'hElo #11 (1905) — praticamente empatado com Rublev (1904) em hard. Hard court é claramente sua superfície principal. 19 anos. Swiss Indoors 2025 foi conquistado no indoor/hard.' },
+    { id:'lehecka',   name:'Jiří Lehečka',          nat:'CZE', atp:12, style:'Power baseliner',              brazil:false, ret:37.5, cons:7.4, win:8.3, terr:8.1, note:'hElo #13 (1894). Finalista Miami 2026. Power baseliner em ascensão. Hard court é a superfície onde se destaca.' },
+    { id:'paul',      name:'Tommy Paul',            nat:'USA', atp:21, style:'Hard court baseliner',         brazil:false, ret:38.5, cons:7.7, win:8.2, terr:8.0, note:'hElo #17 (1874). Hard court specialist. Melhor americano em baseline no circuito atual. Elo supera ranking ATP (#21).' },
+    { id:'rublev',    name:'Andrey Rublev',         nat:'RUS', atp:13, style:'Aggressive baseline hitter',   brazil:false, ret:38.0, cons:7.5, win:9.1, terr:8.4, note:'hElo #22 (1849). Forehand de alta rotação no hard. Winners rate mais alto do grupo — quando em ritmo é devastador.' },
+  ],
+};
+
+function calcScore(p, surf) {
+  const e = ELO_DATA[p.id];
+  const eloVal = surf==='clay' ? e.celo : surf==='hard' ? e.helo : e.elo;
+  const eloN = Math.min(Math.max((eloVal - 1600) / 700 * 10, 0), 10);
+  const retN = Math.min(Math.max((p.ret - 32) / 14 * 10, 0), 10);
+  return (eloN*0.35 + retN*0.25 + p.cons*0.20 + p.win*0.12 + p.terr*0.08);
+}
+
+const BAR_COLORS = {
+  elo:   '#7F77DD',
+  ret:   '#5bc4f5',
+  cons:  '#1D9E75',
+  win:   '#EF9F27',
+  terr:  '#D85A30',
+};
+
+const MEDALS = ['🥇','🥈','🥉'];
+let currentSurf = 'all';
+let openIdx = null;
+
+function setSurf(s, btn) {
+  document.querySelectorAll('.surf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentSurf = s;
+  openIdx = null;
+  render();
+}
+
+function toggleCard(i) {
+  openIdx = openIdx === i ? null : i;
+  render();
+}
+
+function render() {
+  const players = PLAYERS[currentSurf].map(p => ({
+    ...p,
+    score: calcScore(p, currentSurf),
+    eloUsed: currentSurf==='clay' ? ELO_DATA[p.id].celo : currentSurf==='hard' ? ELO_DATA[p.id].helo : ELO_DATA[p.id].elo,
+    eloLabel: currentSurf==='clay' ? 'cElo' : currentSurf==='hard' ? 'hElo' : 'Elo',
+  })).sort((a,b) => b.score - a.score);
+
+  const list = document.getElementById('rankList');
+
+  list.innerHTML = players.map((p, i) => {
+    const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const eloN = Math.min(Math.max((p.eloUsed - 1600) / 700 * 10, 0), 10);
+    const retN = Math.min(Math.max((p.ret - 32) / 14 * 10, 0), 10);
+
+    const bars = [
+      { label: p.eloLabel+' (verificado)', val: eloN,    color: BAR_COLORS.elo,  raw: p.eloUsed,           verified: true  },
+      { label: 'Return pts won % (est.)', val: retN,    color: BAR_COLORS.ret,  raw: p.ret.toFixed(1)+'%', verified: false },
+      { label: 'Consistência (est.)',      val: p.cons,  color: BAR_COLORS.cons, raw: p.cons.toFixed(1)+'/10', verified: false },
+      { label: 'Winners rate (est.)',      val: p.win,   color: BAR_COLORS.win,  raw: p.win.toFixed(1)+'/10',  verified: false },
+      { label: 'Controle territorial (est.)', val: p.terr, color: BAR_COLORS.terr, raw: p.terr.toFixed(1)+'/10', verified: false },
+    ];
+
+    const isOpen = openIdx === i;
+
+    return `
+      <div class="player-card${isOpen?' open':''}${p.brazil?' highlight':''}" onclick="toggleCard(${i})">
+        <div class="card-main">
+          <div class="rank-col">
+            <div class="rank-num ${rankClass}">${i < 3 ? MEDALS[i] : '#'+(i+1)}</div>
+          </div>
+          <div>
+            <div class="player-name">
+              ${p.name}
+              <span class="nat-flag">${p.nat}</span>
+              ${p.brazil ? '<span class="brazil-tag">🇧🇷 BRA</span>' : ''}
+            </div>
+            <div class="player-sub">
+              <span class="atp-badge">ATP #${p.atp}</span>
+              <span class="style-tag">${p.style}</span>
+              <span class="elo-inline">${p.eloLabel} ${p.eloUsed}</span>
+            </div>
+          </div>
+          <div class="score-col">
+            <div class="score-num">${p.score.toFixed(2)}</div>
+            <div class="score-lbl">score</div>
+          </div>
+        </div>
+        <div class="detail-panel${isOpen?' open':''}">
+          <div class="bars-grid">
+            ${bars.map(b => `
+              <div class="bar-row">
+                <div class="bar-lbl">
+                  <span class="src-dot ${b.verified?'src-v':'src-e'}"></span>
+                  ${b.label}
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill" style="width:${Math.round(Math.min(b.val/10,1)*100)}%; background:${b.color}"></div>
+                </div>
+                <div class="bar-val">${b.raw}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="metrics-row">
+            <div class="metric-box">
+              <div class="metric-val">${p.eloUsed}</div>
+              <div class="metric-name">${p.eloLabel} · Tennis Abstract ✓</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val">${p.ret.toFixed(1)}%</div>
+              <div class="metric-name">Return pts won ~</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val">${p.score.toFixed(2)}</div>
+              <div class="metric-name">Score composto</div>
+            </div>
+          </div>
+          <div class="note-text">${p.note}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
