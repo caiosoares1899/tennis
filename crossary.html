@@ -1,0 +1,2868 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CROSSARY — O Glossário do CrossFit</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #161616;
+    --border: #2a2a2a;
+    --red: #e63329;
+    --red-dark: #c0271e;
+    --red-glow: rgba(230,51,41,0.15);
+    --yellow: #f5c518;
+    --white: #f5f5f0;
+    --muted: #888880;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-heading: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--red); }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: var(--white);
+  }
+
+  .logo span { color: var(--red); }
+
+  nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 8px;
+  }
+
+  nav::-webkit-scrollbar { height: 0; }
+
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    padding: 4rem 2rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a08 50%, #0a0a0a 100%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px);
+  }
+
+  .hero-bg-number {
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: 28vw;
+    color: rgba(230,51,41,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 700px; }
+
+  .hero-tag {
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 4px 12px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span { color: var(--red); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat .num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--red);
+    line-height: 1;
+  }
+
+  .hero-stat .label {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* SEARCH */
+  .search-bar {
+    padding: 1.5rem 2rem;
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-wrap {
+    position: relative;
+    max-width: 600px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 12px 48px 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-wrap input:focus { border-color: var(--red); }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  .search-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 1.2rem;
+  }
+
+  /* SECTIONS */
+  .section {
+    display: none;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section.visible { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 3px;
+    margin-bottom: 0.25rem;
+    line-height: 1;
+  }
+
+  .section-title span { color: var(--red); }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  /* ALPHABET FILTER */
+  .alpha-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 2rem;
+  }
+
+  .alpha-btn {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .alpha-btn:hover, .alpha-btn.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+  }
+
+  /* GLOSSARY GRID */
+  #glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .gloss-card {
+    background: var(--dark);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gloss-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 0;
+    background: var(--red);
+    transition: height 0.2s;
+  }
+
+  .gloss-card:hover { background: var(--card); }
+  .gloss-card:hover::before { height: 100%; }
+
+  .gloss-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .gloss-term {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .gloss-sigla {
+    background: var(--red);
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .gloss-def {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .gloss-tag {
+    display: inline-block;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  /* MOVIMENTOS */
+  .move-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .move-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .move-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--red);
+  }
+
+  .move-visual {
+    height: 160px;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .move-emoji {
+    font-size: 5rem;
+    filter: grayscale(0.3);
+    transition: transform 0.3s;
+  }
+
+  .move-card:hover .move-emoji { transform: scale(1.1); }
+
+  .move-category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--red);
+    color: white;
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+  }
+
+  .move-difficulty {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 3px;
+  }
+
+  .diff-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .diff-dot.filled { background: var(--red); }
+
+  .move-info { padding: 1rem; }
+
+  .move-name {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .move-muscles {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .move-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .move-tips {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .tip-label {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .tip-text {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  /* TREINOS */
+  .workout-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    margin-bottom: 3rem;
+  }
+
+  .wod-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wod-card::after {
+    content: attr(data-sigla);
+    position: absolute;
+    right: -1rem;
+    bottom: -1rem;
+    font-family: var(--font-display);
+    font-size: 6rem;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .wod-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .wod-sigla {
+    background: var(--red);
+    color: white;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    padding: 6px 12px;
+    line-height: 1;
+  }
+
+  .wod-name {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .wod-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .wod-example {
+    background: var(--dark);
+    border-left: 3px solid var(--red);
+    padding: 12px;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+
+  .wod-example strong { color: var(--red); display: block; margin-bottom: 4px; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* MEDIDAS */
+  .measures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 3rem;
+  }
+
+  .measure-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+  }
+
+  .measure-number {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .measure-label {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .measure-desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    max-width: 560px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--card);
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .modal-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .modal-title small {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .modal-close:hover { background: var(--red); border-color: var(--red); color: white; }
+
+  .modal-body { padding: 1.5rem; }
+
+  .modal-visual {
+    height: 200px;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-section { margin-bottom: 1.5rem; }
+
+  .modal-section-title {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .modal-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .modal-steps { list-style: none; }
+
+  .modal-steps li {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .modal-steps li:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--red);
+    min-width: 24px;
+    line-height: 1.4;
+  }
+
+  .modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .modal-tag {
+    background: rgba(230,51,41,0.1);
+    border: 1px solid rgba(230,51,41,0.3);
+    color: var(--red);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    text-transform: uppercase;
+  }
+
+  /* BENCHMARKS */
+  .benchmark-section { margin-bottom: 3rem; }
+
+  .benchmark-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .benchmark-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .benchmark-item {
+    background: var(--dark);
+    padding: 1rem;
+  }
+
+  .benchmark-wod {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .benchmark-desc {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  /* FILTER HIDDEN */
+  .gloss-card.hidden, .move-card.hidden { display: none; }
+
+  /* SCROLLSPY BAND */
+  .progress-bar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: 2px;
+    background: var(--red);
+    z-index: 99;
+    transition: width 0.1s;
+  }
+
+  /* MOBILE NAV */
+  .mobile-menu-btn {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--white);
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+
+  /* VERSION */
+  .version-tag {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    color: #333;
+    letter-spacing: 1px;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 0 1rem; }
+    nav { display: none; }
+    nav.open { display: flex; position: fixed; top: 60px; left: 0; right: 0; background: var(--dark); border-bottom: 1px solid var(--border); padding: 12px; flex-direction: row; flex-wrap: wrap; z-index: 99; gap: 6px; }
+    .mobile-menu-btn { display: block; }
+    .section { padding: 1.5rem 1rem; }
+    .hero { padding: 2.5rem 1rem; }
+    #glossary-grid { grid-template-columns: 1fr; }
+    .move-grid { grid-template-columns: 1fr; }
+    .workout-types { grid-template-columns: 1fr; }
+    .measures-grid { grid-template-columns: repeat(2, 1fr); }
+    .benchmark-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ===== WODBOT ===== */
+  #wodbot-fab {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    z-index: 300;
+    width: 60px;
+    height: 60px;
+    background: var(--red);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(230,51,41,0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fabPulse 3s ease-in-out infinite;
+  }
+  #wodbot-fab:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(230,51,41,0.6); }
+  #wodbot-fab svg { width: 30px; height: 30px; fill: white; }
+  @keyframes fabPulse {
+    0%,100% { box-shadow: 0 4px 24px rgba(230,51,41,0.45); }
+    50% { box-shadow: 0 4px 32px rgba(230,51,41,0.75); }
+  }
+
+  #wodbot-panel {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    z-index: 300;
+    width: 380px;
+    max-width: calc(100vw - 32px);
+    height: 580px;
+    max-height: calc(100vh - 120px);
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.92) translateY(16px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 16px 64px rgba(0,0,0,0.7);
+  }
+  #wodbot-panel.open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .wbot-header {
+    background: var(--red);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 4px 4px 0 0;
+  }
+  .wbot-avatar {
+    width: 36px; height: 36px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .wbot-avatar svg { width: 20px; height: 20px; fill: white; }
+  .wbot-title { flex: 1; }
+  .wbot-title strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: white;
+    line-height: 1;
+  }
+  .wbot-title small {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+  }
+  .wbot-status {
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .wbot-close-btn {
+    background: transparent; border: none;
+    color: rgba(255,255,255,0.7); cursor: pointer;
+    font-size: 1.1rem; padding: 4px; line-height: 1;
+    transition: color 0.15s;
+  }
+  .wbot-close-btn:hover { color: white; }
+
+  .wbot-tabs {
+    display: flex;
+    border-bottom: 1px solid #2a2a2a;
+    flex-shrink: 0;
+    background: #0f0f0f;
+  }
+  .wbot-tab {
+    flex: 1; padding: 10px 8px;
+    background: transparent; border: none;
+    color: #666; cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .wbot-tab.active { color: var(--red); border-bottom-color: var(--red); }
+  .wbot-tab:hover:not(.active) { color: #aaa; }
+
+  .wbot-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+  .wbot-pane { display: none; flex-direction: column; height: 100%; }
+  .wbot-pane.active { display: flex; }
+
+  /* CHAT PANE */
+  .wbot-messages {
+    flex: 1; overflow-y: auto; padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+    scroll-behavior: smooth;
+  }
+  .wbot-messages::-webkit-scrollbar { width: 3px; }
+  .wbot-messages::-webkit-scrollbar-thumb { background: var(--red); }
+
+  .wbot-msg {
+    max-width: 88%;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .wbot-msg.bot { align-self: flex-start; }
+  .wbot-msg.user { align-self: flex-end; }
+
+  .wbot-bubble {
+    padding: 10px 14px;
+    border-radius: 2px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .wbot-msg.bot .wbot-bubble {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-left: 3px solid var(--red);
+    color: #e0e0d8;
+  }
+  .wbot-msg.user .wbot-bubble {
+    background: var(--red);
+    color: white;
+  }
+
+  .wbot-msg-label {
+    font-family: var(--font-heading);
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .wbot-msg.bot .wbot-msg-label { color: var(--red); }
+  .wbot-msg.user .wbot-msg-label { color: rgba(255,255,255,0.6); text-align: right; }
+
+  .wbot-typing {
+    align-self: flex-start;
+    background: #1a1a1a; border: 1px solid #2a2a2a;
+    border-left: 3px solid var(--red);
+    padding: 10px 14px; display: none; gap: 4px; align-items: center;
+  }
+  .wbot-typing.show { display: flex; }
+  .wbot-typing span {
+    width: 6px; height: 6px; background: var(--red);
+    border-radius: 50%; animation: typingDot 1.2s ease-in-out infinite;
+  }
+  .wbot-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .wbot-typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingDot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  .wbot-quick-btns {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 0 16px 12px;
+    flex-shrink: 0;
+  }
+  .wbot-quick {
+    background: transparent;
+    border: 1px solid #333;
+    color: #aaa;
+    font-family: var(--font-heading);
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 1px;
+    padding: 5px 10px; cursor: pointer;
+    transition: all 0.15s; text-transform: uppercase;
+    border-radius: 2px;
+  }
+  .wbot-quick:hover { border-color: var(--red); color: var(--red); }
+
+  /* IMAGE UPLOAD AREA */
+  .wbot-wod-upload {
+    margin: 0 16px 12px;
+    border: 1px dashed #333;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .wbot-wod-upload:hover { border-color: var(--red); }
+  .wbot-wod-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .wbot-wod-upload p {
+    font-family: var(--font-heading);
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 1.5px; color: #555;
+    text-transform: uppercase; pointer-events: none;
+  }
+  .wbot-wod-upload p span { color: var(--red); }
+
+  .wbot-input-row {
+    display: flex; gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid #1e1e1e;
+    flex-shrink: 0;
+  }
+  .wbot-input {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    outline: none;
+    resize: none;
+    transition: border-color 0.15s;
+    border-radius: 2px;
+    max-height: 80px;
+    min-height: 40px;
+  }
+  .wbot-input:focus { border-color: var(--red); }
+  .wbot-input::placeholder { color: #444; }
+  .wbot-send {
+    background: var(--red); border: none;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.15s;
+    border-radius: 2px; flex-shrink: 0; align-self: flex-end;
+  }
+  .wbot-send:hover { background: var(--red-dark); }
+  .wbot-send svg { width: 18px; height: 18px; fill: white; }
+  .wbot-send:disabled { background: #333; cursor: not-allowed; }
+
+  /* HISTÓRICO PANE */
+  .wbot-hist-list { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .wbot-hist-list::-webkit-scrollbar { width: 3px; }
+  .wbot-hist-list::-webkit-scrollbar-thumb { background: var(--red); }
+  .wbot-hist-empty {
+    text-align: center; padding: 2rem 1rem;
+    color: #444; font-size: 0.85rem; line-height: 1.6;
+  }
+  .wbot-hist-card {
+    background: #1a1a1a; border: 1px solid #2a2a2a;
+    border-left: 3px solid var(--red); padding: 12px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .wbot-hist-card:hover { background: #222; }
+  .wbot-hist-date {
+    font-family: var(--font-heading); font-size: 0.65rem;
+    font-weight: 700; letter-spacing: 2px; color: var(--red);
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .wbot-hist-wod {
+    font-family: var(--font-heading); font-size: 0.95rem;
+    font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--white); margin-bottom: 4px;
+  }
+  .wbot-hist-score {
+    font-size: 0.82rem; color: #888; line-height: 1.4;
+  }
+  .wbot-hist-pr {
+    display: inline-block; margin-top: 6px;
+    background: rgba(230,51,41,0.15); border: 1px solid rgba(230,51,41,0.3);
+    color: var(--red); font-family: var(--font-heading);
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px;
+    padding: 2px 8px; text-transform: uppercase;
+  }
+  .wbot-save-form {
+    padding: 12px 16px; border-top: 1px solid #1e1e1e; flex-shrink: 0;
+  }
+  .wbot-save-title {
+    font-family: var(--font-heading); font-size: 0.7rem;
+    font-weight: 700; letter-spacing: 2px; color: var(--red);
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .wbot-save-row { display: flex; gap: 6px; margin-bottom: 6px; }
+  .wbot-field {
+    flex: 1; background: #1a1a1a; border: 1px solid #2a2a2a;
+    color: var(--white); font-family: var(--font-body);
+    font-size: 0.82rem; padding: 8px 10px; outline: none;
+    transition: border-color 0.15s; border-radius: 2px;
+  }
+  .wbot-field:focus { border-color: var(--red); }
+  .wbot-field::placeholder { color: #444; }
+  .wbot-save-btn {
+    background: var(--red); border: none;
+    color: white; font-family: var(--font-heading);
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 1.5px; padding: 8px 14px;
+    cursor: pointer; text-transform: uppercase;
+    transition: background 0.15s; border-radius: 2px;
+    white-space: nowrap;
+  }
+  .wbot-save-btn:hover { background: var(--red-dark); }
+  .wbot-pr-toggle {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .wbot-pr-toggle input { accent-color: var(--red); width: 16px; height: 16px; cursor: pointer; }
+  .wbot-pr-toggle label {
+    font-family: var(--font-heading); font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 1px; color: #aaa;
+    text-transform: uppercase; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">CROSS<span>ARY</span></div>
+  <nav id="main-nav">
+    <button class="nav-btn active" onclick="showSection('home')">Home</button>
+    <button class="nav-btn" onclick="showSection('glossario')">Glossário</button>
+    <button class="nav-btn" onclick="showSection('movimentos')">Movimentos</button>
+    <button class="nav-btn" onclick="showSection('treinos')">Tipos de Treino</button>
+    <button class="nav-btn" onclick="showSection('benchmarks')">Benchmarks</button>
+    <button class="nav-btn" onclick="showSection('medidas')">Medidas</button>
+  </nav>
+  <button class="mobile-menu-btn" onclick="toggleMobileNav()">☰</button>
+</header>
+
+<!-- HERO (HOME) -->
+<div class="section visible" id="home">
+  <section class="hero">
+    <div class="hero-bg-number">RX</div>
+    <div class="hero-content">
+      <span class="hero-tag">🔴 O Dicionário do WOD</span>
+      <h1>CROSS<span>ARY</span></h1>
+      <p>Tudo que você precisa saber para entender o CrossFit. Siglas, movimentos, tipos de treino, benchmarks. Do zero ao RX.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">130+</div>
+          <div class="label">Termos</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">40+</div>
+          <div class="label">Movimentos</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">15+</div>
+          <div class="label">Tipos de WOD</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">∞</div>
+          <div class="label">Intensidade</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick cards home -->
+  <div style="padding: 2rem; background: var(--dark); border-top: 1px solid var(--border);">
+    <p style="font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 1.5rem;">Navegue por categoria</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+      <div onclick="showSection('glossario')" style="background: var(--card); border: 1px solid var(--border); padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size: 2rem; margin-bottom: 8px;">📖</div>
+        <div style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">Glossário</div>
+        <div style="color: var(--muted); font-size: 0.85rem;">Todas as siglas e termos do esporte</div>
+      </div>
+      <div onclick="showSection('movimentos')" style="background: var(--card); border: 1px solid var(--border); padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size: 2rem; margin-bottom: 8px;">🏋️</div>
+        <div style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">Movimentos</div>
+        <div style="color: var(--muted); font-size: 0.85rem;">Guia completo de exercícios</div>
+      </div>
+      <div onclick="showSection('treinos')" style="background: var(--card); border: 1px solid var(--border); padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size: 2rem; margin-bottom: 8px;">⏱️</div>
+        <div style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">Tipos de Treino</div>
+        <div style="color: var(--muted); font-size: 0.85rem;">AMRAP, EMOM, For Time e mais</div>
+      </div>
+      <div onclick="showSection('benchmarks')" style="background: var(--card); border: 1px solid var(--border); padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size: 2rem; margin-bottom: 8px;">🎯</div>
+        <div style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">Benchmarks</div>
+        <div style="color: var(--muted); font-size: 0.85rem;">The Girls, Heroes e WODs famosos</div>
+      </div>
+      <div onclick="showSection('medidas')" style="background: var(--card); border: 1px solid var(--border); padding: 1.5rem; cursor: pointer; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--red)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size: 2rem; margin-bottom: 8px;">⚖️</div>
+        <div style="font-family: var(--font-heading); font-size: 1.1rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">Medidas & Reps</div>
+        <div style="color: var(--muted); font-size: 0.85rem;">Pesos, escalas e como contar reps</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BARRA DE BUSCA (aparece em algumas seções) -->
+<div class="search-bar" id="search-bar" style="display:none;">
+  <div class="search-wrap">
+    <input type="text" id="search-input" placeholder="Buscar termo ou movimento..." oninput="doSearch(this.value)">
+    <span class="search-icon">🔍</span>
+  </div>
+</div>
+
+<!-- GLOSSÁRIO -->
+<div class="section" id="glossario">
+  <h2 class="section-title">GLOSSÁ<span>RIO</span></h2>
+  <p class="section-sub">Termos, siglas e jargões do CrossFit</p>
+
+  <!-- PT-BR Banner -->
+  <div id="ptbr-section" style="display:none; background: linear-gradient(135deg, #1a0d00 0%, #0f1a00 100%); border: 1px solid #3a3a1a; padding: 1.5rem; margin-bottom: 1.5rem;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:1rem;">
+      <span style="font-size:2rem;">🇧🇷</span>
+      <div>
+        <div style="font-family:var(--font-display); font-size:1.8rem; letter-spacing:3px; line-height:1;">COMO SE FALA <span style="color:var(--red)">NO BRASIL</span></div>
+        <div style="font-family:var(--font-heading); font-size:0.72rem; font-weight:700; letter-spacing:2px; color:#888; text-transform:uppercase;">Os apelidos e traduções do dia a dia das boxes brasileiras</div>
+      </div>
+    </div>
+    <div id="ptbr-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:1px; background:#2a2a1a;"></div>
+  </div>
+
+  <div style="display:flex; gap:8px; margin-bottom:1rem; flex-wrap:wrap;">
+    <button class="alpha-btn active" id="view-all-btn" onclick="setGlossView('all', this)" style="width:auto;padding:0 14px;">Todos</button>
+    <button class="alpha-btn" onclick="setGlossView('ptbr', this)" style="width:auto;padding:0 14px;">🇧🇷 Em Português</button>
+  </div>
+
+  <div class="alpha-filter" id="alpha-filter">
+    <button class="alpha-btn active" onclick="filterAlpha('ALL', this)">ALL</button>
+  </div>
+
+  <div id="glossary-grid"></div>
+</div>
+
+<!-- MOVIMENTOS -->
+<div class="section" id="movimentos">
+  <h2 class="section-title">MOVI<span>MENTOS</span></h2>
+  <p class="section-sub">Clique em qualquer movimento para ver detalhes</p>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem;">
+    <button class="alpha-btn active" onclick="filterMoves('all', this)" style="width: auto; padding: 0 14px;">Todos</button>
+    <button class="alpha-btn" onclick="filterMoves('levantamento', this)" style="width: auto; padding: 0 14px;">Levantamento</button>
+    <button class="alpha-btn" onclick="filterMoves('ginastico', this)" style="width: auto; padding: 0 14px;">Ginástico</button>
+    <button class="alpha-btn" onclick="filterMoves('cardio', this)" style="width: auto; padding: 0 14px;">Cardio/Mono</button>
+    <button class="alpha-btn" onclick="filterMoves('kettlebell', this)" style="width: auto; padding: 0 14px;">Kettlebell</button>
+  </div>
+
+  <div class="move-grid" id="move-grid"></div>
+</div>
+
+<!-- TREINOS -->
+<div class="section" id="treinos">
+  <h2 class="section-title">TIPOS DE <span>TREINO</span></h2>
+  <p class="section-sub">Formatos de WOD e como funcionam</p>
+
+  <div class="workout-types" id="workout-types"></div>
+</div>
+
+<!-- BENCHMARKS -->
+<div class="section" id="benchmarks">
+  <h2 class="section-title">BENCH<span>MARKS</span></h2>
+  <p class="section-sub">Os WODs lendários do CrossFit</p>
+
+  <div class="benchmark-section">
+    <div class="benchmark-title">🌸 The Girls — Workouts Clássicos</div>
+    <div class="benchmark-grid" id="girls-grid"></div>
+  </div>
+
+  <div class="benchmark-section">
+    <div class="benchmark-title">🇺🇸 The Heroes — Homenagens</div>
+    <div class="benchmark-grid" id="heroes-grid"></div>
+  </div>
+
+  <div class="benchmark-section">
+    <div class="benchmark-title">🏆 Open Benchmark WODs</div>
+    <div class="benchmark-grid" id="open-grid"></div>
+  </div>
+</div>
+
+<!-- MEDIDAS -->
+<div class="section" id="medidas">
+  <h2 class="section-title">MEDI<span>DAS</span></h2>
+  <p class="section-sub">Pesos, escalas e como medir seu desempenho</p>
+
+  <div style="margin-bottom: 3rem;">
+    <p style="font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 8px; border-bottom: 1px solid var(--border);">Pesos Padrão dos Movimentos</p>
+    <div class="measures-grid" id="measures-grid"></div>
+  </div>
+
+  <div style="margin-bottom: 3rem;">
+    <p style="font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 8px; border-bottom: 1px solid var(--border);">Níveis de Performance</p>
+    <div style="display: grid; gap: 1px; background: var(--border);">
+      <div style="background: var(--dark); display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1px; background: var(--border);">
+        <div style="background: var(--red); padding: 12px; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">Nível</div>
+        <div style="background: var(--red); padding: 12px; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">Squat</div>
+        <div style="background: var(--red); padding: 12px; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">Deadlift</div>
+        <div style="background: var(--red); padding: 12px; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">Clean</div>
+      </div>
+      <div id="levels-table"></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 3rem;">
+    <p style="font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 8px; border-bottom: 1px solid var(--border);">Rep Schemes (Esquemas de Repetições)</p>
+    <div id="rep-schemes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">-</div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">-</div>
+  </div>
+</div>
+
+<!-- WODBOT FAB -->
+<button id="wodbot-fab" onclick="toggleWodBot()" title="WODBot — seu coach IA">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.73V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2zM7.5 14a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM3 18h18v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1z"/>
+  </svg>
+</button>
+
+<!-- WODBOT PANEL -->
+<div id="wodbot-panel">
+  <!-- Header -->
+  <div class="wbot-header">
+    <div class="wbot-avatar">
+      <svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.73V7h1a7 7 0 0 1 7 7H3a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2zM7.5 14a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM3 18h18v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1z"/></svg>
+    </div>
+    <div class="wbot-title">
+      <strong>WODBOT</strong>
+      <small>Coach IA · CrossFit</small>
+    </div>
+    <div class="wbot-status" title="Online"></div>
+    <button class="wbot-close-btn" onclick="toggleWodBot()">✕</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="wbot-tabs">
+    <button class="wbot-tab active" onclick="switchTab('chat', this)">💬 Coach</button>
+    <button class="wbot-tab" onclick="switchTab('wod', this)">📸 Ler WOD</button>
+    <button class="wbot-tab" onclick="switchTab('hist', this)">📊 Histórico</button>
+  </div>
+
+  <!-- Content -->
+  <div class="wbot-content">
+
+    <!-- CHAT PANE -->
+    <div class="wbot-pane active" id="pane-chat">
+      <div class="wbot-messages" id="wbot-msgs">
+        <div class="wbot-msg bot">
+          <div class="wbot-msg-label">WODBot</div>
+          <div class="wbot-bubble">E aí, atleta! 🔴 Sou o WODBot, seu coach IA de CrossFit.
+
+Posso explicar movimentos, desmembrar qualquer WOD, dar estratégia de prova e acompanhar sua evolução.
+
+Manda a dúvida ou sobe um print do WOD na aba <strong>Ler WOD</strong>!</div>
+        </div>
+      </div>
+      <div class="wbot-typing" id="wbot-typing"><span></span><span></span><span></span></div>
+      <div class="wbot-quick-btns">
+        <button class="wbot-quick" onclick="quickAsk('O que é RX e scaled?')">RX vs Scaled</button>
+        <button class="wbot-quick" onclick="quickAsk('Como executar o deadlift corretamente?')">Deadlift</button>
+        <button class="wbot-quick" onclick="quickAsk('O que é kipping pull-up? É diferente do strict?')">Kipping</button>
+        <button class="wbot-quick" onclick="quickAsk('Como montar uma estratégia para um AMRAP?')">Estratégia AMRAP</button>
+        <button class="wbot-quick" onclick="quickAsk('Explique double under e como aprender')">Double Under</button>
+      </div>
+      <div class="wbot-input-row">
+        <textarea class="wbot-input" id="wbot-input" placeholder="Pergunte qualquer coisa sobre CrossFit..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+        <button class="wbot-send" id="wbot-send-btn" onclick="sendChat()">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- WOD UPLOAD PANE -->
+    <div class="wbot-pane" id="pane-wod">
+      <div class="wbot-messages" id="wbot-wod-msgs">
+        <div class="wbot-msg bot">
+          <div class="wbot-msg-label">WODBot</div>
+          <div class="wbot-bubble">📸 Suba um print do WOD do seu box e eu explico tudo:
+
+• Estrutura do treino
+• Significado de cada sigla
+• Pesos e escalas
+• Estratégia para a prova
+• Movimentos técnicos
+
+Pode ser foto do quadro, print do app ou qualquer formato!</div>
+        </div>
+      </div>
+      <div class="wbot-typing" id="wbot-wod-typing"><span></span><span></span><span></span></div>
+      <div class="wbot-wod-upload" id="wbot-upload-area">
+        <input type="file" accept="image/*" id="wbot-file-input" onchange="handleWodImage(this)">
+        <p>📷 Toque para enviar o print do <span>WOD</span></p>
+      </div>
+      <div class="wbot-input-row">
+        <textarea class="wbot-input" id="wbot-wod-input" placeholder="Ou descreva o WOD manualmente..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendWodText();}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+        <button class="wbot-send" id="wbot-wod-send-btn" onclick="sendWodText()">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- HISTÓRICO PANE -->
+    <div class="wbot-pane" id="pane-hist">
+      <div class="wbot-hist-list" id="wbot-hist-list">
+        <div class="wbot-hist-empty" id="hist-empty">
+          Nenhum treino registrado ainda.<br><br>
+          Salve seus WODs aqui para acompanhar a evolução! 💪
+        </div>
+      </div>
+      <div class="wbot-save-form">
+        <div class="wbot-save-title">💾 Registrar treino de hoje</div>
+        <div class="wbot-save-row">
+          <input class="wbot-field" id="save-wod" placeholder="Nome do WOD (ex: Fran)" style="flex:2">
+          <input class="wbot-field" id="save-score" placeholder="Score / Tempo" style="flex:1.5">
+        </div>
+        <div class="wbot-save-row">
+          <input class="wbot-field" id="save-rx" placeholder="RX / Scaled / Peso usado" style="flex:2">
+          <input class="wbot-field" id="save-obs" placeholder="Observação" style="flex:2">
+        </div>
+        <div class="wbot-pr-toggle">
+          <input type="checkbox" id="save-pr-check">
+          <label for="save-pr-check">🔴 Foi um PR!</label>
+        </div>
+        <button class="wbot-save-btn" onclick="saveWorkout()">Salvar treino →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="version-tag">v1.5</div>
+
+<script>
+// ==================== DATA ====================
+
+const glossaryData = [
+  // A
+  { term: "AMRAP", sigla: "AMRAP", def: "As Many Rounds/Reps As Possible. Quantas rodadas ou repetições você conseguir no tempo determinado.", tag: "treino" },
+  { term: "A2G", sigla: "A2G", def: "Ass-to-Grass. Agachamento na profundidade máxima possível — bunda toca o chão metaforicamente.", tag: "técnica" },
+  { term: "Affiliate", sigla: null, def: "Box oficialmente afiliado ao CrossFit HQ. Não é franquia; cada box é independente.", tag: "negócio" },
+  { term: "Air Squat", sigla: null, def: "Agachamento apenas com peso corporal. Base de todos os squats — movimento fundamental.", tag: "movimento" },
+  { term: "Atlas Stones", sigla: null, def: "Pedras esféricas de concreto usadas em competições de strongman e CrossFit Games.", tag: "equipamento" },
+  // B
+  { term: "Back Extension", sigla: null, def: "Extensão das costas no GHD. Fortalece cadeia posterior: glúteos, isquiotibiais e eretores.", tag: "movimento" },
+  { term: "Back Squat", sigla: "BS", def: "Back Squat. Agachamento clássico com a barra apoiada nas trapézias (high bar) ou deltoides posteriores (low bar).", tag: "movimento" },
+  { term: "Bar-Facing Burpee", sigla: null, def: "Burpee executado de frente para a barra, com o salto passando por cima da barra. Comum em competições.", tag: "movimento" },
+  { term: "Barbell", sigla: null, def: "Barra olímpica padrão. Pesa 20kg (masculina) ou 15kg (feminina). Base dos levantamentos.", tag: "equipamento" },
+  { term: "Benchmark WOD", sigla: null, def: "WODs padronizados repetidos periodicamente para medir evolução. Ex: Fran, Grace, Murph.", tag: "treino" },
+  { term: "Bike Erg", sigla: null, def: "Bicicleta ergométrica (Assault Bike / Echo Bike). Pernas e braços. Medido em calorias ou metros.", tag: "cardio" },
+  { term: "BMU", sigla: "BMU", def: "Bar Muscle-Up. Muscle-up executado na barra fixa (diferente do Ring Muscle-Up nos anéis).", tag: "movimento" },
+  { term: "Box", sigla: null, def: "Nome dado à academia de CrossFit. Geralmente espaço aberto/industrial com equipamentos específicos.", tag: "geral" },
+  { term: "Box Jump", sigla: "BJ", def: "Salto sobre uma caixa, aterrissando com os dois pés ao mesmo tempo. RX: 24' (H) / 20' (M).", tag: "movimento" },
+  { term: "Box Jump Over", sigla: "BJOS", def: "Box Jump Over. Salto por cima da caixa, aterrissando do outro lado. Extensão completa no topo não é exigida.", tag: "movimento" },
+  { term: "Bumper Plates", sigla: null, def: "Anilhas de borracha que podem ser soltas no chão com segurança. Obrigatórias nos levantamentos olímpicos.", tag: "equipamento" },
+  { term: "Burpee", sigla: null, def: "Queda ao chão (peito e quadril tocam) + salto com palmas acima da cabeça. O movimento mais odiado.", tag: "movimento" },
+  { term: "Burpee Box Jump", sigla: "BBJS", def: "Burpee seguido de salto sobre a caixa. Combinação devastadora de cardio e potência.", tag: "movimento" },
+  { term: "Buy-In", sigla: null, def: "Conjunto de exercícios que deve ser completado ANTES do WOD principal começar. Conta no tempo total. Ex: 'Buy-In: 1000m row, depois AMRAP 15...'", tag: "treino" },
+  { term: "Buy-Out", sigla: null, def: "Conjunto de exercícios que deve ser completado DEPOIS do WOD principal para encerrar o treino. Também chamado Cash-Out ou Cash-In inverso.", tag: "treino" },
+  { term: "BW", sigla: "BW", def: "Body Weight. Peso corporal. Usado para descrever movimentos sem equipamento ou para calcular cargas relativas.", tag: "geral" },
+  { term: "Butterfly", sigla: null, def: "Variação do kipping pull-up com rotação circular dos braços. Mais rápido, mais difícil de aprender.", tag: "técnica" },
+  // C
+  { term: "C2", sigla: "C2", def: "Concept 2. A marca/modelo de remo ergométrico mais usada nas boxes de CrossFit do mundo.", tag: "equipamento" },
+  { term: "C2B", sigla: "C2B", def: "Chest-to-Bar. Pull-up onde o peito (não o queixo) toca a barra. Versão RX+ de muitos WODs.", tag: "movimento" },
+  { term: "C&J", sigla: "C&J", def: "Clean and Jerk. O levantamento olímpico em duas fases: primeiro o clean, depois o jerk.", tag: "movimento" },
+  { term: "Cash-Out", sigla: null, def: "Exercícios finais após o WOD. Devem ser concluídos antes de declarar o treino encerrado. Conta no score.", tag: "treino" },
+  { term: "CF Games", sigla: null, def: "CrossFit Games. Competição anual para encontrar o/a atleta mais em forma do planeta.", tag: "competição" },
+  { term: "CFT", sigla: "CFT", def: "CrossFit Total. WOD de força: soma do max em Back Squat + Strict Press + Deadlift. 3 tentativas por movimento.", tag: "benchmark" },
+  { term: "CFWU", sigla: "CFWU", def: "CrossFit Warm-Up. O aquecimento padrão original do CrossFit HQ com pull-ups, DLs, push-ups, squats e situps.", tag: "treino" },
+  { term: "Chalk", sigla: null, def: "Magnésio em pó (carbonato de magnésio) usado para melhorar aderência da mão na barra.", tag: "equipamento" },
+  { term: "Chipper", sigla: null, def: "WOD com lista longa de movimentos diferentes completados sequencialmente do início ao fim. Você 'lasca' cada exercício.", tag: "treino" },
+  { term: "Clean", sigla: "CLN", def: "Levantamento olímpico: barra vai do chão até o rack frontal (clavícula) em um movimento contínuo.", tag: "movimento" },
+  { term: "Couplet", sigla: null, def: "WOD com apenas dois exercícios alternados. Ex: Fran (thrusters + pull-ups).", tag: "treino" },
+  { term: "Constantly Varied", sigla: null, def: "Um dos três pilares do CrossFit: variação constante de exercícios, cargas e estímulos.", tag: "filosofia" },
+  // D
+  { term: "DB", sigla: "DB", def: "Dumbbell. Haltere. Muito comum nos WODs modernos, especialmente desde os CrossFit Games 2016.", tag: "equipamento" },
+  { term: "DNF", sigla: "DNF", def: "Did Not Finish. Não completou o WOD dentro do time cap ou por outro motivo.", tag: "performance" },
+  { term: "DFL", sigla: "DFL", def: "Dead F***ing Last. Último a terminar o WOD. Na cultura CrossFit, completar é o que importa.", tag: "geral" },
+  { term: "Deadlift", sigla: "DL", def: "Levantamento terra. Barra sobe do chão até extensão total dos quadris. O mais pesado dos 3 grandes levantamentos.", tag: "movimento" },
+  { term: "Death By", sigla: null, def: "Formato: começa com 1 rep no minuto 1, 2 no minuto 2... você sai quando não consegue completar no tempo.", tag: "treino" },
+  { term: "Dip", sigla: null, def: "Flexão nos paralelos ou anéis. Também a fase de rebaixamento no press e jerk (dip + drive).", tag: "movimento" },
+  { term: "Double Under", sigla: "DU", def: "Corda passando DUAS vezes sob os pés a cada salto. Exige tempo e coordenação para dominar.", tag: "movimento" },
+  // E
+  { term: "E2MOM", sigla: "E2MOM", def: "Every 2 Minutes On the Minute. Variação do EMOM com janelas de 2 minutos.", tag: "treino" },
+  { term: "EMOM", sigla: "EMOM", def: "Every Minute On the Minute. A cada início de minuto, executa o trabalho prescrito. O restante é descanso.", tag: "treino" },
+  // F
+  { term: "False Grip", sigla: null, def: "Pegada nos anéis onde o pulso passa por cima do anel. Essencial para o ring muscle-up.", tag: "técnica" },
+  { term: "Filthy Fifty", sigla: null, def: "WOD clássico: 50 reps de 10 movimentos diferentes. Box jumps, pull-ups, KB swings, lunges, K2E, push press, GHD, wall balls, burpees, DUs.", tag: "benchmark" },
+  { term: "Firebreather", sigla: null, def: "Atleta de elite que termina rápido e fica animando os outros. Também: quem treina com intensidade máxima sempre.", tag: "geral" },
+  { term: "For Time", sigla: null, def: "Complete o trabalho no menor tempo possível. Seu score é o tempo final.", tag: "treino" },
+  { term: "Fran", sigla: null, def: "O benchmark mais icônico: 21-15-9 Thrusters (95/65 lb) + Pull-ups. For Time.", tag: "benchmark" },
+  { term: "Front Squat", sigla: "FS", def: "Agachamento com a barra no rack frontal (clavícula). Cotovelos altos e à frente durante todo o movimento.", tag: "movimento" },
+  { term: "Functional Movement", sigla: null, def: "Movimento que replica ações do mundo real: empurrar, puxar, agachar, carregar, levantar.", tag: "filosofia" },
+  // G
+  { term: "GHD", sigla: "GHD", def: "Glute-Ham Developer. Aparelho para GHD sit-ups e back extensions. Alvo: cadeia posterior.", tag: "equipamento" },
+  { term: "GHD Sit-up", sigla: null, def: "Abdominal no GHD com amplitude total: costas descem além do horizontal antes de subir.", tag: "movimento" },
+  { term: "GOAT", sigla: "GOAT", def: "Seu ponto mais fraco que precisa de treino. Ex: 'Meu GOAT é double under'. Também Greatest Of All Time.", tag: "geral" },
+  { term: "GPP", sigla: "GPP", def: "General Physical Preparedness. Preparo físico geral — a base do CrossFit. Oposto de especialização.", tag: "filosofia" },
+  { term: "GTG", sigla: "GTG", def: "Grease The Groove. Método de praticar um movimento muitas vezes ao longo do dia, sempre sub-máximo.", tag: "técnica" },
+  // H
+  { term: "Hang Clean", sigla: null, def: "Clean iniciado da posição de joelhos ou quadris (hang), não do chão. Foco na segunda puxada.", tag: "movimento" },
+  { term: "Hang Power Clean", sigla: "HPC", def: "Power Clean iniciado do hang (joelhos/quadris). Recepção acima do paralelo.", tag: "movimento" },
+  { term: "High Intensity", sigla: null, def: "Terceiro pilar do CrossFit: a intensidade relativa ao próprio limite é o gatilho da adaptação.", tag: "filosofia" },
+  { term: "Hook Grip", sigla: null, def: "Pegada com o polegar preso sob os outros dedos. Dói nas primeiras semanas, mas é a mais segura.", tag: "técnica" },
+  { term: "HPC", sigla: "HPC", def: "Hang Power Clean. Clean em posição de hang, recebido acima do paralelo.", tag: "movimento" },
+  { term: "HRPU", sigla: "HRPU", def: "Hand Release Push-Up. Flexão onde as mãos saem do chão a cada repetição para garantir o padrão.", tag: "movimento" },
+  { term: "HSPU", sigla: "HSPU", def: "Handstand Push-Up. Flexão invertida com pés na parede. RX: cabeça toca o chão, braços travam no topo.", tag: "movimento" },
+  { term: "HSWA", sigla: "HSWA", def: "Handstand Walk. Caminhada em equilíbrio sobre as mãos. Competições medem em metros.", tag: "movimento" },
+  // J
+  { term: "Jerk", sigla: null, def: "Movimento de propulsão: barra do rack frontal para acima da cabeça. Variações: push jerk, split jerk.", tag: "movimento" },
+  { term: "Jump Rope", sigla: null, def: "Corda de pular. Usada em single-unders, double-unders e triple-unders.", tag: "equipamento" },
+  // K
+  { term: "KB", sigla: "KB", def: "Kettlebell. Bola de ferro com alça. Usada em swings, carries, TGU e vários outros movimentos.", tag: "equipamento" },
+  { term: "KBS", sigla: "KBS", def: "Kettlebell Swing. Balanço do KB — American (acima da cabeça) ou Russian (até nível dos olhos).", tag: "movimento" },
+  { term: "Kipping", sigla: null, def: "Técnica que usa momentum do quadril (swing) para auxiliar pull-ups, HSPU e outros ginásticos.", tag: "técnica" },
+  { term: "K2E", sigla: "K2E", def: "Knees to Elbows. Suspenso na barra, os joelhos tocam os cotovelos. Versão mais fácil do T2B.", tag: "movimento" },
+  { term: "KTE", sigla: "KTE", def: "Knees to Elbows. Mesmo que K2E. Variação de abdominal suspenso na barra.", tag: "movimento" },
+  // L
+  { term: "Ladder", sigla: null, def: "Reps que crescem (1-2-3...) ou decrescem (10-9-8...) a cada rodada. Testa resistência crescente.", tag: "treino" },
+  { term: "L-Sit", sigla: null, def: "Posição isométrica onde as pernas ficam horizontais com o corpo suspenso. Exige core e força de quadril.", tag: "ginástico" },
+  { term: "Lunge", sigla: null, def: "Avanço/afundo. Pode ser estático, walking lunge (caminhando) ou overhead lunge (com carga acima da cabeça).", tag: "movimento" },
+  // M
+  { term: "Metcon", sigla: "Metcon", def: "Metabolic Conditioning. A parte central do treino CrossFit — o WOD de condicionamento metabólico.", tag: "treino" },
+  { term: "MU", sigla: "MU", def: "Muscle-Up. Transição de hanging (puxada) para suporte (dip) acima da barra ou anéis.", tag: "movimento" },
+  { term: "Murph", sigla: null, def: "Hero WOD: 1 milha de corrida + 100 pull-ups + 200 push-ups + 300 squats + 1 milha. Com colete de 20#.", tag: "benchmark" },
+  // N
+  { term: "No Rep", sigla: null, def: "Repetição inválida por não atingir os padrões de movimento exigidos. O juiz/coach grita 'No rep!'", tag: "geral" },
+  // O
+  { term: "OHS", sigla: "OHS", def: "Overhead Squat. Agachamento com a barra acima da cabeça em pegada snatch. Teste máximo de mobilidade.", tag: "movimento" },
+  { term: "Overhead Press", sigla: "OHP", def: "Strict Press. Barra sobe dos ombros para acima da cabeça sem impulso das pernas.", tag: "movimento" },
+  { term: "Open", sigla: null, def: "CrossFit Open. Competição online anual com WODs semanais. Aberta a qualquer atleta do mundo.", tag: "competição" },
+  // P
+  { term: "Partner WOD", sigla: null, def: "Treino em dupla (ou grupo). Um trabalha enquanto o outro descansa ou sustenta uma posição.", tag: "treino" },
+  { term: "PC", sigla: "PC", def: "Power Clean. Clean onde a barra é recebida acima do paralelo do quadril.", tag: "movimento" },
+  { term: "Pood", sigla: "Pd", def: "Medida russa para kettlebell. 1 pood = 16kg (35 lb). 1.5 pood = 24kg. 2 pood = 32kg.", tag: "equipamento" },
+  { term: "PP", sigla: "PP", def: "Push Press. Press com impulso das pernas (dip + drive) para auxiliar a barra acima da cabeça.", tag: "movimento" },
+  { term: "PJ", sigla: "PJ", def: "Push Jerk. Jerk com rebaixamento em agachamento parcial para receber a barra.", tag: "movimento" },
+  { term: "PR", sigla: "PR", def: "Personal Record. Sua melhor marca pessoal. Também chamado PB (Personal Best).", tag: "performance" },
+  { term: "PS", sigla: "PS", def: "Power Snatch. Snatch recebido acima do paralelo do quadril.", tag: "movimento" },
+  { term: "PU", sigla: "PU", def: "Pull-Up ou Push-Up, dependendo do contexto no whiteboard. Atenção ao WOD completo para interpretar.", tag: "movimento" },
+  { term: "PVC", sigla: "PVC", def: "Cano de PVC leve usado para praticar técnica dos levantamentos olímpicos sem carga alguma.", tag: "equipamento" },
+  // Q
+  { term: "Quarterfinals", sigla: null, def: "Segunda fase da seleção para o CrossFit Games, após o Open. Realizada online com WODs específicos.", tag: "competição" },
+  // R
+  { term: "Rack", sigla: null, def: "Estrutura de apoio para a barra (squat rack). Também a posição 'rack frontal' com a barra na clavícula.", tag: "equipamento" },
+  { term: "RFT", sigla: "RFT", def: "Rounds For Time. Complete X rounds no menor tempo possível. Score é o tempo final.", tag: "treino" },
+  { term: "Rig", sigla: null, def: "Estrutura principal da box com barras fixas, anéis, espaços para pull-ups e outros ginásticos.", tag: "equipamento" },
+  { term: "Ring Dip", sigla: null, def: "Flexão executada nos anéis olímpicos. Instabilidade dos anéis exige muito mais controle de ombros e core.", tag: "movimento" },
+  { term: "Ring MU", sigla: "RMU", def: "Ring Muscle-Up. Muscle-Up nos anéis olímpicos. Requer false grip e mais força de tríceps.", tag: "movimento" },
+  { term: "RM", sigla: "RM", def: "Repetition Maximum. 1RM = máximo em 1 rep. 5RM = máximo em 5 reps. Base para prescrição de cargas.", tag: "força" },
+  { term: "ROM", sigla: "ROM", def: "Range of Motion. Amplitude de movimento de uma articulação ou exercício.", tag: "técnica" },
+  { term: "Rope Climb", sigla: null, def: "Escalada de corda. Pode ser com pés (legless = sem pés, mais difícil) ou com técnica de J-hook.", tag: "movimento" },
+  { term: "Rowing", sigla: null, def: "Remo ergométrico no C2 (Concept2). Medido em metros ou calorias. 70% pernas, 20% core, 10% braços.", tag: "cardio" },
+  { term: "RX", sigla: "RX", def: "As Prescribed. Completar o WOD com pesos e movimentos originais, sem qualquer escala.", tag: "performance" },
+  { term: "RX+", sigla: "RX+", def: "Versão ainda mais pesada/difícil que o RX padrão. Para atletas de elite ou avançados.", tag: "performance" },
+  // S
+  { term: "SC", sigla: "SC", def: "Squat Clean. Clean completo onde a barra é recebida em agachamento total abaixo do paralelo.", tag: "movimento" },
+  { term: "Scaled", sigla: null, def: "Versão adaptada do WOD. Pesos menores ou movimentos modificados. Legítimo para qualquer nível.", tag: "performance" },
+  { term: "SDHP", sigla: "SDHP", def: "Sumo Deadlift High Pull. Pegada e postura larga + deadlift + high pull. Combina força e potência.", tag: "movimento" },
+  { term: "Set", sigla: null, def: "Número de repetições em sequência. '5 sets de 3' = 5x3 = fazer 3 reps, descansar, repetir 5 vezes.", tag: "geral" },
+  { term: "Shin Skin", sigla: null, def: "Protetores de canela usados durante rope climbs para evitar arranhões dolorosos ao descer.", tag: "equipamento" },
+  { term: "Single Under", sigla: "SU", def: "Corda passando UMA vez sob os pés por salto. Versão básica do double under.", tag: "movimento" },
+  { term: "Ski Erg", sigla: null, def: "Ergômetro de esqui. Puxadas de corda de cima para baixo. Excelente para aeróbico e ombros.", tag: "cardio" },
+  { term: "Snatch", sigla: "SN", def: "Arrancar. Barra vai do chão para acima da cabeça em um único movimento fluido. O mais técnico do CrossFit.", tag: "movimento" },
+  { term: "Snatch Grip", sigla: null, def: "Pegada larga usada no snatch — aprox. 1,5x a largura dos ombros. Distância do índice até as orelhas.", tag: "técnica" },
+  { term: "SPP", sigla: "SPP", def: "Specific Physical Preparedness. Preparo físico específico — treino de habilidade em um movimento ou esporte.", tag: "filosofia" },
+  { term: "Split Jerk", sigla: "SJ", def: "Jerk com divisão das pernas em tesoura para receber a barra. A técnica mais usada em levantamento olímpico.", tag: "movimento" },
+  { term: "Squat Snatch", sigla: "SS", def: "Snatch completo onde a barra é recebida em agachamento total (overhead squat position).", tag: "movimento" },
+  { term: "STOH", sigla: "STOH", def: "Shoulder To OverHead. Qualquer movimento que leva a barra dos ombros para acima da cabeça.", tag: "movimento" },
+  { term: "Strict", sigla: null, def: "Movimento executado APENAS com força muscular, sem impulso, kipping ou qualquer momentum externo.", tag: "técnica" },
+  { term: "Subbed", sigla: null, def: "Substituted. Quando você troca um exercício por outro por incapacidade ou adaptação.", tag: "geral" },
+  // T
+  { term: "TABATA", sigla: null, def: "Protocolo do Dr. Izumi Tabata: 8 rounds × 20s esforço máximo + 10s descanso = 4 minutos. Score: pior round.", tag: "treino" },
+  { term: "T2B", sigla: "T2B", def: "Toes-to-Bar. Suspenso na barra, pés sobem até tocar a barra com pernas estendidas.", tag: "movimento" },
+  { term: "TGU", sigla: "TGU", def: "Turkish Get-Up. Do chão até de pé carregando KB acima da cabeça. Teste de estabilidade total.", tag: "movimento" },
+  { term: "Thruster", sigla: null, def: "Front squat + overhead press em movimento contínuo sem pausa. Devastador em alto volume.", tag: "movimento" },
+  { term: "Time Cap", sigla: null, def: "Tempo máximo permitido para completar o WOD. Se bater o cap, registra as reps completadas.", tag: "geral" },
+  { term: "Triplet", sigla: null, def: "WOD com três exercícios diferentes. Muitos dos benchmarks clássicos são triplets.", tag: "treino" },
+  // V
+  { term: "Virtuosity", sigla: null, def: "Executar com maestria o que é ordinário. Filosofia central do CrossFit segundo Greg Glassman.", tag: "filosofia" },
+  // W
+  { term: "Walking Lunge", sigla: null, def: "Avanços em progressão frontal. Pode ser com peso corporal, com barra, DBs ou KB.", tag: "movimento" },
+  { term: "Wall Ball", sigla: "WB", def: "Med ball arremessada à parede após um squat completo. RX: alvo 10' (H) / 9' (M), bola 20/14 lb.", tag: "movimento" },
+  { term: "Wall Walk", sigla: null, def: "Saindo em prancha com pés na parede, caminha as mãos até tocar a parede com o peito verticalmente.", tag: "ginástico" },
+  { term: "WOD", sigla: "WOD", def: "Workout of the Day. O treino do dia. Postado no whiteboard. O coração da cultura CrossFit.", tag: "geral" },
+  // Y
+  { term: "YBF", sigla: "YBF", def: "You'll Be Fine. Frase de encorajamento da cultura CrossFit. Gritada por coaches nos momentos mais difíceis.", tag: "geral" },
+  // 1
+  { term: "1RM", sigla: "1RM", def: "One Rep Max. Carga máxima que você levanta em uma única repetição. Base para calcular % de treino.", tag: "força" },
+  { term: "21-15-9", sigla: null, def: "Esquema de repetições clássico: 21 reps, depois 15, depois 9. Usado em Fran, Diane e muitos outros.", tag: "treino" },
+  { term: "Rope Climb (Legless)", sigla: null, def: "Escalada de corda sem usar as pernas. Apenas força de braços e core. Nível avançado.", tag: "movimento" },
+  { term: "Bench Press", sigla: "BP", def: "Supino. Não é comum no CrossFit tradicional, mas aparece em alguns WODs e CFT adaptados.", tag: "movimento" },
+  { term: "C2B Pull-up", sigla: "CTB", def: "Chest-to-Bar. Mesma sigla que C2B. O peito deve tocar a barra em cada repetição válida.", tag: "movimento" },
+  { term: "Hang Power Snatch", sigla: "HPS", def: "Power Snatch a partir do hang (joelhos/quadris). Recepção acima do paralelo em overhead.", tag: "movimento" },
+  { term: "CrossFit Open", sigla: null, def: "Competição anual online de 3 semanas. Qualquer atleta pode participar de qualquer box do mundo.", tag: "competição" },
+  { term: "Affiliate", sigla: null, def: "Box afiliado ao CrossFit HQ. Independente, mas usa a marca e metodologia oficial.", tag: "negócio" },
+  { term: "Calluses", sigla: null, def: "Calosidades nas palmas. São normais e bem-vindas no CrossFit — sinal de treino consistente na barra.", tag: "geral" },
+  { term: "Grip (False)", sigla: null, def: "Pegada falsa nos anéis com o pulso passando sobre o anel. Essencial para ring muscle-ups.", tag: "técnica" },
+  { term: "Hollow Position", sigla: null, def: "Posição de corpo 'em forma de banana invertida': ombros e pernas levemente elevados, lombar no chão.", tag: "técnica" },
+  { term: "Arch Position", sigla: null, def: "Posição oposta ao hollow: quadris projetados, peito aberto. Parte do swing/kip no pull-up.", tag: "técnica" },
+  { term: "Hip Extension", sigla: null, def: "Extensão total dos quadris: quadris abertos, glúteos contraídos. Padrão exigido em DL, KB swing, clean.", tag: "técnica" },
+  { term: "Dumbbell", sigla: "DB", def: "Haltere. Muito usado nos WODs modernos: DB snatch, DB thrusters, farmer carry.", tag: "equipamento" },
+  { term: "Farmer Carry", sigla: null, def: "Caminhar segurando DBs ou KBs nas laterais do corpo. Treina grip, core e capacidade de carga.", tag: "movimento" },
+  { term: "Sandbag", sigla: null, def: "Bolsa de areia usada em carries, squats e clean. Muito usada em provas de fitness militar.", tag: "equipamento" },
+  { term: "Sled Push/Pull", sigla: null, def: "Empurrar ou puxar um trenó carregado. Cardio e força combinados sem impacto articular.", tag: "movimento" },
+  { term: "Assault Bike", sigla: null, def: "Bicicleta com manivelas para braços e pedais. Trabalha corpo inteiro. Referência de sofrimento no CrossFit.", tag: "equipamento" },
+  { term: "Echo Bike", sigla: null, def: "Versão da Assault Bike fabricada pela Rogue. Muito usada em boxes e nos CrossFit Games.", tag: "equipamento" },
+];
+
+const movementsData = [
+  {
+    name: "Back Squat",
+    sigla: "BS",
+    category: "levantamento",
+    emoji: "🏋️",
+    muscles: "Quadríceps, Glúteos, Isquiotibiais",
+    difficulty: 2,
+    desc: "O rei dos agachamentos. Barra posicionada nas trapézias, agachamento até abaixo do paralelo.",
+    steps: ["Posicione a barra nas trapézias (low bar) ou deltoides posteriores (high bar)","Pés na largura dos ombros, ligeiramente abertos","Peito aberto, lombar neutra, olhar à frente","Desça controlando o movimento até abaixo do paralelo","Suba explosivo, empurrando o chão com os calcanhares"],
+    tip: "Para iniciantes: pratique o agachamento com peso corporal até dominar a posição antes de adicionar carga.",
+    tags: ["força", "membros inferiores", "barbell"]
+  },
+  {
+    name: "Front Squat",
+    sigla: "FS",
+    category: "levantamento",
+    emoji: "🏋️‍♀️",
+    muscles: "Quadríceps, Core, Lombar",
+    difficulty: 3,
+    desc: "Agachamento com a barra no rack frontal. Exige mobilidade de tornozelo e ombros.",
+    steps: ["Barra nos deltoides frontais, cotovelos elevados e na frente","Pegada pode ser limpa ou com dedos apenas","Mantenha os cotovelos altos durante todo o movimento","Agache com torso vertical — mais ereto que o back squat","Suba mantendo os cotovelos acima a todo momento"],
+    tip: "Se a mobilidade de punho for limitada, use a pegada com apenas os dedos (fingertip grip) inicialmente.",
+    tags: ["força", "membros inferiores", "barbell", "olímpico"]
+  },
+  {
+    name: "Deadlift",
+    sigla: "DL",
+    category: "levantamento",
+    emoji: "💪",
+    muscles: "Cadeia posterior, Glúteos, Trapézio",
+    difficulty: 2,
+    desc: "O levantamento mais básico e funcional. Barra sobe do chão até os quadris estendidos.",
+    steps: ["Pés embaixo da barra, largura dos quadris","Agache e segure a barra fora das pernas","Costas retas (lombar neutra), peito aberto","Empurre o chão como se fosse fazer leg press","Suba barra junto ao corpo, quadris e ombros na mesma velocidade","Final: quadris completamente estendidos, glúteos contraídos"],
+    tip: "O engajamento do latíssimo antes de puxar ('quebrar a barra') é crucial para proteger a lombar.",
+    tags: ["força", "cadeia posterior", "barbell"]
+  },
+  {
+    name: "Power Clean",
+    sigla: "PC",
+    category: "levantamento",
+    emoji: "⚡",
+    muscles: "Corpo inteiro, explosão de quadris",
+    difficulty: 4,
+    desc: "Clean olímpico recebido acima do paralelo. Um dos movimentos mais explosivos do CrossFit.",
+    steps: ["Configuração idêntica ao deadlift","Primeira puxada: barra sobe vagarosa até joelhos","Transição: barra passa pelos joelhos, tronco inclina ligeiramente","Segunda puxada EXPLOSIVA: estenda quadris, joelhos e tornozelos","Shrug agressivo nos ombros + high pull","Rebaixamento rápido sob a barra em recepção no rack frontal"],
+    tip: "Pense em puxar os cotovelos para CIMA e para FORA ao realizar o catch, não de girar os punhos.",
+    tags: ["olímpico", "explosão", "corpo inteiro", "barbell"]
+  },
+  {
+    name: "Snatch",
+    sigla: "SN",
+    category: "levantamento",
+    emoji: "🔥",
+    muscles: "Corpo inteiro, coordenação total",
+    difficulty: 5,
+    desc: "O movimento mais técnico do CrossFit. Barra do chão para acima da cabeça em um único movimento.",
+    steps: ["Pegada larga (snatch grip), 1.5x largura dos ombros","Primeira puxada vagarosa até os joelhos","Barra junto ao corpo, joelhos empurrados para trás","Segunda puxada explosiva: extensão total de quadris","Pull alto: cotovelos acima da barra","Rebaixe RÁPIDO em overhead squat para receber a barra"],
+    tip: "Use PVC ou barra vazia por meses antes de adicionar carga. A técnica é tudo no snatch.",
+    tags: ["olímpico", "explosão", "corpo inteiro", "barbell", "avançado"]
+  },
+  {
+    name: "Thruster",
+    sigla: null,
+    category: "levantamento",
+    emoji: "🚀",
+    muscles: "Ombros, Quadríceps, Core",
+    difficulty: 3,
+    desc: "Front squat + push press em um único movimento. O favorito nos WODs como Fran.",
+    steps: ["Comece com a barra no rack frontal","Execute um front squat completo (abaixo do paralelo)","Na subida, use o momentum para continuar o movimento","Pressione a barra acima da cabeça até os braços travarem","Retorne ao rack frontal e repita"],
+    tip: "O segredo é não pausar na transição squat→press. O movimento deve ser contínuo e fluido.",
+    tags: ["metcon", "compostos", "barbell"]
+  },
+  {
+    name: "Overhead Squat",
+    sigla: "OHS",
+    category: "levantamento",
+    emoji: "🎯",
+    muscles: "Core, Estabilizadores, Ombros",
+    difficulty: 4,
+    desc: "Agachamento com a barra sustentada acima da cabeça em pegada snatch. Teste supremo de mobilidade.",
+    steps: ["Barra acima da cabeça, pegada larga (snatch grip)","Ombros ativos: empurre a barra para o teto","Cotovelos travados, punhos neutros","Agache mantendo a barra diretamente sobre os calcanhares","Core rígido, olhar à frente"],
+    tip: "Se você não consegue fazer OHS sem peso, trabalhe mobilidade de tornozelo, ombros e quadril antes.",
+    tags: ["força", "mobilidade", "barbell"]
+  },
+  {
+    name: "Pull-up",
+    sigla: null,
+    category: "ginastico",
+    emoji: "🙌",
+    muscles: "Latíssimo, Bíceps, Trapézio",
+    difficulty: 2,
+    desc: "O principal movimento ginástico. Do hang até o queixo acima da barra.",
+    steps: ["Segure a barra com pegada pronada, largura dos ombros","Corpo completamente estendido no ponto de partida","Puxe ativamente as escápulas para baixo e para trás","Puxe os cotovelos para o chão até o queixo ultrapassar a barra","Desça controlado de volta ao hang completo"],
+    tip: "Comece com band-assisted pull-ups ou ring rows. Construa força base antes de kipping.",
+    tags: ["ginástico", "puxada", "barra"]
+  },
+  {
+    name: "Kipping Pull-up",
+    sigla: null,
+    category: "ginastico",
+    emoji: "🌊",
+    muscles: "Latíssimo, Core, Ombros",
+    difficulty: 3,
+    desc: "Pull-up com momentum do quadril. Mais rápido e eficiente para WODs de alta repetição.",
+    steps: ["Comece em hollow position (corpo como banana invertida)","Swing para arch position (corpo como arco)","No swing para hollow, puxe os cotovelos para baixo","O kip do quadril eleva o corpo rapidamente","Queixo acima da barra, retorne pelo movimento reverso"],
+    tip: "Você PRECISA ter strict pull-ups antes de kipping. Sem força base, o risco de lesão no ombro é alto.",
+    tags: ["ginástico", "puxada", "barra", "metcon"]
+  },
+  {
+    name: "Muscle-Up",
+    sigla: "MU",
+    category: "ginastico",
+    emoji: "🎪",
+    muscles: "Peitoral, Tríceps, Latíssimo, Core",
+    difficulty: 5,
+    desc: "A transição de hanging para suporte acima da barra ou anéis. Movimento elite do CrossFit.",
+    steps: ["Begin in false grip (anéis) ou pegada normal (barra)","Swing agressivo (kip) para gerar momentum","Na fase de pull, cotovelos puxam para cima e atrás","Transição: cotovelos passam da posição de pull para push","Empurre para completar o dip e braços estendidos em suporte"],
+    tip: "Pré-requisito: 10 strict pull-ups E 10 ring dips. O muscle-up é a soma destes dois movimentos.",
+    tags: ["ginástico", "avançado", "anéis", "barra"]
+  },
+  {
+    name: "Handstand Push-up",
+    sigla: "HSPU",
+    category: "ginastico",
+    emoji: "🤸",
+    muscles: "Deltoides, Tríceps, Core",
+    difficulty: 4,
+    desc: "Flexão invertida com pés na parede. Demanda force de ombros e equilíbrio.",
+    steps: ["Kick up para apoio na parede (mãos a ~30cm da parede)","Corpo totalmente estendido, pés juntos na parede","Desça a cabeça controlado até a bochecha tocar o chão","(Kipping) Use impulso do joelho para auxiliar na subida","Suba até os braços travarem completamente"],
+    tip: "Pratique pike push-ups e box pike push-ups como progressões antes do HSPU completo.",
+    tags: ["ginástico", "ombros", "parede"]
+  },
+  {
+    name: "Toes-to-Bar",
+    sigla: "T2B",
+    category: "ginastico",
+    emoji: "⚙️",
+    muscles: "Core, Flexores do Quadril, Latíssimo",
+    difficulty: 3,
+    desc: "Suspenso na barra, os pés tocam a barra com as pernas estendidas.",
+    steps: ["Segure a barra, corpo em hang completo","Inicie o swing (kip): hollow → arch","Na fase hollow, comprima o core e eleve as pernas","Pés sobem em arco até tocarem a barra","Retorne controlado para o hang e repita o ciclo"],
+    tip: "Progressão: knee raises → L-sit raises → toes to bar. O kip correto vem do latíssimo, não só do core.",
+    tags: ["ginástico", "core", "barra"]
+  },
+  {
+    name: "Box Jump",
+    sigla: "BJ",
+    category: "ginastico",
+    emoji: "📦",
+    muscles: "Quadríceps, Glúteos, Panturrilha",
+    difficulty: 2,
+    desc: "Salto explosivo sobre uma caixa. RX geralmente 24' (homens) e 20' (mulheres).",
+    steps: ["Posicione-se a ~30cm da caixa","Flexione rapidamente os joelhos e balanço os braços","Salte explosivo, puxando os joelhos para o peito","Aterrisse com AMBOS os pés simultaneamente na caixa","Joelhos e quadris completamente estendidos no topo","Salte ou desça com cuidado para trás"],
+    tip: "Box jump step-down é permitido para conservar energia em WODs longos. Segurança sempre primeiro.",
+    tags: ["cardio", "explosão", "membros inferiores"]
+  },
+  {
+    name: "Double Under",
+    sigla: "DU",
+    category: "cardio",
+    emoji: "🪢",
+    muscles: "Panturrilha, Coordenação",
+    difficulty: 3,
+    desc: "A corda passa duas vezes sob os pés a cada salto. Base do condicionamento no CrossFit.",
+    steps: ["Postura ereta, cotovelos próximos ao corpo","Punhos giram a corda (não o braço todo)","Salto levemente mais alto que o single under","Corda passa DUAS VEZES antes de você aterrissar","Mantenha ritmo consistente — não 'lute' contra a corda"],
+    tip: "Aprenda primeiro fazendo 1 single + 1 double, depois 2 singles + 1 double, até conseguir encadear.",
+    tags: ["cardio", "corda", "coordenação"]
+  },
+  {
+    name: "Rowing",
+    sigla: null,
+    category: "cardio",
+    emoji: "🚣",
+    muscles: "Corpo inteiro: costas, pernas, braços",
+    difficulty: 2,
+    desc: "Remo ergométrico (Concept2). 70% pernas, 20% core, 10% braços. Medido em metros ou cal.",
+    steps: ["Início: joelhos dobrados, shinbone vertical, braços estendidos, torso ligeiramente à frente","Drive: empurre o chão com as pernas PRIMEIRO","Depois que as pernas estiverem quase estendidas, reclina o torso","Por último, puxe o cabo até o peito abaixo do esterno","Retorno: reverso — braços, torso, pernas"],
+    tip: "A sequência é: LEGS → BACK → ARMS na puxada. E ARMS → BACK → LEGS no retorno. Jamais ao contrário.",
+    tags: ["cardio", "monoestrutural", "concept2"]
+  },
+  {
+    name: "Burpee",
+    sigla: null,
+    category: "cardio",
+    emoji: "😤",
+    muscles: "Corpo inteiro, cardio",
+    difficulty: 1,
+    desc: "O exercício mais odiado e amado do CrossFit. Queda ao chão e salto. RX: peito e quadril tocam o chão.",
+    steps: ["Em pé, quedas das mãos no chão","Salte os pés para a posição de prancha","Abaixe o peito E o quadril até tocarem o chão","Empurre de volta para a prancha","Salte os pés para fora das mãos","Salte com palmas acima da cabeça"],
+    tip: "Burpees box jump over, bar-facing burpees e bar-over burpees são variações comuns em competições.",
+    tags: ["cardio", "metcon", "corpo inteiro"]
+  },
+  {
+    name: "KB Swing",
+    sigla: null,
+    category: "kettlebell",
+    emoji: "🔔",
+    muscles: "Glúteos, Isquiotibiais, Lombar, Core",
+    difficulty: 2,
+    desc: "Russian (até os olhos) ou American (acima da cabeça). Movimento de hip hinge explosivo.",
+    steps: ["Kettlebell à frente, pés na largura dos ombros","Hip hinge (não agachamento): rebaixe com quadris para trás","KB balança para trás entre as pernas","Extensão EXPLOSIVA dos quadris projeta o KB para frente","Russian: KB para no nível dos olhos","American: KB vai completamente acima da cabeça, braços travados"],
+    tip: "O swing é um movimento de HIP HINGE, não um agachamento. Os quadris geram a força, não os braços.",
+    tags: ["kettlebell", "cadeia posterior", "explosão"]
+  },
+  {
+    name: "Wall Ball",
+    sigla: "WB",
+    category: "cardio",
+    emoji: "🎱",
+    muscles: "Quadríceps, Ombros, Core",
+    difficulty: 2,
+    desc: "Agachamento com a med ball seguido de arremesso à parede. Alvo: 10 pés (H) / 9 pés (M).",
+    steps: ["Med ball no peito, alvo marcado na parede","Execute um squat completo (abaixo do paralelo)","Na subida, use o momentum para arremessar a ball","A ball deve atingir o alvo ou acima","Receba a ball no peito e vá direto para o próximo squat — sem pausa"],
+    tip: "O padrão de movimento é agachamento → arremesso em um movimento fluido. Receba a ball em semi-squat já.",
+    tags: ["metcon", "cardio", "med ball"]
+  },
+  {
+    name: "Pistol Squat",
+    sigla: null,
+    category: "ginastico",
+    emoji: "🦵",
+    muscles: "Quadríceps, Glúteos, Equilíbrio",
+    difficulty: 4,
+    desc: "Agachamento unilateral completo. Demanda força, flexibilidade e equilíbrio excepcionais.",
+    steps: ["Em pé sobre uma perna, outra estendida à frente","Agache lentamente na perna de apoio","A outra perna permanece estendida e elevada","Toque o calcanhar no chão em profundidade total (A2G)","Suba pela força unilateral sem apoio"],
+    tip: "Progressões: box pistol → assisted pistol → full pistol. Trabalhe mobilidade de tornozelo em paralelo.",
+    tags: ["ginástico", "unilateral", "mobilidade"]
+  },
+  {
+    name: "Turkish Get-up",
+    sigla: "TGU",
+    category: "kettlebell",
+    emoji: "🌅",
+    muscles: "Core, Ombros, Quadris",
+    difficulty: 4,
+    desc: "Do chão em pé carregando o KB acima da cabeça. Movimento de estabilização total.",
+    steps: ["Deite com KB em uma mão, braço estendido acima","Role para o cotovelo, depois para a mão","Eleve os quadris (bridge)","Passe a perna por baixo do corpo em lunge","Suba para o lunge vertical","Junte os pés e fique em pé"],
+    tip: "Faça VAGAROSO. O TGU é um exercício de qualidade de movimento, não de velocidade.",
+    tags: ["kettlebell", "mobilidade", "estabilização"]
+  },
+  {
+    name: "Dumbbell Snatch",
+    sigla: "DB SN",
+    category: "levantamento",
+    emoji: "🏆",
+    muscles: "Corpo inteiro, explosão",
+    difficulty: 3,
+    desc: "Snatch com haltere. Um dos movimentos mais frequentes nos CrossFit Games e Open.",
+    steps: ["DB entre as pernas, pés na largura dos ombros","Hip hinge: rebaixe com quadris para trás","Extensão explosiva dos quadris","High pull: cotovelo sobe acima do ombro","Abaixo sob o DB: rotação do punho e recepção acima da cabeça","Suba para a posição vertical com braço travado"],
+    tip: "Alterne as mãos a cada rep ou complete todas de um lado antes de trocar — ambas são válidas.",
+    tags: ["dumbbell", "olímpico", "metcon"]
+  },
+];
+
+const workoutTypes = [
+  {
+    sigla: "AMRAP",
+    name: "As Many Rounds As Possible",
+    desc: "Você tem um tempo determinado para completar o máximo de rodadas possível de um circuito de exercícios. Não há descanso obrigatório — você gerencia seu ritmo.",
+    example: "AMRAP 12 min:\n5 Pull-ups\n10 Push-ups\n15 Air Squats",
+    icon: "🔄",
+    detail: "Estratégia: comece um pouco mais devagar do que você acha que consegue. A maioria das pessoas vai rápido demais nos primeiros minutos e paga o preço no final."
+  },
+  {
+    sigla: "EMOM",
+    name: "Every Minute On the Minute",
+    desc: "A cada minuto que começa, você executa um conjunto definido de exercícios. O tempo restante de cada minuto é seu descanso antes do próximo minuto iniciar.",
+    example: "EMOM 10 min:\nMinuto ímpar: 8 Thrusters\nMinuto par: 10 Box Jumps",
+    icon: "⏱️",
+    detail: "Se você não terminar o trabalho antes do minuto acabar, não tem descanso — é sinal de que o peso ou as reps estão além do seu nível atual."
+  },
+  {
+    sigla: "For Time",
+    name: "For Time",
+    desc: "Complete o trabalho designado no menor tempo possível. Simples e brutal. Seu cronômetro para quando você termina.",
+    example: "For Time:\n21-15-9\nThrusters (95/65 lb)\nPull-ups\n(Este é o Fran)",
+    icon: "⚡",
+    detail: "Formato usado nos benchmark WODs. Permite comparar seu desempenho ao longo do tempo e com outros atletas."
+  },
+  {
+    sigla: "TABATA",
+    name: "Tabata Protocol",
+    desc: "8 rounds de 20 segundos de esforço máximo + 10 segundos de descanso = 4 minutos. Desenvolvido pelo Dr. Izumi Tabata.",
+    example: "Tabata Rowing:\n20s esforço máximo\n10s descanso\n× 8 rounds\nScore: pior resultado",
+    icon: "🔥",
+    detail: "O score no Tabata é geralmente o PIOR round. Isso incentiva consistência ao longo de todos os rounds."
+  },
+  {
+    sigla: "CHIPPER",
+    name: "Chipper WOD",
+    desc: "Lista longa de diferentes exercícios completados sequencialmente do início ao fim. Como 'chipar' (cortar) uma árvore uma machadada de cada vez.",
+    example: "For Time:\n50 Box Jumps\n50 Jumping Pull-ups\n50 KB Swings\n50 Walking Lunges\n50 DUs\n50 Sit-ups",
+    icon: "🪓",
+    detail: "A estratégia no chipper é não ir rápido demais nos primeiros movimentos. Conserve energia para o final."
+  },
+  {
+    sigla: "LADDER",
+    name: "Ladder",
+    desc: "Repetições que aumentam (ascending ladder) ou diminuem (descending ladder) a cada rodada. Também pode ser bidirecional.",
+    example: "Ascending Ladder:\n1 Clean\n1 Bar Muscle-up\n2 Cleans\n2 MUs\n... até o tempo",
+    icon: "📈",
+    detail: "Ladders são comuns nos CrossFit Games. Testam o quanto você consegue completar dentro de um tempo-limite."
+  },
+  {
+    sigla: "E2MOM",
+    name: "Every 2 Minutes On the Minute",
+    desc: "Variação do EMOM com janelas de 2 minutos. Permite trabalho de mais volume ou com cargas mais pesadas.",
+    example: "E2MOM × 8:\n3 Squat Cleans\n@ 80% 1RM",
+    icon: "⚔️",
+    detail: "Comum em trabalho de força olímpica onde você precisa de mais tempo de descanso entre os sets de alta intensidade."
+  },
+  {
+    sigla: "RFT",
+    name: "Rounds For Time",
+    desc: "Complete um número determinado de rounds no menor tempo possível. Variação específica do For Time com rounds fixos.",
+    example: "5 RFT:\n10 Deadlifts (225/155)\n20 Box Jumps\n30 DUs",
+    icon: "🎯",
+    detail: "Parecido com AMRAP mas você sabe exatamente quanto trabalho será feito — só o tempo é variável."
+  },
+  {
+    sigla: "DEATH BY",
+    name: "Death By...",
+    desc: "Começa com 1 rep no minuto 1, 2 reps no minuto 2, etc. Você é eliminado quando não completa o número de reps no tempo.",
+    example: "Death By Pull-ups:\nMin 1: 1 pull-up\nMin 2: 2 pull-ups\n...\n(até a falha)",
+    icon: "💀",
+    detail: "Parece fácil no começo e vira inferno rapidamente. O score é o último minuto completado com sucesso."
+  },
+  {
+    sigla: "HERO WOD",
+    name: "Hero WODs",
+    desc: "WODs nomeados em homenagem a militares, policiais ou bombeiros que morreram em serviço. São geralmente longos e muito intensos.",
+    example: "MURPH:\n1 mi Run\n100 Pull-ups\n200 Push-ups\n300 Squats\n1 mi Run\n(com colete 20#)",
+    icon: "🎖️",
+    detail: "São completados com respeito e determinação. Murph é o mais famoso e é completado anualmente no Memorial Day (EUA)."
+  },
+  {
+    sigla: "BENCHMARK",
+    name: "Benchmark WODs",
+    desc: "WODs padronizados usados para medir e comparar progresso ao longo do tempo. 'The Girls' e 'The Heroes' são as séries mais famosas.",
+    example: "FRAN (The Girl):\n21-15-9\nThrusters 95/65 lb\nPull-ups\n(For Time)",
+    icon: "📊",
+    detail: "Refaça os benchmarks a cada 3-6 meses para medir sua evolução objetivamente."
+  },
+  {
+    sigla: "PARTNER WOD",
+    name: "Partner/Team WOD",
+    desc: "Treinos executados em duplas ou grupos. Estratégia de divisão de trabalho é fundamental para um bom resultado.",
+    example: "Partner AMRAP 20:\nA: 10 Thrusters\nB: Hold plank\n(troca quando A termina)",
+    icon: "👥",
+    detail: "A comunicação com o parceiro é tão importante quanto a performance física. Dividam o trabalho de forma inteligente."
+  },
+];
+
+const benchmarks = {
+  girls: [
+    { name: "Fran", desc: "21-15-9: Thrusters (95/65 lb) + Pull-ups. For Time. O benchmark mais famoso." },
+    { name: "Grace", desc: "30 Clean & Jerks (135/95 lb). For Time. Teste de velocidade no olímpico." },
+    { name: "Helen", desc: "3 rounds: 400m run + 21 KB swings (53/35) + 12 pull-ups. For Time." },
+    { name: "Diane", desc: "21-15-9: Deadlifts (225/155 lb) + HSPU. For Time." },
+    { name: "Elizabeth", desc: "21-15-9: Squat Cleans (135/95) + Ring Dips. For Time." },
+    { name: "Isabel", desc: "30 Snatches (135/95 lb). For Time. Velocidade e técnica no snatch." },
+    { name: "Karen", desc: "150 Wall Balls (20/14 lb). For Time. Puro sofrimento de membros inferiores." },
+    { name: "Annie", desc: "50-40-30-20-10: Double Unders + Sit-ups. For Time." },
+    { name: "Amanda", desc: "9-7-5: Muscle-ups + Squat Snatches (135/95). For Time. Elite." },
+    { name: "Nancy", desc: "5 rounds: 400m run + 15 OHS (95/65 lb). For Time." },
+    { name: "Eva", desc: "5 rounds: 800m run + 30 KB swings (70/53) + 30 pull-ups. Longo e brutal." },
+    { name: "Kelly", desc: "5 rounds: 400m run + 30 box jumps (24/20') + 30 wall balls (20/14). For Time." },
+  ],
+  heroes: [
+    { name: "Murph", desc: "1 mi run + 100 pull-ups + 200 push-ups + 300 squats + 1 mi run. Com colete 20#." },
+    { name: "DT", desc: "5 RFT: 12 DL + 9 Hang PC + 6 Push Jerk @ 155/105 lb. Homenagem ao USAF." },
+    { name: "Randy", desc: "75 Power Snatches (75/55 lb). For Time. Homenagem ao FDNY." },
+    { name: "JT", desc: "21-15-9: HSPU + Ring Dips + Push-ups. For Time. Homenagem à Marinha dos EUA." },
+    { name: "Michael", desc: "3 RFT: 800m run + 50 GHD sit-ups + 50 back extensions." },
+    { name: "Arnie", desc: "21-15-9: DB Thrusters + Burpees over DBs. For Time." },
+    { name: "Nate", desc: "AMRAP 20: 2 MU + 4 HSPU + 8 KB swings (70/53). Homenagem à Navy SEAL." },
+    { name: "Lumberjack 20", desc: "20 DL + 400m + 20 KB swings + 400m + 20 OHS + 400m + 20 BJ + 400m." },
+  ],
+  open: [
+    { name: "24.1", desc: "3 MU + 6 DB Snatches + 24 DUs — AMRAP 15 min (Open 2024)" },
+    { name: "23.2", desc: "Ladder: Clean & Jerks + Chest-to-bar pull-ups (Open 2023)" },
+    { name: "22.1", desc: "AMRAP 15: 3 Wall Walks + 12 DB Snatches + 15 Box Jump Overs" },
+    { name: "21.4", desc: "Até: 30 DL + 30 T2B + Heavy DL + T2B (Open 2021)" },
+    { name: "20.5", desc: "AMRAP 20 (Thrusters + Chest-to-Bar). Com time cap de 20 min." },
+    { name: "19.5", desc: "33-27-21-15-9: Thrusters + Chest-to-bar pull-ups. Esgotante." },
+  ]
+};
+
+const measures = [
+  { number: "95/65", label: "Thruster RX", desc: "Libras. 95 para homens, 65 para mulheres. Padrão em Fran, Grace e muitos benchmarks." },
+  { number: "135/95", label: "Clean & Jerk RX", desc: "Libras. Peso padrão em Grace, Elizabeth e outros benchmarks de olímpicos." },
+  { number: "225/155", label: "Deadlift RX", desc: "Libras. Peso padrão em Diane e outros WODs com deadlift." },
+  { number: "53/35", label: "KB Swing RX", desc: "Libras (24/16 kg). Peso padrão em Helen e maioria dos WODs com kettlebell." },
+  { number: "24/20", label: "Box Jump RX", desc: "Polegadas. 24' para homens, 20' para mulheres no box jump padrão." },
+  { number: "20/14", label: "Wall Ball RX", desc: "Libras. Med ball pesada/leve. Alvo: 10 pés (H) e 9 pés (M) de altura." },
+  { number: "20#", label: "Colete Murph", desc: "20 libras (~9kg). Peso do colete usado em Murph e outros Hero WODs." },
+  { number: "1RM", label: "Máximo 1 rep", desc: "Seu peso máximo em uma única repetição. Base para calcular % de treino (80% 1RM, etc.)." },
+];
+
+const repSchemes = [
+  { name: "21-15-9", desc: "O esquema mais icônico do CrossFit. Três rounds com repetições decrescentes. Usado em Fran e Diane.", example: "21 Thrusters, 15 Thrusters, 9 Thrusters" },
+  { name: "5×5", desc: "Cinco sets de cinco repetições. Clássico para desenvolvimento de força com carga moderada-alta.", example: "5×5 Back Squat @ 75% 1RM" },
+  { name: "3-3-3-3-3", desc: "Cinco sets de três reps. Geralmente usado para trabalho de força máxima com carga pesada.", example: "3-3-3-3-3 Squat Clean (crescendo)" },
+  { name: "10-9-8-7-6-5-4-3-2-1", desc: "Descending ladder. Começa com 10 reps e vai reduzindo até 1. Volume total: 55 reps.", example: "10 DL + 10 Box Jumps, 9+9, ..., 1+1" },
+  { name: "1-1-1-1-1", desc: "Cinco sets de uma repetição. Para estabelecer ou tentar bater o 1RM.", example: "1-1-1-1-1 Snatch (subindo ao máximo)" },
+  { name: "DUMBBELL COMPLEX", desc: "Sequência de movimentos com o mesmo par de halteres, sem soltar entre os movimentos.", example: "6 reps: DL + Hang PC + Push Press + Front Squat" },
+];
+
+const levelRows = [
+  { level: "Iniciante", squat: "60-80%", deadlift: "70-90%", clean: "50-60%" },
+  { level: "Intermediário", squat: "100-120%", deadlift: "120-150%", clean: "80-90%" },
+  { level: "Avançado", squat: "150-180%", deadlift: "180-220%", clean: "110-130%" },
+  { level: "Elite", squat: "200%+", deadlift: "250%+", clean: "150%+" },
+];
+
+// ==================== RENDER FUNCTIONS ====================
+
+function renderGlossary() {
+  const grid = document.getElementById('glossary-grid');
+  const alphaFilter = document.getElementById('alpha-filter');
+  
+  // Build alphabet
+  const letters = [...new Set(glossaryData.map(g => g.term[0].toUpperCase()))].sort();
+  letters.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className = 'alpha-btn';
+    btn.textContent = l;
+    btn.onclick = function() { filterAlpha(l, this); };
+    alphaFilter.appendChild(btn);
+  });
+
+  // Render cards
+  glossaryData.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'gloss-card';
+    card.dataset.letter = item.term[0].toUpperCase();
+    card.dataset.tag = item.tag;
+    card.innerHTML = `
+      <div class="gloss-card-top">
+        <div class="gloss-term">${item.term}</div>
+        ${item.sigla ? `<div class="gloss-sigla">${item.sigla}</div>` : ''}
+      </div>
+      <div class="gloss-def">${item.def}</div>
+      <span class="gloss-tag">${item.tag}</span>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ==================== PT-BR DATA ====================
+const ptbrData = [
+  // GINÁSTICA — Posições e técnicas
+  { en: "Hollow Body Position", br: "Canoinha", desc: "A posição fundamental da ginástica no CrossFit. O atleta fica deitado de costas, fechando a caixa torácica, contraindo abdômen e glúteos para criar uma 'colher' rígida. É a base do kipping e do swing na barra." },
+  { en: "Superman", br: "Superman / Barquinho", desc: "Posição oposta à canoinha: deitado de bruços, braços e pernas elevados e estendidos. Também chamado de 'barquinho' por algumas boxes. Exercício de extensão de coluna e ativação da cadeia posterior." },
+  { en: "Arch Position", br: "Arco / Bananinha", desc: "A posição de arco no swing — corpo como uma banana, com quadris projetados para frente. Alterna com a canoinha no ritmo do kipping pull-up." },
+  { en: "Rowing (C2)", br: "Remo / Remada", desc: "O remo ergométrico (Concept2). Nas boxes brasileiras é simplesmente chamado de 'remo' ou 'remada'. 'Vai no remo!' é uma das frases mais ouvidas no CrossFit brasileiro." },
+  { en: "Ring Row", br: "Remada nas argolas / Remadinha", desc: "Remada feita nas argolas olímpicas com os pés no chão. É o scaling mais comum do pull-up para iniciantes. Chamada carinhosamente de 'remadinha' em muitas boxes." },
+  { en: "Box Jump", br: "Caixinha / Salto na caixa", desc: "O box jump nas boxes brasileiras muitas vezes vira 'caixinha'. 'Vai na caixinha de 60!' é uma fala clássica de coach." },
+  { en: "Assault Bike / Echo Bike", br: "Bicicleta do Ódio / Bike do Inferno", desc: "A bicicleta ergométrica ganhou apelidos épicos nas boxes brasileiras pela sua intensidade brutal. Também chamada simplesmente de 'bike' ou 'airbike'." },
+  { en: "Pull-up", br: "Barra", desc: "No Brasil, pull-up é universalmente chamado de 'barra'. 'Faz 10 barras!' é padrão. Chest-to-bar vira 'barra no peito'. Strict pull-up vira 'barra na força'." },
+  { en: "Handstand / Handstand Walk", br: "Parada de mão / Passinho de mão", desc: "Handstand é 'parada de mão' e o handstand walk vira 'passinho de mão' ou 'caminhadinha de mão' no vocabulário informal das boxes." },
+  { en: "Handstand Push-up", br: "Flexão na parada de mão / HSPU", desc: "Geralmente mantido como HSPU mesmo no Brasil, mas também chamado de 'flexão invertida' ou 'flexão na parada de mão' para explicar para iniciantes." },
+  { en: "Toes-to-Bar", br: "Pezinho na barra / Pé na barra", desc: "Além da sigla T2B, nas boxes informalmente é chamado de 'pé na barra' ou 'pezinho na barra'. 'Vai pro pé na barra!' é um clássico." },
+  { en: "Rope Climb", br: "Corda / Subida na corda", desc: "Simplesmente 'corda' nas boxes brasileiras. 'Quantas cordas você fez?' é a pergunta padrão. Legless vira 'corda sem perna' ou 'corda na força'." },
+  { en: "Double Under", br: "Duplo / Double", desc: "Nas boxes brasileiras o double under vira 'duplo' ou simplesmente 'double'. 'Você consegue encadear duplos?' é a pergunta clássica para iniciantes." },
+  { en: "Single Under", br: "Simples / Single", desc: "O scaling do double under. Chamado de 'simples' ou 'single' nas boxes. '300 simples no lugar de 150 duplos' é o scaling padrão." },
+  { en: "Wall Ball", br: "Bolinha / Bola na parede", desc: "O wall ball nas boxes vira 'bolinha' carinhosamente. '150 bolinhas' é uma das frases que mais causa terror em WODs longos como Karen." },
+  { en: "Burpee Over the Bar", br: "BOB / Burpee sobre a barra", desc: "O BOB (Burpee Over the Bar) é amplamente usado como sigla no Brasil. Aparece nos WODs escritos exatamente assim: '6 BOB'. Muito comum nos treinos de boxes brasileiras." },
+  { en: "Muscle-Up", br: "Argola / MU", desc: "O muscle-up nas argolas é chamado simplesmente de 'argola' em muitas boxes. 'Você já faz argola?' é a pergunta que separa iniciante de intermediário." },
+  { en: "Kettlebell Swing", br: "Swing / Balanço", desc: "O KB swing é chamado de 'swing' ou 'balanço' no Brasil. 'American swing' (acima da cabeça) vs 'Russian swing' (até os olhos) são os dois tipos conhecidos assim mesmo." },
+  { en: "Air Squat", br: "Agachamento livre / Squat", desc: "O air squat é 'agachamento' ou 'agachamento livre' para iniciantes. Coaches mais experientes já falam 'squat' diretamente." },
+  { en: "Deadlift", br: "Terra / Levantamento terra", desc: "O deadlift em português é 'levantamento terra' ou simplesmente 'terra'. 'Qual seu terra máximo?' é a pergunta clássica nas boxes brasileiras." },
+  { en: "Push-up", br: "Flexão", desc: "Push-up é universalmente 'flexão' no Brasil. 'Faz 20 flexões!' ninguém precisa traduzir. HRPU vira 'flexão com elevação das mãos'." },
+  { en: "Sit-up", br: "Abdominal / Abdomen", desc: "Sit-up é 'abdominal' ou simplesmente 'abdomen' nas boxes brasileiras. GHD sit-up vira 'abdominal no GHD' ou 'abdominal no cavalinho'." },
+  { en: "GHD Machine", br: "Cavalinho / GHD", desc: "O aparelho GHD (Glute-Ham Developer) ganhou o apelido 'cavalinho' nas boxes brasileiras pelo seu formato. 'Vai no cavalinho!' é ouvido em todo box do país." },
+  { en: "Lunge / Walking Lunge", br: "Avanço / Afundo", desc: "Lunge é 'avanço' ou 'afundo' no Brasil. Walking lunge vira 'avanço caminhando'. Overhead lunge vira 'avanço com barra'." },
+  { en: "I Go, You Go", br: "Eu vou, você vai", desc: "Formato de partner WOD onde um atleta trabalha enquanto o outro descansa. Muito comum nas boxes brasileiras, especialmente em provas com duplas. Aparece nas programações exatamente como 'I GO, YOU GO'." },
+  { en: "AbMat Sit-up", br: "Abdominal no abmat / Abdome com almofada", desc: "O sit-up feito com o abmat (almofada embaixo da lombar) é o 'abdominal no abmat' ou 'abdominal com almofada'. Padrão na maioria dos WODs com sit-up." },
+  { en: "Hollow Rocks", br: "Balanço na canoinha", desc: "O hollow rock (balançar na posição canoinha) é chamado de 'balanço na canoinha' ou apenas 'canoinha balançando'." },
+  { en: "Bear Complex", br: "Complexo do urso", desc: "A sequência power clean + front squat + push press + back squat + push press sem soltar a barra. Chamada de 'complexo do urso' nas boxes brasileiras." },
+  { en: "Thruster", br: "Thruster / Agachamento-press", desc: "Thruster é mantido em inglês na maioria das boxes. Para iniciantes pode ser explicado como 'agachamento frontal + press'. Nunca traduzido literalmente." },
+  { en: "Cluster", br: "Cluster / Squat clean + thruster", desc: "O cluster (squat clean + thruster em sequência) é chamado de 'cluster' mesmo no Brasil. Um dos movimentos mais exigentes do CrossFit." },
+  { en: "Chalk", br: "Magnésio / Pó branco", desc: "O chalk é chamado de 'magnésio' no Brasil, mesmo sendo tecnicamente carbonato de magnésio. 'Passa o magnésio!' é a frase padrão antes de um WOD pesado." },
+  { en: "Scaled", br: "Escalado / Adaptado", desc: "Scaled vira 'escalado' ou 'adaptado' nas boxes brasileiras. 'Você vai fazer RX ou escalado?' é a pergunta do coach antes do WOD." },
+  { en: "Bro Rep", br: "Rep do brother / Rep do amigo", desc: "A rep inválida que o árbitro (ou o amigo) deixa passar. Termo irônico usado nas boxes. 'Isso foi rep do brother!' é uma brincadeira clássica entre atletas." },
+  { en: "No Rep", br: "No rep / Rep inválida", desc: "Mantido em inglês mesmo no Brasil. O coach grita 'No rep!' quando o movimento não atinge os padrões. É universal nas boxes brasileiras." },
+  { en: "Olympic Weightlifting (LPO)", br: "LPO — Levantamento de Peso Olímpico", desc: "O levantamento olímpico no Brasil tem sigla própria: LPO. Você vai ouvir 'treino de LPO' ou 'aula de LPO' nas boxes que trabalham técnica de snatch e clean & jerk." },
+  { en: "Abmat", br: "Abmat / Almofada do abdômen", desc: "O abmat (suporte lombar para sit-ups) é chamado pelo próprio nome nas boxes. 'Pega o abmat!' é padrão em qualquer WOD com sit-ups." },
+];
+
+let currentGlossView = 'all';
+
+function setGlossView(view, btn) {
+  currentGlossView = view;
+  document.querySelectorAll('.alpha-btn[id]').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const ptbrSection = document.getElementById('ptbr-section');
+  const alphaFilter = document.getElementById('alpha-filter');
+  const glossGrid = document.getElementById('glossary-grid');
+
+  if (view === 'ptbr') {
+    ptbrSection.style.display = 'block';
+    alphaFilter.style.display = 'none';
+    glossGrid.style.display = 'none';
+    renderPtBr();
+  } else {
+    ptbrSection.style.display = 'none';
+    alphaFilter.style.display = 'flex';
+    glossGrid.style.display = 'grid';
+  }
+}
+
+function renderPtBr() {
+  const grid = document.getElementById('ptbr-grid');
+  if (grid.children.length > 0) return; // já renderizou
+  ptbrData.forEach(item => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:#111;padding:1.25rem;';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px;">
+        <div style="font-family:var(--font-heading);font-size:1.25rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#f0e060;">${item.br}</div>
+        <div style="background:rgba(240,224,96,0.12);border:1px solid rgba(240,224,96,0.25);color:#c8b800;font-family:var(--font-heading);font-size:0.65rem;font-weight:700;letter-spacing:1px;padding:2px 8px;text-transform:uppercase;white-space:nowrap;flex-shrink:0;">${item.en}</div>
+      </div>
+      <div style="color:#888;font-size:0.87rem;line-height:1.6;">${item.desc}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function filterAlpha(letter, btn) {
+  // reset view-mode buttons
+  document.getElementById('view-all-btn')?.classList.add('active');
+
+  document.querySelectorAll('.alpha-btn').forEach(b => {
+    if (!b.id) b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  document.querySelectorAll('.gloss-card').forEach(card => {
+    if (letter === 'ALL' || card.dataset.letter === letter) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+
+function renderMovements() {
+  const grid = document.getElementById('move-grid');
+  movementsData.forEach((move, i) => {
+    const card = document.createElement('div');
+    card.className = 'move-card';
+    card.dataset.category = move.category;
+
+    let dots = '';
+    for (let d = 1; d <= 5; d++)
+      dots += `<div class="diff-dot ${d <= move.difficulty ? 'filled' : ''}"></div>`;
+
+    const thumbUrl = GIPHY_THUMB[move.name] || null;
+    const visualContent = thumbUrl
+      ? `<img src="${thumbUrl}" alt="${move.name}"
+           style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.3s;"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+         >
+         <div style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:4rem;">${move.emoji}</div>`
+      : `<span class="move-emoji">${move.emoji}</span>`;
+
+    card.innerHTML = `
+      <div class="move-visual" style="position:relative;overflow:hidden;">
+        ${visualContent}
+        <div class="move-category-badge">${move.category}</div>
+        <div class="move-difficulty">${dots}</div>
+        ${thumbUrl ? `<div style="position:absolute;bottom:4px;right:6px;background:rgba(0,0,0,0.5);font-family:var(--font-heading);font-size:0.55rem;letter-spacing:1px;color:#aaa;padding:1px 5px;text-transform:uppercase;">GIPHY</div>` : ''}
+      </div>
+      <div class="move-info">
+        <div class="move-name">${move.name}${move.sigla ? ` <span style="color:var(--red);font-size:0.85rem">(${move.sigla})</span>` : ''}</div>
+        <div class="move-muscles">${move.muscles}</div>
+        <div class="move-desc">${move.desc}</div>
+        <div class="move-tips">
+          <div class="tip-label">💡 Dica para iniciantes</div>
+          <div class="tip-text">${move.tip}</div>
+        </div>
+      </div>
+    `;
+    card.onclick = () => openMoveModal(move);
+    grid.appendChild(card);
+  });
+}
+
+function filterMoves(cat, btn) {
+  document.querySelectorAll('.move-card').forEach(c => c.classList.remove('hidden'));
+  document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (cat !== 'all') {
+    document.querySelectorAll('.move-card').forEach(c => {
+      if (c.dataset.category !== cat) c.classList.add('hidden');
+    });
+  }
+}
+
+// ==================== GIPHY — GIFs oficiais CrossFit ====================
+// URLs diretas de GIFs do canal @crossfit e boxes afiliadas no Giphy
+// Formato: https://media{n}.giphy.com/media/{ID}/giphy.gif
+const GIPHY_MAP = {
+  // Levantamento
+  "Back Squat":        "https://media1.giphy.com/media/W5gFEeJmRhvElyatmF/giphy.gif",
+  "Front Squat":       "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/giphy.gif",
+  "Deadlift":          "https://media3.giphy.com/media/FK9b8whh0BLyNrA86X/giphy.gif",
+  "Power Clean":       "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
+  "Snatch":            "https://media2.giphy.com/media/iJ8ACH4X9nolXswEFb/giphy.gif",
+  "Thruster":          "https://media0.giphy.com/media/2A1aTxXb1ARariT3KN/giphy.gif",
+  "Overhead Squat":    "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/giphy.gif",
+  "Dumbbell Snatch":   "https://media0.giphy.com/media/ueMtp7cdM7uRnMX2I7/giphy.gif",
+  // Ginástico
+  "Pull-up":           "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
+  "Kipping Pull-up":   "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
+  "Muscle-Up":         "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/giphy.gif",
+  "Handstand Push-up": "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/giphy.gif",
+  "Toes-to-Bar":       "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/giphy.gif",
+  "Box Jump":          "https://media2.giphy.com/media/niY3b9di4DsEvWizQk/giphy.gif",
+  "Pistol Squat":      "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/giphy.gif",
+  "Turkish Get-up":    "https://media0.giphy.com/media/3oEjHHYOTZeHjzLLOg/giphy.gif",
+  // Cardio
+  "Double Under":      "https://media4.giphy.com/media/niY3b9di4DsEvWizQk/giphy.gif",
+  "Rowing":            "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
+  "Burpee":            "https://media1.giphy.com/media/h9i9JrsescJwz1rreO/giphy.gif",
+  "Wall Ball":         "https://media3.giphy.com/media/9iIklRRy3sA8WOb4v1/giphy.gif",
+  // Kettlebell
+  "KB Swing":          "https://media3.giphy.com/media/3oEjHHYOTZeHjzLLOg/giphy.gif",
+};
+
+// Thumbnail menor para o card (100px)
+const GIPHY_THUMB = {
+  "Back Squat":        "https://media1.giphy.com/media/W5gFEeJmRhvElyatmF/100.gif",
+  "Front Squat":       "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/100.gif",
+  "Deadlift":          "https://media3.giphy.com/media/FK9b8whh0BLyNrA86X/100.gif",
+  "Power Clean":       "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
+  "Snatch":            "https://media2.giphy.com/media/iJ8ACH4X9nolXswEFb/100.gif",
+  "Thruster":          "https://media0.giphy.com/media/2A1aTxXb1ARariT3KN/100.gif",
+  "Overhead Squat":    "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/100.gif",
+  "Dumbbell Snatch":   "https://media0.giphy.com/media/ueMtp7cdM7uRnMX2I7/100.gif",
+  "Pull-up":           "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
+  "Kipping Pull-up":   "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
+  "Muscle-Up":         "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/100.gif",
+  "Handstand Push-up": "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/100.gif",
+  "Toes-to-Bar":       "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/100.gif",
+  "Box Jump":          "https://media2.giphy.com/media/niY3b9di4DsEvWizQk/100.gif",
+  "Pistol Squat":      "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/100.gif",
+  "Turkish Get-up":    "https://media0.giphy.com/media/3oEjHHYOTZeHjzLLOg/100.gif",
+  "Double Under":      "https://media4.giphy.com/media/niY3b9di4DsEvWizQk/100.gif",
+  "Rowing":            "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
+  "Burpee":            "https://media1.giphy.com/media/h9i9JrsescJwz1rreO/100.gif",
+  "Wall Ball":         "https://media3.giphy.com/media/9iIklRRy3sA8WOb4v1/100.gif",
+  "KB Swing":          "https://media3.giphy.com/media/3oEjHHYOTZeHjzLLOg/100.gif",
+};
+
+async function openMoveModal(move) {
+  const overlay = document.getElementById('modal-overlay');
+  const title   = document.getElementById('modal-title');
+  const body    = document.getElementById('modal-body');
+
+  const stepsHTML = move.steps.map((s,i) => `
+    <li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('');
+  const tagsHTML = move.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+  let dotsHTML = '';
+  for (let d=1;d<=5;d++)
+    dotsHTML += `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${d<=move.difficulty?'var(--red)':'var(--border)'};margin-right:4px"></span>`;
+  const diffLabels=['','Iniciante','Básico','Intermediário','Avançado','Elite'];
+
+  const gifUrl   = GIPHY_MAP[move.name]   || null;
+  const gifMedia = gifUrl
+    ? `<img src="${gifUrl}" alt="${move.name}" style="width:100%;height:100%;object-fit:cover;display:block;"
+         onerror="this.style.display='none';document.getElementById('gif-fallback').style.display='flex'">
+       <div id="gif-fallback" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:6rem;">${move.emoji}</div>
+       <div style="position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,0.55);font-family:var(--font-heading);font-size:0.58rem;letter-spacing:1px;color:#aaa;padding:2px 6px;text-transform:uppercase;">GIPHY</div>`
+    : `<div style="font-size:6rem;">${move.emoji}</div>`;
+
+  title.innerHTML = `<small>${move.category.toUpperCase()}</small>${move.name}${move.sigla?` <span style="color:var(--red)">(${move.sigla})</span>`:''}`;
+  body.innerHTML = `
+    <div style="height:220px;background:var(--dark);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;overflow:hidden;position:relative;">
+      ${gifMedia}
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Dificuldade</div>
+      <div>${dotsHTML}<span style="color:var(--muted);font-size:0.85rem;margin-left:8px">${diffLabels[move.difficulty]}</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Músculos Trabalhados</div>
+      <div class="modal-text">${move.muscles}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Descrição</div>
+      <div class="modal-text">${move.desc}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Execução Passo a Passo</div>
+      <ol class="modal-steps">${stepsHTML}</ol>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">💡 Dica para Iniciantes</div>
+      <div class="modal-text" style="background:var(--dark);padding:12px;border-left:3px solid var(--red)">${move.tip}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Tags</div>
+      <div class="modal-tags">${tagsHTML}</div>
+    </div>`;
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderWorkouts() {
+  const container = document.getElementById('workout-types');
+  workoutTypes.forEach(wt => {
+    const card = document.createElement('div');
+    card.className = 'wod-card';
+    card.setAttribute('data-sigla', wt.sigla);
+    card.innerHTML = `
+      <div class="wod-header">
+        <div style="font-size:2rem">${wt.icon}</div>
+        <div>
+          <div class="wod-sigla">${wt.sigla}</div>
+          <div class="wod-name">${wt.name}</div>
+        </div>
+      </div>
+      <div class="wod-desc">${wt.desc}</div>
+      <div class="wod-example"><strong>Exemplo</strong>${wt.example}</div>
+      <div style="margin-top:12px;padding:10px;background:rgba(230,51,41,0.05);border:1px solid rgba(230,51,41,0.15);font-size:0.8rem;color:var(--muted);line-height:1.6">
+        <strong style="color:var(--red);font-family:var(--font-heading);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px">💡 Estratégia</strong>
+        ${wt.detail}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function renderBenchmarks() {
+  function renderGrid(data, id) {
+    const grid = document.getElementById(id);
+    data.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'benchmark-item';
+      el.innerHTML = `<div class="benchmark-wod">${item.name}</div><div class="benchmark-desc">${item.desc}</div>`;
+      grid.appendChild(el);
+    });
+  }
+  renderGrid(benchmarks.girls, 'girls-grid');
+  renderGrid(benchmarks.heroes, 'heroes-grid');
+  renderGrid(benchmarks.open, 'open-grid');
+}
+
+function renderMeasures() {
+  const grid = document.getElementById('measures-grid');
+  measures.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'measure-card';
+    card.innerHTML = `
+      <div class="measure-number">${m.number}</div>
+      <div class="measure-label">${m.label}</div>
+      <div class="measure-desc">${m.desc}</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Levels table
+  const levelsTable = document.getElementById('levels-table');
+  levelRows.forEach(row => {
+    const rowEl = document.createElement('div');
+    rowEl.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:var(--border)';
+    rowEl.innerHTML = `
+      <div style="background:var(--dark);padding:10px;font-family:var(--font-heading);font-size:0.9rem;font-weight:700">${row.level}</div>
+      <div style="background:var(--dark);padding:10px;color:var(--muted);font-size:0.9rem">${row.squat} PC</div>
+      <div style="background:var(--dark);padding:10px;color:var(--muted);font-size:0.9rem">${row.deadlift} PC</div>
+      <div style="background:var(--dark);padding:10px;color:var(--muted);font-size:0.9rem">${row.clean} PC</div>
+    `;
+    levelsTable.appendChild(rowEl);
+  });
+
+  // Rep schemes
+  const rsContainer = document.getElementById('rep-schemes');
+  repSchemes.forEach(rs => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:var(--card);border:1px solid var(--border);padding:1.25rem';
+    card.innerHTML = `
+      <div style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:1px;color:var(--red);margin-bottom:6px">${rs.name}</div>
+      <div style="color:var(--muted);font-size:0.85rem;line-height:1.6;margin-bottom:10px">${rs.desc}</div>
+      <div style="background:var(--dark);border-left:3px solid var(--red);padding:8px 12px;font-family:var(--font-heading);font-size:0.85rem;color:var(--white)">${rs.example}</div>
+    `;
+    rsContainer.appendChild(card);
+  });
+}
+
+// ==================== NAV ====================
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const sectionNames = ['home', 'glossario', 'movimentos', 'treinos', 'benchmarks', 'medidas'];
+  const idx = sectionNames.indexOf(id);
+  if (navBtns[idx]) navBtns[idx].classList.add('active');
+
+  const searchBar = document.getElementById('search-bar');
+  searchBar.style.display = (id === 'glossario' || id === 'movimentos') ? 'block' : 'none';
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  if (window.innerWidth <= 768) {
+    document.getElementById('main-nav').classList.remove('open');
+  }
+}
+
+function toggleMobileNav() {
+  document.getElementById('main-nav').classList.toggle('open');
+}
+
+function doSearch(val) {
+  const q = val.toLowerCase().trim();
+  const activeSection = document.querySelector('.section.visible');
+  
+  if (activeSection.id === 'glossario') {
+    document.querySelectorAll('.gloss-card').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.classList.toggle('hidden', q.length > 0 && !text.includes(q));
+    });
+  } else if (activeSection.id === 'movimentos') {
+    document.querySelectorAll('.move-card').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.classList.toggle('hidden', q.length > 0 && !text.includes(q));
+    });
+  }
+}
+
+// Progress bar
+window.addEventListener('scroll', () => {
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+  document.getElementById('progress-bar').style.width = pct + '%';
+});
+
+// ESC close modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModalDirect();
+});
+
+// ==================== WODBOT ====================
+
+// ---- CONFIG ----
+const ANTHROPIC_PROXY = 'https://api.anthropic.com/v1/messages';
+const WODBOT_MODEL = 'claude-sonnet-4-20250514';
+
+// Firebase config (mesma instância do Maré Digital)
+const FB_CONFIG = {
+  apiKey: "AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", // ← cole sua apiKey aqui
+  authDomain: "XXXXXXXX.firebaseapp.com",
+  databaseURL: "https://XXXXXXXX-default-rtdb.firebaseio.com",
+  projectId: "XXXXXXXX",
+  storageBucket: "XXXXXXXX.appspot.com",
+  messagingSenderId: "XXXXXXXXXXXX",
+  appId: "1:XXXXXXXXXXXX:web:XXXXXXXXXXXXXXXXXXXXXXXX"
+};
+
+const WODBOT_SYSTEM = `Você é o WODBot, coach de IA especializado em CrossFit integrado ao app Crossary.
+Seu tom é motivador, direto e técnico — como um coach experiente de box.
+Use linguagem brasileira natural, misture português com os termos em inglês do CrossFit como são falados nas boxes.
+Seja conciso e prático. Quando explicar movimentos, dê dicas de execução e segurança.
+Quando analisar um WOD, sempre cubra: estrutura do treino, significado das siglas, pesos/escalas recomendadas para iniciantes, e estratégia de prova.
+Emojis com moderação. Nunca invente informações técnicas — se não souber, diga.
+Se o usuário mencionar termos como BOB, I GO YOU GO, Buy-In, Buy-Out, explique claramente.
+Formatos de resposta: use quebras de linha e estrutura visual para facilitar a leitura no mobile.`;
+
+// ---- STATE ----
+let wodBotOpen = false;
+let chatHistory = [];
+let wodChatHistory = [];
+let firebaseApp = null;
+let firebaseDB = null;
+let currentUserId = 'user_' + (localStorage.getItem('wodbot_uid') || (() => {
+  const id = Math.random().toString(36).slice(2,10);
+  localStorage.setItem('wodbot_uid', id);
+  return id;
+})());
+
+// ---- FIREBASE INIT ----
+function initFirebase() {
+  try {
+    if (typeof firebase !== 'undefined' && !firebaseApp) {
+      firebaseApp = firebase.initializeApp(FB_CONFIG);
+      firebaseDB = firebase.database();
+      loadWorkoutsFromFirebase();
+    }
+  } catch(e) {
+    // Firebase não disponível, usa localStorage como fallback
+    loadWorkoutsLocal();
+  }
+}
+
+// ---- PANEL TOGGLE ----
+function toggleWodBot() {
+  wodBotOpen = !wodBotOpen;
+  const panel = document.getElementById('wodbot-panel');
+  panel.classList.toggle('open', wodBotOpen);
+  if (wodBotOpen) {
+    setTimeout(() => document.getElementById('wbot-input').focus(), 300);
+    loadWorkoutsUI();
+  }
+}
+
+// ---- TABS ----
+function switchTab(tab, btn) {
+  document.querySelectorAll('.wbot-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.wbot-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-' + tab).classList.add('active');
+  if (tab === 'hist') loadWorkoutsUI();
+}
+
+// ---- CHAT ----
+function appendMsg(containerId, role, text) {
+  const c = document.getElementById(containerId);
+  const div = document.createElement('div');
+  div.className = 'wbot-msg ' + role;
+  div.innerHTML = `
+    <div class="wbot-msg-label">${role === 'bot' ? 'WODBot' : 'Você'}</div>
+    <div class="wbot-bubble">${text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>
+  `;
+  c.appendChild(div);
+  c.scrollTop = c.scrollHeight;
+  return div;
+}
+
+function setTyping(typingId, show) {
+  const el = document.getElementById(typingId);
+  el.classList.toggle('show', show);
+  if (show) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+function setSendDisabled(btnId, disabled) {
+  const btn = document.getElementById(btnId);
+  if (btn) btn.disabled = disabled;
+}
+
+async function callClaude(messages, systemOverride) {
+  const res = await fetch(ANTHROPIC_PROXY, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': '', // gerenciado pelo proxy/Cloudflare Worker
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: WODBOT_MODEL,
+      max_tokens: 1024,
+      system: systemOverride || WODBOT_SYSTEM,
+      messages
+    })
+  });
+  if (!res.ok) throw new Error('API error ' + res.status);
+  const data = await res.json();
+  return data.content?.[0]?.text || '(sem resposta)';
+}
+
+async function sendChat() {
+  const input = document.getElementById('wbot-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+
+  appendMsg('wbot-msgs', 'user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  setSendDisabled('wbot-send-btn', true);
+  setTyping('wbot-typing', true);
+
+  try {
+    const reply = await callClaude([...chatHistory]);
+    chatHistory.push({ role: 'assistant', content: reply });
+    setTyping('wbot-typing', false);
+    appendMsg('wbot-msgs', 'bot', reply);
+  } catch(e) {
+    setTyping('wbot-typing', false);
+    appendMsg('wbot-msgs', 'bot', '⚠️ Erro de conexão. Verifique sua internet e tente novamente.\n\n(Dica: configure a API key no código)');
+  }
+  setSendDisabled('wbot-send-btn', false);
+  document.getElementById('wbot-input').focus();
+}
+
+function quickAsk(q) {
+  switchTab('chat', document.querySelector('.wbot-tab'));
+  document.querySelectorAll('.wbot-tab').forEach((b,i) => { if(i===0) b.classList.add('active'); else b.classList.remove('active'); });
+  document.querySelectorAll('.wbot-pane').forEach((p,i) => { if(i===0) p.classList.add('active'); else p.classList.remove('active'); });
+  document.getElementById('wbot-input').value = q;
+  sendChat();
+}
+
+// ---- WOD IMAGE ANALYSIS ----
+async function handleWodImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const uploadArea = document.getElementById('wbot-upload-area');
+  uploadArea.querySelector('p').innerHTML = '⏳ Lendo o WOD...';
+
+  appendMsg('wbot-wod-msgs', 'user', `📸 [Imagem enviada: ${file.name}]`);
+  setSendDisabled('wbot-wod-send-btn', true);
+  setTyping('wbot-wod-typing', true);
+
+  try {
+    const base64 = await fileToBase64(file);
+    const mediaType = file.type || 'image/jpeg';
+
+    const messages = [{
+      role: 'user',
+      content: [
+        {
+          type: 'image',
+          source: { type: 'base64', media_type: mediaType, data: base64 }
+        },
+        {
+          type: 'text',
+          text: `Analise este WOD de CrossFit completamente. Explique:\n1. Estrutura e formato do treino (AMRAP, For Time, EMOM, etc.)\n2. Cada sigla e termo técnico encontrado\n3. Os movimentos exigidos e como executá-los\n4. Os pesos prescritos e sugestões de escala para iniciantes\n5. Estratégia de prova: como dividir as reps, quando descansar\n6. Duração estimada para diferentes níveis\n\nSeja detalhado e use linguagem de coach de CrossFit brasileiro.`
+        }
+      ]
+    }];
+
+    const reply = await callClaude(messages, WODBOT_SYSTEM);
+    wodChatHistory.push({ role: 'user', content: '[WOD image analyzed]' });
+    wodChatHistory.push({ role: 'assistant', content: reply });
+
+    setTyping('wbot-wod-typing', false);
+    appendMsg('wbot-wod-msgs', 'bot', reply);
+    uploadArea.querySelector('p').innerHTML = '📷 Enviar outro WOD | <span>Clique aqui</span>';
+  } catch(e) {
+    setTyping('wbot-wod-typing', false);
+    appendMsg('wbot-wod-msgs', 'bot', '⚠️ Não consegui analisar a imagem. Tente descrever o WOD na caixa de texto abaixo!');
+    uploadArea.querySelector('p').innerHTML = '📷 Toque para enviar o print do <span>WOD</span>';
+  }
+
+  setSendDisabled('wbot-wod-send-btn', false);
+  input.value = '';
+}
+
+async function sendWodText() {
+  const input = document.getElementById('wbot-wod-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+
+  appendMsg('wbot-wod-msgs', 'user', text);
+
+  const prompt = `Analise este WOD de CrossFit:\n\n${text}\n\nExplique a estrutura, siglas, movimentos, pesos e estratégia de prova como um coach experiente de CrossFit brasileiro.`;
+  wodChatHistory.push({ role: 'user', content: prompt });
+
+  setSendDisabled('wbot-wod-send-btn', true);
+  setTyping('wbot-wod-typing', true);
+
+  try {
+    const reply = await callClaude([...wodChatHistory]);
+    wodChatHistory.push({ role: 'assistant', content: reply });
+    setTyping('wbot-wod-typing', false);
+    appendMsg('wbot-wod-msgs', 'bot', reply);
+  } catch(e) {
+    setTyping('wbot-wod-typing', false);
+    appendMsg('wbot-wod-msgs', 'bot', '⚠️ Erro de conexão. Tente novamente.');
+  }
+  setSendDisabled('wbot-wod-send-btn', false);
+}
+
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+// ---- HISTÓRICO ----
+function getLocalWorkouts() {
+  try { return JSON.parse(localStorage.getItem('wodbot_workouts') || '[]'); }
+  catch { return []; }
+}
+
+function saveLocalWorkouts(arr) {
+  localStorage.setItem('wodbot_workouts', JSON.stringify(arr));
+}
+
+async function saveWorkout() {
+  const wod = document.getElementById('save-wod').value.trim();
+  const score = document.getElementById('save-score').value.trim();
+  const rx = document.getElementById('save-rx').value.trim();
+  const obs = document.getElementById('save-obs').value.trim();
+  const isPR = document.getElementById('save-pr-check').checked;
+
+  if (!wod) { alert('Informe o nome do WOD!'); return; }
+
+  const entry = {
+    id: Date.now().toString(),
+    date: new Date().toLocaleDateString('pt-BR'),
+    dateTs: Date.now(),
+    wod, score, rx, obs, isPR,
+    userId: currentUserId
+  };
+
+  // Salva local sempre
+  const local = getLocalWorkouts();
+  local.unshift(entry);
+  saveLocalWorkouts(local);
+
+  // Tenta Firebase
+  if (firebaseDB) {
+    try {
+      await firebaseDB.ref(`wodbot/workouts/${currentUserId}/${entry.id}`).set(entry);
+    } catch(e) { /* fallback local OK */ }
+  }
+
+  // Limpa form
+  ['save-wod','save-score','save-rx','save-obs'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('save-pr-check').checked = false;
+
+  loadWorkoutsUI();
+
+  // Feedback
+  const btn = document.querySelector('.wbot-save-btn');
+  btn.textContent = '✅ Salvo!';
+  setTimeout(() => btn.textContent = 'Salvar treino →', 2000);
+}
+
+function loadWorkoutsUI() {
+  const container = document.getElementById('wbot-hist-list');
+  const empty = document.getElementById('hist-empty');
+  const workouts = getLocalWorkouts();
+
+  const cards = container.querySelectorAll('.wbot-hist-card');
+  cards.forEach(c => c.remove());
+
+  if (workouts.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  workouts.slice(0, 30).forEach(w => {
+    const card = document.createElement('div');
+    card.className = 'wbot-hist-card';
+    card.innerHTML = `
+      <div class="wbot-hist-date">${w.date}</div>
+      <div class="wbot-hist-wod">${w.wod}</div>
+      <div class="wbot-hist-score">
+        ${w.score ? '⏱ ' + w.score : ''}
+        ${w.rx ? ' · ' + w.rx : ''}
+        ${w.obs ? '<br>' + w.obs : ''}
+      </div>
+      ${w.isPR ? '<span class="wbot-hist-pr">🔴 PR</span>' : ''}
+    `;
+    card.onclick = () => {
+      // Carrega no chat para análise
+      switchTab('chat', document.querySelectorAll('.wbot-tab')[0]);
+      document.querySelectorAll('.wbot-tab').forEach((b,i) => i===0 ? b.classList.add('active') : b.classList.remove('active'));
+      document.querySelectorAll('.wbot-pane').forEach((p,i) => i===0 ? p.classList.add('active') : p.classList.remove('active'));
+      document.getElementById('wbot-input').value = `Analisando meu treino de ${w.date}: ${w.wod}${w.score ? ', score: ' + w.score : ''}${w.rx ? ', ' + w.rx : ''}. O que posso melhorar?`;
+    };
+    container.appendChild(card);
+  });
+}
+
+async function loadWorkoutsFromFirebase() {
+  if (!firebaseDB) return;
+  try {
+    const snap = await firebaseDB.ref(`wodbot/workouts/${currentUserId}`).orderByChild('dateTs').limitToLast(50).once('value');
+    const data = snap.val();
+    if (data) {
+      const arr = Object.values(data).sort((a,b) => b.dateTs - a.dateTs);
+      saveLocalWorkouts(arr);
+      loadWorkoutsUI();
+    }
+  } catch(e) { /* usa local */ }
+}
+
+function loadWorkoutsLocal() {
+  loadWorkoutsUI();
+}
+
+// ---- INIT ----
+// Tenta carregar Firebase SDK dinamicamente
+(function loadFirebaseSDK() {
+  const s1 = document.createElement('script');
+  s1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+  s1.onload = () => {
+    const s2 = document.createElement('script');
+    s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+    s2.onload = () => initFirebase();
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s1);
+})();
+
+loadWorkoutsLocal(); // carrega local imediatamente como fallback
+
+// ==================== INIT ====================
+renderGlossary();
+renderMovements();
+renderWorkouts();
+renderBenchmarks();
+renderMeasures();
+
+</script>
+</body>
+</html>
