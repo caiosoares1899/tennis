@@ -1464,7 +1464,7 @@ Pode ser foto do quadro, print do app ou qualquer formato!</div>
   </div>
 </div>
 
-<div class="version-tag">v1.5</div>
+<div class="version-tag">v1.6</div>
 
 <script>
 // ==================== DATA ====================
@@ -2243,60 +2243,57 @@ function filterMoves(cat, btn) {
   }
 }
 
-// ==================== GIPHY — GIFs oficiais CrossFit ====================
-// URLs diretas de GIFs do canal @crossfit e boxes afiliadas no Giphy
+// ==================== GIPHY — GIFs oficiais CrossFit LLC ====================
+// Todos do canal @crossfit no Giphy — URLs diretas verificadas
 // Formato: https://media{n}.giphy.com/media/{ID}/giphy.gif
 const GIPHY_MAP = {
-  // Levantamento
-  "Back Squat":        "https://media1.giphy.com/media/W5gFEeJmRhvElyatmF/giphy.gif",
+  "Air Squat":         "https://media0.giphy.com/media/aT4gLVz0A9ROxqLgI1/giphy.gif",
+  "Back Squat":        "https://media2.giphy.com/media/SO492RNU3htWaBeVaz/giphy.gif",
   "Front Squat":       "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/giphy.gif",
   "Deadlift":          "https://media3.giphy.com/media/FK9b8whh0BLyNrA86X/giphy.gif",
   "Power Clean":       "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
   "Snatch":            "https://media2.giphy.com/media/iJ8ACH4X9nolXswEFb/giphy.gif",
-  "Thruster":          "https://media0.giphy.com/media/2A1aTxXb1ARariT3KN/giphy.gif",
-  "Overhead Squat":    "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/giphy.gif",
+  "Thruster":          "https://media0.giphy.com/media/ueMtp7cdM7uRnMX2I7/giphy.gif",
+  "Overhead Squat":    "https://media2.giphy.com/media/SO492RNU3htWaBeVaz/giphy.gif",
   "Dumbbell Snatch":   "https://media0.giphy.com/media/ueMtp7cdM7uRnMX2I7/giphy.gif",
-  // Ginástico
   "Pull-up":           "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
   "Kipping Pull-up":   "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
   "Muscle-Up":         "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/giphy.gif",
   "Handstand Push-up": "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/giphy.gif",
   "Toes-to-Bar":       "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/giphy.gif",
-  "Box Jump":          "https://media2.giphy.com/media/niY3b9di4DsEvWizQk/giphy.gif",
+  "Box Jump":          "https://media3.giphy.com/media/glD2SrkFrTJ3FUyyGB/giphy.gif",
   "Pistol Squat":      "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/giphy.gif",
-  "Turkish Get-up":    "https://media0.giphy.com/media/3oEjHHYOTZeHjzLLOg/giphy.gif",
-  // Cardio
+  "Turkish Get-up":    "https://media1.giphy.com/media/h9i9JrsescJwz1rreO/giphy.gif",
   "Double Under":      "https://media4.giphy.com/media/niY3b9di4DsEvWizQk/giphy.gif",
   "Rowing":            "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/giphy.gif",
   "Burpee":            "https://media1.giphy.com/media/h9i9JrsescJwz1rreO/giphy.gif",
   "Wall Ball":         "https://media3.giphy.com/media/9iIklRRy3sA8WOb4v1/giphy.gif",
-  // Kettlebell
   "KB Swing":          "https://media3.giphy.com/media/3oEjHHYOTZeHjzLLOg/giphy.gif",
 };
 
-// Thumbnail menor para o card (100px)
 const GIPHY_THUMB = {
-  "Back Squat":        "https://media1.giphy.com/media/W5gFEeJmRhvElyatmF/100.gif",
-  "Front Squat":       "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/100.gif",
-  "Deadlift":          "https://media3.giphy.com/media/FK9b8whh0BLyNrA86X/100.gif",
-  "Power Clean":       "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
-  "Snatch":            "https://media2.giphy.com/media/iJ8ACH4X9nolXswEFb/100.gif",
-  "Thruster":          "https://media0.giphy.com/media/2A1aTxXb1ARariT3KN/100.gif",
-  "Overhead Squat":    "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/100.gif",
-  "Dumbbell Snatch":   "https://media0.giphy.com/media/ueMtp7cdM7uRnMX2I7/100.gif",
-  "Pull-up":           "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
-  "Kipping Pull-up":   "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
-  "Muscle-Up":         "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/100.gif",
-  "Handstand Push-up": "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/100.gif",
-  "Toes-to-Bar":       "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/100.gif",
-  "Box Jump":          "https://media2.giphy.com/media/niY3b9di4DsEvWizQk/100.gif",
-  "Pistol Squat":      "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/100.gif",
-  "Turkish Get-up":    "https://media0.giphy.com/media/3oEjHHYOTZeHjzLLOg/100.gif",
-  "Double Under":      "https://media4.giphy.com/media/niY3b9di4DsEvWizQk/100.gif",
-  "Rowing":            "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/100.gif",
-  "Burpee":            "https://media1.giphy.com/media/h9i9JrsescJwz1rreO/100.gif",
-  "Wall Ball":         "https://media3.giphy.com/media/9iIklRRy3sA8WOb4v1/100.gif",
-  "KB Swing":          "https://media3.giphy.com/media/3oEjHHYOTZeHjzLLOg/100.gif",
+  "Air Squat":         "https://media0.giphy.com/media/aT4gLVz0A9ROxqLgI1/200.gif",
+  "Back Squat":        "https://media2.giphy.com/media/SO492RNU3htWaBeVaz/200.gif",
+  "Front Squat":       "https://media1.giphy.com/media/O1TWaCoEj6lwuWtvo2/200.gif",
+  "Deadlift":          "https://media3.giphy.com/media/FK9b8whh0BLyNrA86X/200.gif",
+  "Power Clean":       "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/200.gif",
+  "Snatch":            "https://media2.giphy.com/media/iJ8ACH4X9nolXswEFb/200.gif",
+  "Thruster":          "https://media0.giphy.com/media/ueMtp7cdM7uRnMX2I7/200.gif",
+  "Overhead Squat":    "https://media2.giphy.com/media/SO492RNU3htWaBeVaz/200.gif",
+  "Dumbbell Snatch":   "https://media0.giphy.com/media/ueMtp7cdM7uRnMX2I7/200.gif",
+  "Pull-up":           "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/200.gif",
+  "Kipping Pull-up":   "https://media0.giphy.com/media/UALlXcWPDm0qfqLFTt/200.gif",
+  "Muscle-Up":         "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/200.gif",
+  "Handstand Push-up": "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/200.gif",
+  "Toes-to-Bar":       "https://media3.giphy.com/media/zWEW3fncuH09xR3JUC/200.gif",
+  "Box Jump":          "https://media3.giphy.com/media/glD2SrkFrTJ3FUyyGB/200.gif",
+  "Pistol Squat":      "https://media0.giphy.com/media/uevCvFflMPH7QK6w9Q/200.gif",
+  "Turkish Get-up":    "https://media1.giphy.com/media/h9i9JrsescJwz1rreO/200.gif",
+  "Double Under":      "https://media4.giphy.com/media/niY3b9di4DsEvWizQk/200.gif",
+  "Rowing":            "https://media2.giphy.com/media/UALlXcWPDm0qfqLFTt/200.gif",
+  "Burpee":            "https://media1.giphy.com/media/h9i9JrsescJwz1rreO/200.gif",
+  "Wall Ball":         "https://media3.giphy.com/media/9iIklRRy3sA8WOb4v1/200.gif",
+  "KB Swing":          "https://media3.giphy.com/media/3oEjHHYOTZeHjzLLOg/200.gif",
 };
 
 async function openMoveModal(move) {
