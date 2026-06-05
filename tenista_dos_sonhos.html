@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenista dos Sonhos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Fraunces:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --border: #1e1e2e;
+  --text: #e8e8f0;
+  --muted: #6b6b8a;
+  --accent: #c8a96e;
+  --accent2: #7eb8c9;
+  --card-bg: #16161f;
+
+  /* GS themes */
+  --ao-bg: #0a1628; --ao-accent: #3a8fd6; --ao-court: #4a9fd4; --ao-name: "AUSTRALIAN OPEN";
+  --rg-bg: #1a0f08; --rg-accent: #c8622a; --rg-court: #c96b30; --rg-name: "ROLAND GARROS";
+  --wb-bg: #0a1a0a; --wb-accent: #4a9e4a; --wb-court: #5aae5a; --wb-name: "WIMBLEDON";
+  --uso-bg: #0f0f28; --uso-accent: #2244cc; --uso-court: #3355dd; --uso-name: "US OPEN";
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.6s ease;
+}
+
+body.ao { --bg: var(--ao-bg); --accent: var(--ao-accent); --court-color: var(--ao-court); }
+body.rg { --bg: var(--rg-bg); --accent: var(--rg-accent); --court-color: var(--rg-court); }
+body.wb { --bg: var(--wb-bg); --accent: var(--wb-accent); --court-color: var(--wb-court); }
+body.uso { --bg: var(--uso-bg); --accent: var(--uso-accent); --court-color: var(--uso-court); }
+
+/* --- COURT BG DECORATION --- */
+.court-bg {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none; z-index: 0; opacity: 0.04;
+  background-image:
+    linear-gradient(var(--accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transition: all 0.6s ease;
+}
+
+.container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+/* --- HEADER --- */
+header {
+  text-align: center;
+  padding: 60px 20px 40px;
+  position: relative;
+}
+
+.gs-label {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  transition: color 0.6s;
+  min-height: 14px;
+}
+
+header h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(32px, 7vw, 72px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+header h1 span {
+  color: var(--accent);
+  font-style: italic;
+  font-family: 'Fraunces', serif;
+  transition: color 0.6s;
+}
+
+.subtitle {
+  margin-top: 20px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  line-height: 1.8;
+}
+
+/* --- STEPS NAV --- */
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 40px 0 50px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  padding: 14px 10px;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  transition: all 0.3s;
+  position: relative;
+}
+.step:last-child { border-right: none; }
+.step.active { color: var(--accent); background: rgba(255,255,255,0.03); }
+.step.done { color: var(--text); }
+.step .num {
+  display: block;
+  font-size: 18px;
+  font-weight: 300;
+  margin-bottom: 4px;
+  color: inherit;
+  font-family: 'Fraunces', serif;
+}
+
+/* --- PHASE PANELS --- */
+.phase { display: none; }
+.phase.active { display: block; animation: fadeUp 0.4s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- ATTRIBUTE SLOTS --- */
+.attrs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.attr-slot {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 16px;
+  background: var(--card-bg);
+  min-height: 100px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+.attr-slot.filled { border-color: var(--accent); }
+.attr-slot.rolling { animation: pulse 0.3s ease infinite alternate; }
+
+@keyframes pulse {
+  from { border-color: var(--accent); }
+  to { border-color: transparent; }
+}
+
+.attr-label {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.attr-value {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 4px;
+  transition: color 0.3s;
+}
+
+.attr-player {
+  font-size: 10px;
+  color: var(--text);
+  opacity: 0.8;
+  line-height: 1.3;
+}
+
+.attr-decade {
+  font-size: 9px;
+  color: var(--muted);
+}
+
+.roll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.roll-btn:hover { background: var(--accent); color: var(--bg); }
+.roll-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.roll-btn:hover:disabled { background: transparent; color: var(--accent); }
+
+/* DICE icon */
+.dice { font-size: 16px; display: inline-block; transition: transform 0.3s; }
+.roll-btn:hover .dice { transform: rotate(180deg); }
+
+/* --- STYLE SELECTOR --- */
+.style-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.style-card {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--card-bg);
+}
+.style-card:hover { border-color: var(--muted); }
+.style-card.selected { border-color: var(--accent); background: rgba(255,255,255,0.04); }
+
+.style-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.style-desc { font-size: 10px; color: var(--muted); line-height: 1.6; }
+.style-surface-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+.tag {
+  font-size: 8px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  padding: 3px 7px;
+  border-radius: 1px;
+  background: rgba(255,255,255,0.05);
+  color: var(--muted);
+}
+.tag.pos { background: rgba(100,200,100,0.1); color: #6dc870; }
+.tag.neg { background: rgba(200,100,100,0.1); color: #d06060; }
+.tag.neu { background: rgba(200,200,100,0.1); color: #c8c870; }
+
+/* --- GS SELECTOR --- */
+.gs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 30px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 480px) {
+  .gs-grid { grid-template-columns: 1fr; }
+}
+
+.gs-card {
+  border: 2px solid transparent;
+  border-radius: 3px;
+  padding: 22px 16px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.gs-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0.08;
+  transition: opacity 0.25s;
+}
+.gs-card:hover::before { opacity: 0.15; }
+.gs-card.selected::before { opacity: 0.2; }
+
+.gs-ao { background: #0a1628; border-color: transparent; }
+.gs-ao::before { background: #3a8fd6; }
+.gs-ao.selected { border-color: #3a8fd6; }
+
+.gs-rg { background: #1a0f08; border-color: transparent; }
+.gs-rg::before { background: #c8622a; }
+.gs-rg.selected { border-color: #c8622a; }
+
+.gs-wb { background: #0a1a0a; border-color: transparent; }
+.gs-wb::before { background: #4a9e4a; }
+.gs-wb.selected { border-color: #4a9e4a; }
+
+.gs-uso { background: #0f0f28; border-color: transparent; }
+.gs-uso::before { background: #2244cc; }
+.gs-uso.selected { border-color: #2244cc; }
+
+.gs-card-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+  position: relative; z-index: 1;
+}
+.gs-card-city {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  position: relative; z-index: 1;
+}
+.gs-card-surface {
+  font-size: 24px;
+  margin-bottom: 8px;
+  position: relative; z-index: 1;
+}
+
+/* --- PLAYER SUMMARY CARD --- */
+.player-card {
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: 28px;
+  background: var(--card-bg);
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  transition: border-color 0.6s;
+}
+
+@media (max-width: 600px) {
+  .player-card { grid-template-columns: 1fr; }
+}
+
+.player-name-display {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-style: italic;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.player-style-display {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  text-transform: uppercase;
+  transition: color 0.6s;
+}
+
+.attrs-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.attr-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.attr-bar-label {
+  font-size: 8px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  width: 64px;
+  flex-shrink: 0;
+}
+.attr-bar-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.attr-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1), background 0.6s;
+}
+.attr-bar-val {
+  font-size: 10px;
+  color: var(--text);
+  width: 18px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Overall score */
+.overall-score {
+  font-family: 'Fraunces', serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  transition: color 0.6s;
+}
+.overall-label {
+  font-size: 9px;
+  font-family: 'Unbounded', sans-serif;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* --- SIMULATION --- */
+.campaign-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 30px;
+}
+
+.round-row {
+  border-left: 1px solid var(--border);
+  padding: 0 0 0 20px;
+  margin-left: 8px;
+  position: relative;
+  padding-bottom: 24px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.round-row.revealed { opacity: 1; transform: none; }
+.round-row::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 4px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 1px solid var(--muted);
+  transition: background 0.3s, border-color 0.3s;
+}
+.round-row.win::before { background: var(--accent); border-color: var(--accent); }
+.round-row.loss::before { background: #c04040; border-color: #c04040; }
+
+.round-label {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.round-opponent {
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.round-score {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.round-score.win { color: var(--accent); }
+.round-score.loss { color: #c04040; }
+.round-narrative {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.result-banner {
+  text-align: center;
+  padding: 40px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  margin-bottom: 30px;
+  background: rgba(255,255,255,0.02);
+  opacity: 0;
+  transition: opacity 0.6s 0.2s;
+}
+.result-banner.show { opacity: 1; }
+.result-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(32px, 6vw, 64px);
+  font-style: italic;
+  color: var(--accent);
+  transition: color 0.6s;
+  margin-bottom: 8px;
+}
+.result-subtitle {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+}
+
+/* --- ACTION BAR --- */
+.action-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px 0 60px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  padding: 14px 24px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  padding: 14px 24px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--muted); color: var(--text); }
+
+/* --- SECTION TITLE --- */
+.section-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-sub {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+/* --- ROLL COUNTER --- */
+.roll-info {
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.roll-info span { font-size: 13px; color: var(--accent); font-family: 'Fraunces', serif; }
+
+/* --- LOADING DOTS --- */
+.loading-dots::after {
+  content: '...';
+  animation: dots 1s steps(3, end) infinite;
+}
+@keyframes dots {
+  0%, 100% { content: '.'; }
+  33% { content: '..'; }
+  66% { content: '...'; }
+}
+
+/* --- FOOTER --- */
+footer {
+  text-align: center;
+  padding: 30px;
+  font-size: 9px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  letter-spacing: 0.15em;
+  position: relative; z-index: 1;
+}
+.version-tag {
+  position: fixed;
+  bottom: 10px; right: 14px;
+  font-size: 8px;
+  font-family: 'DM Mono', monospace;
+  color: var(--border);
+  letter-spacing: 0.1em;
+  z-index: 999;
+}
+
+/* Odds display */
+.odds-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.odds-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.5s ease, background 0.6s;
+}
+.odds-fill.bad { background: #c04040; }
+
+.highlight { color: var(--accent); transition: color 0.6s; }
+</style>
+</head>
+<body>
+<div class="court-bg"></div>
+<div id="loading-banner" style="
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  background:#13131a;border-bottom:1px solid #1e1e2e;
+  text-align:center;padding:10px;
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:#6b6b8a;letter-spacing:0.2em;
+">
+  Carregando jogadores<span class="loading-dots"></span>
+</div>
+<div style="height:0" id="banner-spacer"></div>
+
+
+<div class="container">
+  <header>
+    <div class="gs-label" id="gs-label">· SIMULADOR DE TÊNIS ·</div>
+    <h1>Tenista<br><span>dos Sonhos</span></h1>
+    <p class="subtitle">
+      Role o dado · monte seu tenista ideal<br>
+      escolha um Grand Slam · simule a campanha
+    </p>
+  </header>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step active" id="step-1"><span class="num">01</span>ATRIBUTOS</div>
+    <div class="step" id="step-2"><span class="num">02</span>ESTILO</div>
+    <div class="step" id="step-3"><span class="num">03</span>GRAND SLAM</div>
+    <div class="step" id="step-4"><span class="num">04</span>SIMULAR</div>
+  </div>
+
+  <!-- PHASE 1: ROLL FOR ATTRIBUTES -->
+  <div class="phase active" id="phase-1">
+    <div class="section-title">Construa seu Tenista</div>
+    <p class="section-sub">
+      Role o dado para cada atributo. A cada rolagem, um tenista histórico é sorteado e seu melhor golpe vai para o seu jogador.
+      Você pode re-rolar <span class="highlight">3 vezes</span> por atributo.
+    </p>
+
+    <div class="roll-info">
+      Re-rolls restantes (total): <span id="reroll-count">3</span> ·
+      Atributo selecionado: <span id="selected-attr-name">—</span>
+    </div>
+
+    <div class="attrs-grid" id="attrs-grid"></div>
+
+    <div class="action-bar">
+      <button class="btn-primary" id="roll-all-btn" onclick="rollAll()">
+        🎲 Rolar Todos
+      </button>
+      <button class="btn-ghost" onclick="goToPhase(2)" id="next-1-btn" disabled>
+        Próximo →
+      </button>
+    </div>
+  </div>
+
+  <!-- PHASE 2: PLAY STYLE -->
+  <div class="phase" id="phase-2">
+    <div class="section-title">Estilo de Jogo</div>
+    <p class="section-sub">
+      O estilo define como seu tenista se comporta em quadra. Cada estilo tem vantagens e desvantagens dependendo da superfície.
+    </p>
+    <div class="style-grid" id="style-grid"></div>
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="goToPhase(1)">← Voltar</button>
+      <button class="btn-primary" id="next-2-btn" onclick="goToPhase(3)" disabled>Próximo →</button>
+    </div>
+  </div>
+
+  <!-- PHASE 3: GRAND SLAM -->
+  <div class="phase" id="phase-3">
+    <div class="section-title">Escolha o Grand Slam</div>
+    <p class="section-sub">A superfície influencia diretamente o desempenho de cada estilo de jogo.</p>
+    <div class="gs-grid" id="gs-grid"></div>
+    <div class="action-bar">
+      <button class="btn-ghost" onclick="goToPhase(2)">← Voltar</button>
+      <button class="btn-primary" id="next-3-btn" onclick="buildAndPreview()" disabled>Ver Meu Tenista →</button>
+    </div>
+  </div>
+
+  <!-- PHASE 4: PREVIEW + SIMULATE -->
+  <div class="phase" id="phase-4">
+    <div class="section-title">Seu Tenista</div>
+
+    <div class="player-card" id="player-card">
+      <div>
+        <div class="player-name-display" id="player-name-display">—</div>
+        <div class="player-style-display" id="player-style-display">—</div>
+        <div style="margin-top:20px;">
+          <div class="overall-score" id="overall-score">—</div>
+          <div class="overall-label">OVERALL</div>
+        </div>
+      </div>
+      <div class="attrs-mini" id="attrs-mini"></div>
+    </div>
+
+    <div class="action-bar" id="sim-action-bar">
+      <button class="btn-primary" onclick="simulate()" id="sim-btn">🎾 Simular Campanha</button>
+      <button class="btn-ghost" onclick="goToPhase(3)">← Mudar Slam</button>
+    </div>
+
+    <div id="campaign-area" style="display:none;">
+      <div class="section-title" style="margin-top:40px;" id="campaign-title">CAMPANHA</div>
+      <div class="campaign-timeline" id="campaign-timeline"></div>
+      <div class="result-banner" id="result-banner">
+        <div class="result-title" id="result-title"></div>
+        <div class="result-subtitle" id="result-subtitle"></div>
+      </div>
+      <div class="action-bar">
+        <button class="btn-primary" onclick="restart()">🔄 Montar Novo Tenista</button>
+        <button class="btn-ghost" onclick="simulate()">Simular Novamente</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Tenista dos Sonhos · dados baseados em estatísticas ATP históricas</footer>
+<div class="version-tag">v1.2</div>
+
+<script>
+// ===========================
+// DATA: PLAYERS BY DECADE
+// ===========================
+window.PLAYERS = [
+  // MODERN ERA (2020s)
+  { id: "sinner_20s", name: "Jannik Sinner", decade: "2020s", nat: "🇮🇹", attrs: { forehand:9, backhand:10, saque:8, slice:7, dropshot:7, fisico:10, mental:10, overall:9 } },
+  { id: "alcaraz_20s", name: "Carlos Alcaraz", decade: "2020s", nat: "🇪🇸", attrs: { forehand:10, backhand:9, saque:8, slice:8, dropshot:10, fisico:10, mental:9, overall:10 } },
+  { id: "djokovic_20s", name: "Novak Djokovic", decade: "2020s", nat: "🇷🇸", attrs: { forehand:9, backhand:10, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
+  { id: "medvedev_20s", name: "Daniil Medvedev", decade: "2020s", nat: "🇷🇺", attrs: { forehand:8, backhand:9, saque:9, slice:8, dropshot:7, fisico:9, mental:9, overall:9 } },
+  { id: "zverev_20s", name: "Alexander Zverev", decade: "2020s", nat: "🇩🇪", attrs: { forehand:9, backhand:8, saque:9, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+  { id: "fonseca_20s", name: "João Fonseca", decade: "2020s", nat: "🇧🇷", attrs: { forehand:10, backhand:8, saque:9, slice:6, dropshot:7, fisico:8, mental:8, overall:8 } },
+  { id: "musetti_20s", name: "Lorenzo Musetti", decade: "2020s", nat: "🇮🇹", attrs: { forehand:8, backhand:7, saque:7, slice:9, dropshot:9, fisico:7, mental:7, overall:8 } },
+  { id: "draper_20s", name: "Jack Draper", decade: "2020s", nat: "🇬🇧", attrs: { forehand:8, backhand:9, saque:8, slice:8, dropshot:7, fisico:8, mental:7, overall:8 } },
+  { id: "rune_20s", name: "Holger Rune", decade: "2020s", nat: "🇩🇰", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:8, fisico:8, mental:7, overall:8 } },
+  { id: "shelton_20s", name: "Ben Shelton", decade: "2020s", nat: "🇺🇸", attrs: { forehand:8, backhand:7, saque:10, slice:6, dropshot:6, fisico:8, mental:7, overall:8 } },
+  { id: "bublik_20s", name: "Alexander Bublik", decade: "2020s", nat: "🇰🇿", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:10, fisico:7, mental:6, overall:8 } },
+  { id: "auger_20s", name: "Félix A.-Aliassime", decade: "2020s", nat: "🇨🇦", attrs: { forehand:9, backhand:8, saque:9, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+
+  // 2010s
+  { id: "djokovic_10s", name: "Novak Djokovic", decade: "2010s", nat: "🇷🇸", attrs: { forehand:9, backhand:10, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
+  { id: "federer_10s", name: "Roger Federer", decade: "2010s", nat: "🇨🇭", attrs: { forehand:10, backhand:9, saque:9, slice:10, dropshot:9, fisico:8, mental:10, overall:10 } },
+  { id: "nadal_10s", name: "Rafael Nadal", decade: "2010s", nat: "🇪🇸", attrs: { forehand:10, backhand:9, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
+  { id: "murray_10s", name: "Andy Murray", decade: "2010s", nat: "🇬🇧", attrs: { forehand:8, backhand:9, saque:7, slice:9, dropshot:7, fisico:9, mental:10, overall:9 } },
+  { id: "wawrinka_10s", name: "Stan Wawrinka", decade: "2010s", nat: "🇨🇭", attrs: { forehand:10, backhand:10, saque:8, slice:7, dropshot:7, fisico:8, mental:8, overall:9 } },
+  { id: "tsitsipas_10s", name: "Stefanos Tsitsipas", decade: "2010s", nat: "🇬🇷", attrs: { forehand:9, backhand:7, saque:8, slice:9, dropshot:9, fisico:8, mental:8, overall:9 } },
+  { id: "thiem_10s", name: "Dominic Thiem", decade: "2010s", nat: "🇦🇹", attrs: { forehand:10, backhand:9, saque:8, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+  { id: "zverev_10s", name: "Alexander Zverev", decade: "2010s", nat: "🇩🇪", attrs: { forehand:8, backhand:8, saque:9, slice:7, dropshot:7, fisico:9, mental:7, overall:8 } },
+  { id: "cilic_10s", name: "Marin Čilić", decade: "2010s", nat: "🇭🇷", attrs: { forehand:8, backhand:7, saque:10, slice:7, dropshot:6, fisico:8, mental:8, overall:8 } },
+  { id: "raonic_10s", name: "Milos Raonic", decade: "2010s", nat: "🇨🇦", attrs: { forehand:8, backhand:7, saque:10, slice:6, dropshot:5, fisico:8, mental:7, overall:8 } },
+  { id: "nishikori_10s", name: "Kei Nishikori", decade: "2010s", nat: "🇯🇵", attrs: { forehand:9, backhand:8, saque:7, slice:8, dropshot:8, fisico:8, mental:8, overall:8 } },
+  { id: "monfils_10s", name: "Gaël Monfils", decade: "2010s", nat: "🇫🇷", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:8, fisico:10, mental:6, overall:8 } },
+
+  // 2000s
+  { id: "federer_00s", name: "Roger Federer", decade: "2000s", nat: "🇨🇭", attrs: { forehand:10, backhand:9, saque:9, slice:10, dropshot:9, fisico:9, mental:10, overall:10 } },
+  { id: "nadal_00s", name: "Rafael Nadal", decade: "2000s", nat: "🇪🇸", attrs: { forehand:10, backhand:8, saque:7, slice:8, dropshot:7, fisico:10, mental:9, overall:9 } },
+  { id: "djokovic_00s", name: "Novak Djokovic", decade: "2000s", nat: "🇷🇸", attrs: { forehand:7, backhand:9, saque:7, slice:7, dropshot:6, fisico:8, mental:8, overall:7 } },
+  { id: "roddick_00s", name: "Andy Roddick", decade: "2000s", nat: "🇺🇸", attrs: { forehand:9, backhand:7, saque:10, slice:6, dropshot:6, fisico:8, mental:8, overall:8 } },
+  { id: "hewitt_00s", name: "Lleyton Hewitt", decade: "2000s", nat: "🇦🇺", attrs: { forehand:8, backhand:8, saque:7, slice:8, dropshot:7, fisico:9, mental:10, overall:8 } },
+  { id: "ferrero_00s", name: "Juan Carlos Ferrero", decade: "2000s", nat: "🇪🇸", attrs: { forehand:9, backhand:8, saque:7, slice:8, dropshot:8, fisico:9, mental:8, overall:8 } },
+  { id: "safin_00s", name: "Marat Safin", decade: "2000s", nat: "🇷🇺", attrs: { forehand:10, backhand:9, saque:9, slice:7, dropshot:7, fisico:8, mental:6, overall:8 } },
+  { id: "guga_00s", name: "Gustavo Kuerten", decade: "2000s", nat: "🇧🇷", attrs: { forehand:10, backhand:8, saque:7, slice:7, dropshot:8, fisico:7, mental:9, overall:8 } },
+  { id: "davydenko_00s", name: "Nikolay Davydenko", decade: "2000s", nat: "🇷🇺", attrs: { forehand:8, backhand:9, saque:7, slice:7, dropshot:7, fisico:8, mental:8, overall:8 } },
+  { id: "hrbaty_00s", name: "Dominik Hrbatý", decade: "2000s", nat: "🇸🇰", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "gasquet_00s", name: "Richard Gasquet", decade: "2000s", nat: "🇫🇷", attrs: { forehand:8, backhand:10, saque:7, slice:9, dropshot:8, fisico:7, mental:7, overall:8 } },
+  { id: "haas_00s", name: "Tommy Haas", decade: "2000s", nat: "🇩🇪", attrs: { forehand:9, backhand:8, saque:8, slice:9, dropshot:8, fisico:8, mental:7, overall:8 } },
+  { id: "bellucci_00s", name: "Thomaz Bellucci", decade: "2000s", nat: "🇧🇷", attrs: { forehand:9, backhand:7, saque:7, slice:8, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "youzhny_00s", name: "Mikhail Youzhny", decade: "2000s", nat: "🇷🇺", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:8, overall:7 } },
+
+  // 1990s
+  { id: "sampras_90s", name: "Pete Sampras", decade: "1990s", nat: "🇺🇸", attrs: { forehand:9, backhand:7, saque:10, slice:9, dropshot:7, fisico:9, mental:10, overall:10 } },
+  { id: "agassi_90s", name: "Andre Agassi", decade: "1990s", nat: "🇺🇸", attrs: { forehand:10, backhand:9, saque:8, slice:8, dropshot:8, fisico:8, mental:9, overall:9 } },
+  { id: "courier_90s", name: "Jim Courier", decade: "1990s", nat: "🇺🇸", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:7, fisico:10, mental:9, overall:8 } },
+  { id: "chang_90s", name: "Michael Chang", decade: "1990s", nat: "🇺🇸", attrs: { forehand:8, backhand:8, saque:7, slice:7, dropshot:8, fisico:10, mental:9, overall:8 } },
+  { id: "becker_90s", name: "Boris Becker", decade: "1990s", nat: "🇩🇪", attrs: { forehand:9, backhand:8, saque:10, slice:7, dropshot:7, fisico:9, mental:9, overall:9 } },
+  { id: "edberg_90s", name: "Stefan Edberg", decade: "1990s", nat: "🇸🇪", attrs: { forehand:8, backhand:9, saque:9, slice:9, dropshot:8, fisico:8, mental:9, overall:9 } },
+  { id: "muster_90s", name: "Thomas Muster", decade: "1990s", nat: "🇦🇹", attrs: { forehand:9, backhand:8, saque:7, slice:7, dropshot:7, fisico:10, mental:9, overall:8 } },
+  { id: "guga_90s", name: "Gustavo Kuerten", decade: "1990s", nat: "🇧🇷", attrs: { forehand:9, backhand:7, saque:7, slice:6, dropshot:7, fisico:8, mental:9, overall:8 } },
+  { id: "bruguera_90s", name: "Sergi Bruguera", decade: "1990s", nat: "🇪🇸", attrs: { forehand:9, backhand:7, saque:7, slice:8, dropshot:8, fisico:9, mental:8, overall:8 } },
+  { id: "ivanisevic_90s", name: "Goran Ivanišević", decade: "1990s", nat: "🇭🇷", attrs: { forehand:8, backhand:7, saque:10, slice:7, dropshot:6, fisico:8, mental:7, overall:8 } },
+  { id: "pioline_90s", name: "Cédric Pioline", decade: "1990s", nat: "🇫🇷", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "rios_90s", name: "Marcelo Ríos", decade: "1990s", nat: "🇨🇱", attrs: { forehand:8, backhand:9, saque:8, slice:9, dropshot:9, fisico:7, mental:7, overall:8 } },
+  { id: "kafelnikov_90s", name: "Yevgeny Kafelnikov", decade: "1990s", nat: "🇷🇺", attrs: { forehand:8, backhand:8, saque:8, slice:7, dropshot:7, fisico:9, mental:8, overall:8 } },
+  { id: "stich_90s", name: "Michael Stich", decade: "1990s", nat: "🇩🇪", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:7, fisico:8, mental:8, overall:8 } },
+
+  // 1980s
+  { id: "mcenroe_80s", name: "John McEnroe", decade: "1980s", nat: "🇺🇸", attrs: { forehand:9, backhand:8, saque:9, slice:10, dropshot:10, fisico:8, mental:8, overall:10 } },
+  { id: "connors_80s", name: "Jimmy Connors", decade: "1980s", nat: "🇺🇸", attrs: { forehand:9, backhand:10, saque:7, slice:8, dropshot:7, fisico:10, mental:10, overall:9 } },
+  { id: "lendl_80s", name: "Ivan Lendl", decade: "1980s", nat: "🇨🇿", attrs: { forehand:10, backhand:9, saque:8, slice:7, dropshot:7, fisico:10, mental:10, overall:10 } },
+  { id: "wilander_80s", name: "Mats Wilander", decade: "1980s", nat: "🇸🇪", attrs: { forehand:8, backhand:8, saque:7, slice:8, dropshot:8, fisico:9, mental:9, overall:8 } },
+  { id: "becker_80s", name: "Boris Becker", decade: "1980s", nat: "🇩🇪", attrs: { forehand:9, backhand:7, saque:10, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+  { id: "cash_80s", name: "Pat Cash", decade: "1980s", nat: "🇦🇺", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:7, fisico:9, mental:8, overall:8 } },
+  { id: "edberg_80s", name: "Stefan Edberg", decade: "1980s", nat: "🇸🇪", attrs: { forehand:7, backhand:9, saque:9, slice:9, dropshot:8, fisico:8, mental:8, overall:8 } },
+  { id: "borg_80s", name: "Björn Borg", decade: "1980s", nat: "🇸🇪", attrs: { forehand:9, backhand:9, saque:7, slice:8, dropshot:7, fisico:10, mental:10, overall:9 } },
+
+  // SPECIAL / WILDCARDS
+  { id: "haddad_20s", name: "Botic van de Zandschulp", decade: "2020s", nat: "🇳🇱", attrs: { forehand:7, backhand:7, saque:7, slice:6, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "jaziri_10s", name: "Malek Jaziri", decade: "2010s", nat: "🇹🇳", attrs: { forehand:7, backhand:6, saque:8, slice:6, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "youla_00s", name: "Hicham Arazi", decade: "2000s", nat: "🇲🇦", attrs: { forehand:8, backhand:7, saque:7, slice:9, dropshot:9, fisico:7, mental:7, overall:7 } },
+  { id: "amor_90s", name: "Francisco Clavet", decade: "1990s", nat: "🇪🇸", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:8, fisico:7, mental:7, overall:7 } },
+];
+
+// ATTRIBUTES CONFIG
+const ATTRS = [
+  { key: "forehand", label: "Forehand" },
+  { key: "backhand", label: "Backhand" },
+  { key: "saque", label: "Saque" },
+  { key: "slice", label: "Slice" },
+  { key: "dropshot", label: "Dropshot" },
+  { key: "fisico", label: "Físico" },
+  { key: "mental", label: "Mental" },
+];
+
+// PLAY STYLES
+const STYLES = [
+  {
+    key: "baseliner_agressivo",
+    name: "Baseliner Agressivo",
+    desc: "Jogo ofensivo do fundo. Busca o winner a cada oportunidade. Topspin pesado e postura dentro da linha.",
+    bonus: { rg: +1.0, uso: +0.5, ao: +0.5, wb: -0.5 }
+  },
+  {
+    key: "baseliner_defensivo",
+    name: "Baseliner Defensivo",
+    desc: "Constrói o ponto com paciência. Boa consistência, rally longo, explora erros do adversário.",
+    bonus: { rg: +1.5, ao: +0.5, uso: 0, wb: -1.0 }
+  },
+  {
+    key: "baseliner_criativo",
+    name: "Baseliner Criativo",
+    desc: "Mistura de golpes. Slice, dropshot, angle shots. Leva o adversário para fora do conforto.",
+    bonus: { rg: +0.5, ao: +0.5, uso: +0.5, wb: +0.5 }
+  },
+  {
+    key: "all_court",
+    name: "All-Court",
+    desc: "Versátil e adaptável. Joga bem em todas as superfícies, sobe à rede quando a oportunidade aparece.",
+    bonus: { rg: +0.5, ao: +1.0, uso: +0.5, wb: +0.5 }
+  },
+  {
+    key: "serve_volley",
+    name: "Serve & Volley",
+    desc: "Saque como arma, sobe à rede imediatamente. Pontos curtos, pressão constante sobre o returno.",
+    bonus: { rg: -1.5, ao: -0.5, uso: +0.5, wb: +2.0 }
+  },
+  {
+    key: "serverbot",
+    name: "Serverbot",
+    desc: "Saque é a arma principal. Libera os games de saque com mínimo esforço, depende pouco do rally.",
+    bonus: { rg: -2.0, ao: +0.5, uso: +1.0, wb: +1.5 }
+  },
+];
+
+// GRAND SLAMS
+const GS_ICONS = {
+  ao: `<svg viewBox="0 0 60 60" width="52" height="52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="30" cy="30" r="28" stroke="#3a8fd6" stroke-width="2"/>
+    <path d="M14 30 Q22 12 30 30 Q38 48 46 30" stroke="#3a8fd6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <circle cx="30" cy="30" r="4" fill="#3a8fd6"/>
+    <path d="M10 30 H50" stroke="#3a8fd6" stroke-width="1" opacity="0.4"/>
+    <path d="M30 10 V50" stroke="#3a8fd6" stroke-width="1" opacity="0.4"/>
+    <text x="30" y="54" text-anchor="middle" font-size="5" fill="#3a8fd6" font-family="sans-serif" opacity="0.7">AO</text>
+  </svg>`,
+  rg: `<svg viewBox="0 0 60 60" width="52" height="52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="8" width="52" height="44" rx="2" stroke="#c8622a" stroke-width="2"/>
+    <line x1="30" y1="8" x2="30" y2="52" stroke="#c8622a" stroke-width="1.5" opacity="0.6"/>
+    <line x1="4" y1="30" x2="56" y2="30" stroke="#c8622a" stroke-width="1.5" opacity="0.6"/>
+    <rect x="12" y="14" width="36" height="32" rx="1" stroke="#c8622a" stroke-width="1" opacity="0.35"/>
+    <circle cx="30" cy="30" r="5" stroke="#c8622a" stroke-width="1.5"/>
+    <text x="30" y="56" text-anchor="middle" font-size="5" fill="#c8622a" font-family="sans-serif" opacity="0.7">RG</text>
+  </svg>`,
+  wb: `<svg viewBox="0 0 60 60" width="52" height="52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="30" cy="30" rx="26" ry="26" stroke="#4a9e4a" stroke-width="2"/>
+    <path d="M10 22 Q20 18 30 22 Q40 26 50 22" stroke="#4a9e4a" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M10 38 Q20 34 30 38 Q40 42 50 38" stroke="#4a9e4a" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M4 30 H56" stroke="#4a9e4a" stroke-width="1.5" opacity="0.6"/>
+    <path d="M30 4 V56" stroke="#4a9e4a" stroke-width="1.5" opacity="0.6"/>
+    <circle cx="30" cy="30" r="5" stroke="#4a9e4a" stroke-width="1.5"/>
+    <text x="30" y="57" text-anchor="middle" font-size="5" fill="#4a9e4a" font-family="sans-serif" opacity="0.7">WB</text>
+  </svg>`,
+  uso: `<svg viewBox="0 0 60 60" width="52" height="52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="8" width="52" height="44" rx="3" stroke="#2244cc" stroke-width="2"/>
+    <line x1="30" y1="8" x2="30" y2="52" stroke="#2244cc" stroke-width="1.5" opacity="0.6"/>
+    <line x1="4" y1="30" x2="56" y2="30" stroke="#2244cc" stroke-width="1.5" opacity="0.6"/>
+    <line x1="4" y1="20" x2="56" y2="20" stroke="#2244cc" stroke-width="0.8" opacity="0.25"/>
+    <line x1="4" y1="40" x2="56" y2="40" stroke="#2244cc" stroke-width="0.8" opacity="0.25"/>
+    <circle cx="30" cy="30" r="5" stroke="#2244cc" stroke-width="1.5"/>
+    <text x="30" y="56" text-anchor="middle" font-size="5" fill="#2244cc" font-family="sans-serif" opacity="0.7">USO</text>
+  </svg>`
+};
+
+const GRAND_SLAMS = [
+  { key: "ao", name: "Australian Open", city: "Melbourne", cssClass: "gs-ao", theme: "ao", label: "· AUSTRALIAN OPEN · MELBOURNE ·" },
+  { key: "rg", name: "Roland Garros", city: "Paris", cssClass: "gs-rg", theme: "rg", label: "· ROLAND GARROS · PARIS ·" },
+  { key: "wb", name: "Wimbledon", city: "Londres", cssClass: "gs-wb", theme: "wb", label: "· WIMBLEDON · LONDRES ·" },
+  { key: "uso", name: "US Open", city: "Nova York", cssClass: "gs-uso", theme: "uso", label: "· US OPEN · NOVA YORK ·" },
+];
+
+const ROUNDS = ["1ª Rodada","2ª Rodada","3ª Rodada","Oitavas","Quartas","Semifinal","Final"];
+
+// STATE
+let state = {
+  slots: {}, // key -> { player, value }
+  rerollsLeft: 3, // global reroll pool
+  selectedSlotKey: null,
+  style: null,
+  gs: null,
+  playerName: "Meu Tenista",
+};
+
+// ===========================
+// INIT
+// ===========================
+function init() {
+  renderAttrsGrid();
+  renderStyleGrid();
+  renderGSGrid();
+}
+
+function renderAttrsGrid() {
+  const grid = document.getElementById("attrs-grid");
+  grid.innerHTML = "";
+  state.rerollsLeft = 3;
+  updateRerollCounter();
+  ATTRS.forEach(attr => {
+    state.slots[attr.key] = null;
+    const slot = document.createElement("div");
+    slot.className = "attr-slot";
+    slot.id = `slot-${attr.key}`;
+    slot.innerHTML = `
+      <div class="attr-label">${attr.label}</div>
+      <div class="attr-value" id="val-${attr.key}">—</div>
+      <div class="attr-player" id="player-${attr.key}">Clique em rolar</div>
+      <div class="attr-decade" id="decade-${attr.key}"></div>
+      <div style="margin-top:10px;">
+        <button class="roll-btn" onclick="rollAttr('${attr.key}')">
+          <span class="dice">⚄</span> <span>Rolar</span>
+        </button>
+        <button class="roll-btn" onclick="rerollAttr('${attr.key}')" id="reroll-${attr.key}" style="margin-top:6px;font-size:8px;padding:6px 12px;" disabled>
+          ↺ Re-rolar
+        </button>
+      </div>
+    `;
+    grid.appendChild(slot);
+  });
+}
+
+function updateRerollCounter() {
+  const el = document.getElementById("reroll-count");
+  if (el) el.textContent = state.rerollsLeft;
+  ATTRS.forEach(a => {
+    const btn = document.getElementById(`reroll-${a.key}`);
+    if (btn) {
+      const slotFilled = state.slots[a.key] !== null;
+      btn.disabled = !slotFilled || state.rerollsLeft <= 0;
+    }
+  });
+}
+
+function renderStyleGrid() {
+  const grid = document.getElementById("style-grid");
+  grid.innerHTML = "";
+  STYLES.forEach(s => {
+    const card = document.createElement("div");
+    card.className = "style-card";
+    card.id = `style-${s.key}`;
+    card.onclick = () => selectStyle(s.key);
+
+    const tags = GRAND_SLAMS.map(gs => {
+      const b = s.bonus[gs.key];
+      const cls = b > 0 ? "pos" : b < 0 ? "neg" : "neu";
+      const sign = b > 0 ? "+" : "";
+      return `<span class="tag ${cls}">${gs.city} ${sign}${b}</span>`;
+    }).join("");
+
+    card.innerHTML = `
+      <div class="style-name">${s.name}</div>
+      <div class="style-desc">${s.desc}</div>
+      <div class="style-surface-tags">${tags}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderGSGrid() {
+  const grid = document.getElementById("gs-grid");
+  grid.innerHTML = "";
+  GRAND_SLAMS.forEach(gs => {
+    const card = document.createElement("div");
+    card.className = `gs-card ${gs.cssClass}`;
+    card.id = `gs-${gs.key}`;
+    card.onclick = () => selectGS(gs.key);
+    card.innerHTML = `
+      <div class="gs-card-surface">${GS_ICONS[gs.key]}</div>
+      <div class="gs-card-name">${gs.name}</div>
+      <div class="gs-card-city">${gs.city}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ===========================
+// ROLLING
+// ===========================
+function getRandomPlayer(excludeId) {
+  let pool = PLAYERS.filter(p => p.id !== excludeId);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function rollAttr(key) {
+  const player = getRandomPlayer(state.slots[key]?.player?.id);
+  applyAttrRoll(key, player, () => {
+    updateRerollCounter();
+    checkAllRolled();
+  });
+}
+
+function rerollAttr(key) {
+  if (state.rerollsLeft <= 0) return;
+  if (!state.slots[key]) return;
+  state.rerollsLeft--;
+  const player = getRandomPlayer(state.slots[key]?.player?.id);
+  applyAttrRoll(key, player, () => {
+    updateRerollCounter();
+  });
+}
+
+function applyAttrRoll(key, player, onDone) {
+  const slot = document.getElementById(`slot-${key}`);
+  slot.classList.add("rolling");
+  setTimeout(() => {
+    slot.classList.remove("rolling");
+    slot.classList.add("filled");
+
+    const val = player.attrs[key];
+    state.slots[key] = { player, value: val };
+
+    document.getElementById(`val-${key}`).textContent = val;
+    document.getElementById(`player-${key}`).textContent = `${player.nat} ${player.name}`;
+    document.getElementById(`decade-${key}`).textContent = player.decade;
+
+    if (onDone) onDone();
+  }, 200);
+}
+
+function rollAll() {
+  const btn = document.getElementById("roll-all-btn");
+  btn.disabled = true;
+  ATTRS.forEach((attr, i) => {
+    const isLast = i === ATTRS.length - 1;
+    setTimeout(() => {
+      const player = getRandomPlayer(state.slots[attr.key]?.player?.id);
+      applyAttrRoll(attr.key, player, isLast ? () => {
+        btn.disabled = false;
+        updateRerollCounter();
+        checkAllRolled();
+      } : null);
+    }, i * 80);
+  });
+}
+
+function checkAllRolled() {
+  const allFilled = ATTRS.every(a => state.slots[a.key] !== null);
+  document.getElementById("next-1-btn").disabled = !allFilled;
+}
+
+// ===========================
+// STYLE & GS SELECTION
+// ===========================
+function selectStyle(key) {
+  state.style = key;
+  document.querySelectorAll(".style-card").forEach(c => c.classList.remove("selected"));
+  document.getElementById(`style-${key}`).classList.add("selected");
+  document.getElementById("next-2-btn").disabled = false;
+}
+
+function selectGS(key) {
+  state.gs = key;
+  document.querySelectorAll(".gs-card").forEach(c => c.classList.remove("selected"));
+  document.getElementById(`gs-${key}`).classList.add("selected");
+  document.getElementById("next-3-btn").disabled = false;
+
+  // Apply theme
+  document.body.className = key;
+  const gsData = GRAND_SLAMS.find(g => g.key === key);
+  document.getElementById("gs-label").textContent = gsData.label;
+}
+
+// ===========================
+// PHASE NAVIGATION
+// ===========================
+function goToPhase(n) {
+  document.querySelectorAll(".phase").forEach(p => p.classList.remove("active"));
+  document.getElementById(`phase-${n}`).classList.add("active");
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`step-${i}`);
+    el.classList.remove("active","done");
+    if (i < n) el.classList.add("done");
+    else if (i === n) el.classList.add("active");
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function buildAndPreview() {
+  goToPhase(4);
+  renderPlayerCard();
+  document.getElementById("campaign-area").style.display = "none";
+  document.getElementById("sim-action-bar").style.display = "flex";
+}
+
+// ===========================
+// PLAYER CARD
+// ===========================
+function calcOverall() {
+  const styleData = STYLES.find(s => s.key === state.style);
+  const gsBonus = styleData ? styleData.bonus[state.gs] || 0 : 0;
+  const base = ATTRS.reduce((sum, a) => sum + (state.slots[a.key]?.value || 0), 0) / ATTRS.length;
+  return Math.min(10, Math.round((base + gsBonus) * 10) / 10);
+}
+
+function renderPlayerCard() {
+  const styleData = STYLES.find(s => s.key === state.style);
+  const gsData = GRAND_SLAMS.find(g => g.key === state.gs);
+  const overall = calcOverall();
+
+  document.getElementById("player-name-display").textContent = "Meu Tenista";
+  document.getElementById("player-style-display").textContent = styleData?.name || "";
+  document.getElementById("overall-score").textContent = overall.toFixed(1);
+
+  // Bars
+  const mini = document.getElementById("attrs-mini");
+  mini.innerHTML = "";
+  ATTRS.forEach(a => {
+    const val = state.slots[a.key]?.value || 0;
+    const pct = (val / 10) * 100;
+    mini.innerHTML += `
+      <div class="attr-bar-row">
+        <div class="attr-bar-label">${a.label}</div>
+        <div class="attr-bar-track"><div class="attr-bar-fill" style="width:${pct}%"></div></div>
+        <div class="attr-bar-val">${val}</div>
+      </div>
+    `;
+  });
+
+  // Campaign title
+  document.getElementById("campaign-title").textContent = `CAMPANHA · ${gsData?.name.toUpperCase()}`;
+}
+
+// ===========================
+// SIMULATION ENGINE
+// ===========================
+function calcMyStrength() {
+  const styleData = STYLES.find(s => s.key === state.style);
+  const gsBonus = styleData?.bonus[state.gs] || 0;
+  const base = ATTRS.reduce((sum, a) => sum + (state.slots[a.key]?.value || 0), 0) / ATTRS.length;
+  return base + gsBonus;
+}
+
+function getOpponents() {
+  // Pool by GS relevance: surface specialists first
+  const surfaceBonus = { rg: ["guga_90s","guga_00s","nadal_10s","nadal_00s","muster_90s","bruguera_90s","ferrero_00s","thiem_10s"],
+    wb: ["sampras_90s","federer_00s","federer_10s","becker_80s","becker_90s","edberg_90s","edberg_80s","mcenroe_80s"],
+    uso: ["agassi_90s","roddick_00s","sampras_90s","djokovic_20s","medvedev_20s"],
+    ao: ["djokovic_10s","djokovic_20s","federer_10s","sinner_20s","hewitt_00s"] };
+  const priority = surfaceBonus[state.gs] || [];
+  let pool = [...PLAYERS].sort((a,b) => {
+    const ai = priority.includes(a.id) ? -1 : 0;
+    const bi = priority.includes(b.id) ? -1 : 0;
+    return ai - bi;
+  });
+  // Pick 7 unique opponents, scaling difficulty
+  const chosen = [];
+  const levels = [0.55, 0.60, 0.65, 0.70, 0.75, 0.82, 0.88];
+  for (let i = 0; i < 7; i++) {
+    const target = levels[i] * 10;
+    let best = null, bestDiff = 999;
+    pool.forEach(p => {
+      if (chosen.find(c => c.id === p.id)) return;
+      const diff = Math.abs(p.attrs.overall - target);
+      if (diff < bestDiff) { bestDiff = diff; best = p; }
+    });
+    if (best) chosen.push(best);
+  }
+  return chosen;
+}
+
+function simulateMatch(myStr, oppPlayer, round) {
+  const oppBase = oppPlayer.attrs.overall;
+  // Surface specialty modifier
+  const surfaceSpecialists = {
+    rg: ["guga_90s","guga_00s","nadal_10s","nadal_00s","muster_90s","bruguera_90s","ferrero_00s"],
+    wb: ["sampras_90s","federer_00s","federer_10s","becker_80s","edberg_90s","mcenroe_80s"],
+    uso: ["agassi_90s","roddick_00s","sampras_90s"],
+    ao: ["djokovic_10s","djokovic_20s","federer_10s","sinner_20s"]
+  };
+  const isSpecialist = (surfaceSpecialists[state.gs] || []).includes(oppPlayer.id);
+  const oppStr = oppBase + (isSpecialist ? 0.5 : 0);
+
+  const winProb = 1 / (1 + Math.exp(-(myStr - oppStr) * 0.8));
+  const won = Math.random() < winProb;
+
+  // Generate set scores
+  const sets = genSets(won);
+  return { won, sets, winProb, opponent: oppPlayer };
+}
+
+function genSet(iWinThisSet) {
+  if (iWinThisSet) {
+    const loser = rnd(0, 5);
+    if (loser <= 4) return `6/${loser}`;
+    return Math.random() < 0.5 ? `7/5` : `7/6`;
+  } else {
+    const loser = rnd(0, 5);
+    if (loser <= 4) return `${loser}/6`;
+    return Math.random() < 0.5 ? `5/7` : `6/7`;
+  }
+}
+
+function genSets(iWon) {
+  const sets = [];
+  let mySets = 0, oppSets = 0;
+  while (mySets < 3 && oppSets < 3) {
+    const winThisSet = iWon ? Math.random() < 0.72 : Math.random() < 0.28;
+    const score = genSet(winThisSet);
+    if (winThisSet) mySets++; else oppSets++;
+    sets.push(score);
+  }
+  return sets;
+}
+
+function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+
+const NARRATIVES = {
+  rg: {
+    win: ["Jogo longo no saibro. Minha consistência no rally foi decisiva.", "Troca de bolas intensa até o último ponto.", "Usou o ângulo e a paciência para desgastar o adversário."],
+    loss: ["O saibro favoreceu quem aguenta mais. Não foi hoje.", "Erros não forçados custaram caro nos pontos decisivos.", "Pressão no terceiro set foi difícil de sustentar."]
+  },
+  wb: {
+    win: ["A grama acelerou meu jogo. Pontos rápidos e objetivos.", "Serviço e voleio funcionaram à perfeição no All England.", "Aproveitou bem as oportunidades na grama."],
+    loss: ["O bounce baixo criou problemas no retorno.", "O adversário explorou muito bem as características da grama.", "Não consegui me adaptar à velocidade da quadra."]
+  },
+  ao: {
+    win: ["Condições rápidas de Melbourne. Explosão e velocidade.", "Rally consistente sob o calor australiano.", "Mental forte nos momentos decisivos."],
+    loss: ["O calor de Melbourne pesou no quinto set.", "Perdi o ritmo do baseline no momento errado.", "Não consegui converter as break points."]
+  },
+  uso: {
+    win: ["New York foi minha. O público do Ashe do meu lado.", "Hard court rápido, jogo direto e sem concessões.", "Não dei chances ao adversário nos momentos cruciais."],
+    loss: ["A pressão do US Open no set decisivo foi grande demais.", "O adversário encontrou seu ritmo no quinto set.", "Noite difícil no Arthur Ashe."]
+  }
+};
+
+function getNarrative(gs, won) {
+  const pool = NARRATIVES[gs][won ? "win" : "loss"];
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+async function simulate() {
+  document.getElementById("sim-action-bar").style.display = "none";
+  document.getElementById("campaign-area").style.display = "block";
+  const timeline = document.getElementById("campaign-timeline");
+  timeline.innerHTML = "";
+  const banner = document.getElementById("result-banner");
+  banner.classList.remove("show");
+
+  const myStr = calcMyStrength();
+  const opponents = getOpponents();
+  let eliminated = false;
+  let finalRound = "";
+
+  for (let i = 0; i < ROUNDS.length; i++) {
+    await delay(600 + i * 200);
+    const opp = opponents[i];
+    const result = simulateMatch(myStr, opp, ROUNDS[i]);
+
+    const row = document.createElement("div");
+    row.className = `round-row`;
+    const setsStr = result.sets.join("  ");
+    const oppLabel = `${opp.nat} ${opp.name} <span style="color:var(--muted);font-size:9px">${opp.decade}</span>`;
+    row.innerHTML = `
+      <div class="round-label">${ROUNDS[i].toUpperCase()}</div>
+      <div class="round-opponent">vs ${oppLabel}</div>
+      <div class="round-score ${result.won ? 'win' : 'loss'}">${result.won ? '✓' : '✗'} ${setsStr}</div>
+      <div class="odds-bar"><div class="odds-fill ${result.winProb < 0.4 ? 'bad' : ''}" style="width:${Math.round(result.winProb*100)}%"></div></div>
+      <div class="round-narrative">${getNarrative(state.gs, result.won)}</div>
+    `;
+    timeline.appendChild(row);
+    setTimeout(() => row.classList.add(result.won ? "win" : "loss", "revealed"), 50);
+
+    if (!result.won) {
+      eliminated = true;
+      finalRound = ROUNDS[i];
+      break;
+    }
+  }
+
+  await delay(800);
+  showResult(!eliminated, finalRound);
+  document.getElementById("sim-action-bar").style.display = "none";
+}
+
+function showResult(won, eliminatedAt) {
+  const gsData = GRAND_SLAMS.find(g => g.key === state.gs);
+  const banner = document.getElementById("result-banner");
+  const title = document.getElementById("result-title");
+  const sub = document.getElementById("result-subtitle");
+
+  if (won) {
+    title.textContent = `🏆 Campeão`;
+    sub.textContent = `${gsData.name} · Título conquistado`;
+  } else {
+    title.textContent = `Eliminado`;
+    sub.textContent = `${gsData.name} · Caiu na ${eliminatedAt}`;
+  }
+
+  banner.classList.add("show");
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function restart() {
+  state = { slots: {}, rerollsLeft: 3, selectedSlotKey: null, style: null, gs: null };
+  document.body.className = "";
+  document.getElementById("gs-label").textContent = "· SIMULADOR DE TÊNIS ·";
+  renderAttrsGrid();
+  renderStyleGrid();
+  renderGSGrid();
+  document.getElementById("next-1-btn").disabled = true;
+  goToPhase(1);
+}
+
+// START — init() is called by Firebase module after loading players
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCc3eWmWMvQdt8w61KazKxVbj6MwE-jkrU",
+    authDomain: "teninis.firebaseapp.com",
+    databaseURL: "https://teninis-default-rtdb.firebaseio.com",
+    projectId: "teninis",
+    storageBucket: "teninis.firebasestorage.app",
+    messagingSenderId: "83371650381",
+    appId: "1:83371650381:web:18401d7c71ae38acba1b04"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  async function loadPlayersFromFirebase() {
+    const banner = document.getElementById("loading-banner");
+    try {
+      const snap = await get(ref(db, "tenista/players"));
+      if (snap.exists()) {
+        const data = snap.val();
+        // Firebase stores arrays as objects if keys are non-numeric; handle both
+        const arr = Array.isArray(data) ? data : Object.values(data);
+        // Override the global PLAYERS array
+        window.PLAYERS.length = 0;
+        arr.forEach(p => window.PLAYERS.push(p));
+        console.log(`[Firebase] ${arr.length} jogadores carregados`);
+      } else {
+        console.log("[Firebase] Nenhum dado encontrado, usando padrão");
+      }
+    } catch(e) {
+      console.warn("[Firebase] Erro ao carregar:", e.message, "— usando padrão");
+    } finally {
+      if (banner) banner.remove();
+    }
+  }
+
+  // Wait for DOM then load
+  document.addEventListener("DOMContentLoaded", async () => {
+    await loadPlayersFromFirebase();
+    init(); // reinit after players potentially replaced
+  });
+</script>
+
+</body>
+</html>
