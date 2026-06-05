@@ -338,7 +338,7 @@ tr.new-row td { background:rgba(90,158,90,0.05); }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<div class="version-tag">editor v1.6</div>
+<div class="version-tag">editor v1.7</div>
 
 <script>
 // =====================
@@ -572,6 +572,72 @@ const ATTR_KEYS = ["forehand","backhand","saque","slice","dropshot","fisico","me
 let players = [];
 let dirty = false;
 
+
+const PLAYER_STYLES = {
+  "sinner_20s":"baseliner_defensivo","alcaraz_20s":"baseliner_criativo","djokovic_20s":"all_court",
+  "medvedev_20s":"baseliner_defensivo","zverev_20s":"baseliner_agressivo","fonseca_20s":"baseliner_agressivo",
+  "musetti_20s":"baseliner_criativo","draper_20s":"baseliner_agressivo","rune_20s":"baseliner_agressivo",
+  "shelton_20s":"serverbot","bublik_20s":"baseliner_criativo","auger_20s":"all_court",
+  "kyrgios_20s":"serve_volley","haddad_20s":"baseliner_defensivo","cerundolo_20s":"baseliner_defensivo",
+  "tabilo_20s":"baseliner_agressivo","fils_20s":"baseliner_agressivo","struff_20s":"serverbot",
+  "griekspoor_20s":"baseliner_agressivo","coric_20s":"baseliner_defensivo","mpetshi_20s":"serverbot",
+  "kotov_20s":"baseliner_defensivo","rinderknech_20s":"serverbot","kokkinakis_20s":"all_court",
+  "munar_20s":"baseliner_defensivo","davidovich_20s":"baseliner_defensivo","arnaldi_20s":"baseliner_agressivo",
+  "navone_20s":"baseliner_defensivo","schoolkate_20s":"baseliner_agressivo",
+  "djokovic_10s":"all_court","federer_10s":"all_court","nadal_10s":"baseliner_agressivo",
+  "murray_10s":"baseliner_defensivo","wawrinka_10s":"baseliner_agressivo","tsitsipas_10s":"baseliner_criativo",
+  "thiem_10s":"baseliner_agressivo","zverev_10s":"baseliner_agressivo","cilic_10s":"serverbot",
+  "raonic_10s":"serverbot","nishikori_10s":"baseliner_agressivo","monfils_10s":"baseliner_agressivo",
+  "verdasco_10s":"baseliner_agressivo","isner_10s":"serverbot","karlovic_10s":"serverbot",
+  "simon_10s":"baseliner_defensivo","dolgopolov_10s":"baseliner_criativo","almagro_10s":"baseliner_agressivo",
+  "cuevas_10s":"baseliner_criativo","berlocq_10s":"baseliner_defensivo","delbonis_10s":"baseliner_agressivo",
+  "granollers_10s":"baseliner_defensivo","garcia_10s":"serve_volley","melzer_10s":"baseliner_criativo",
+  "tomic_10s":"baseliner_criativo","troicki_10s":"all_court","paire_10s":"baseliner_criativo",
+  "seppi_10s":"baseliner_defensivo","benneteau_10s":"all_court","kukushkin_10s":"baseliner_defensivo",
+  "lorenzi_10s":"baseliner_defensivo","robredo_10s":"baseliner_defensivo","jaziri_10s":"serverbot",
+  "federer_00s":"all_court","nadal_00s":"baseliner_agressivo","djokovic_00s":"baseliner_defensivo",
+  "roddick_00s":"serverbot","hewitt_00s":"baseliner_defensivo","ferrero_00s":"baseliner_defensivo",
+  "safin_00s":"baseliner_agressivo","guga_00s":"baseliner_agressivo","davydenko_00s":"baseliner_agressivo",
+  "gasquet_00s":"baseliner_criativo","haas_00s":"all_court","bellucci_00s":"baseliner_agressivo",
+  "nalbandian_00s":"baseliner_agressivo","ancic_00s":"serve_volley","santoro_00s":"baseliner_criativo",
+  "canas_00s":"baseliner_defensivo","chela_00s":"baseliner_defensivo","acasuso_00s":"baseliner_agressivo",
+  "massu_00s":"baseliner_criativo","clément_00s":"baseliner_criativo","grosjean_00s":"all_court",
+  "escude_00s":"all_court","kiefer_00s":"baseliner_agressivo","schuettler_00s":"baseliner_defensivo",
+  "robredo_00s":"baseliner_defensivo","hrbaty_00s":"baseliner_defensivo","youzhny_00s":"baseliner_agressivo",
+  "youla_00s":"baseliner_criativo","calleri_00s":"baseliner_defensivo","koubek_00s":"baseliner_criativo",
+  "boutter_00s":"serverbot","phau_00s":"baseliner_defensivo","labadze_00s":"baseliner_criativo",
+  "garcia_l_00s":"baseliner_criativo","popp_00s":"baseliner_agressivo",
+  "sampras_90s":"serve_volley","agassi_90s":"baseliner_agressivo","courier_90s":"baseliner_agressivo",
+  "chang_90s":"baseliner_defensivo","becker_90s":"serve_volley","edberg_90s":"serve_volley",
+  "muster_90s":"baseliner_defensivo","guga_90s":"baseliner_agressivo","bruguera_90s":"baseliner_defensivo",
+  "ivanisevic_90s":"serverbot","rios_90s":"baseliner_criativo","kafelnikov_90s":"all_court",
+  "stich_90s":"serve_volley","pioline_90s":"all_court","meligeni_90s":"baseliner_criativo",
+  "oncins_90s":"all_court","corretja_90s":"baseliner_defensivo","costa_90s":"baseliner_defensivo",
+  "berasategui_90s":"baseliner_agressivo","medvedev_d_90s":"baseliner_agressivo","forget_90s":"serve_volley",
+  "rosset_90s":"serverbot","washington_90s":"baseliner_agressivo","leconte_90s":"baseliner_criativo",
+  "vacek_90s":"serve_volley","amor_90s":"baseliner_criativo","clavet_90s":"baseliner_criativo",
+  "pavel_90s":"baseliner_defensivo","volkov_90s":"all_court","ondruska_90s":"baseliner_defensivo",
+  "siemerink_90s":"baseliner_defensivo","frana_90s":"baseliner_defensivo","filippini_90s":"baseliner_defensivo",
+  "muster_l_90s":"all_court","goellner_90s":"serverbot","pescosolido_90s":"baseliner_defensivo",
+  "mcenroe_80s":"serve_volley","connors_80s":"baseliner_agressivo","lendl_80s":"baseliner_agressivo",
+  "wilander_80s":"baseliner_defensivo","becker_80s":"serve_volley","cash_80s":"serve_volley",
+  "edberg_80s":"serve_volley","borg_80s":"baseliner_defensivo","noah_80s":"all_court",
+  "vilas_80s":"baseliner_defensivo","leconte_80s":"baseliner_criativo","gomez_80s":"baseliner_criativo",
+  "forget_80s":"serve_volley","curren_80s":"serverbot","krickstein_80s":"baseliner_defensivo",
+  "mecir_80s":"baseliner_criativo","nystrom_80s":"baseliner_defensivo","jarryd_80s":"all_court",
+  "sundstrom_80s":"baseliner_defensivo","annacone_80s":"serve_volley","pernfors_80s":"baseliner_defensivo",
+  "mayotte_80s":"serve_volley","kriek_80s":"all_court","fitzgerald_80s":"all_court",
+  "seguso_80s":"serve_volley","denton_80s":"serverbot","teltscher_80s":"baseliner_defensivo","koch_80s":"all_court",
+  "borg_70s":"baseliner_defensivo","mcenroe_70s":"serve_volley","connors_70s":"baseliner_agressivo",
+  "vilas_70s":"baseliner_defensivo","nastase_70s":"baseliner_criativo","orantes_70s":"baseliner_criativo",
+  "ashe_70s":"serve_volley","newcombe_70s":"serve_volley","rosewall_70s":"baseliner_criativo",
+  "smith_70s":"serve_volley","laver_70s":"all_court","gerulaitis_70s":"baseliner_agressivo",
+  "panatta_70s":"all_court","solomon_70s":"baseliner_defensivo","okker_70s":"serve_volley",
+  "gottfried_70s":"baseliner_defensivo","ramirez_70s":"all_court","fibak_70s":"baseliner_criativo",
+  "tanner_70s":"serverbot","dibbs_70s":"baseliner_defensivo","tiriac_70s":"baseliner_defensivo",
+  "riessen_70s":"all_court","gorman_70s":"serve_volley","parun_70s":"baseliner_defensivo",
+  "lutz_70s":"all_court","taygan_70s":"serve_volley","koch_70s":"all_court",
+};
 async function loadPlayers() {
   const PROXY = "https://sweet-hat-44d3.kicaio97.workers.dev";
   showToast("⏳ Carregando do Firebase...");
@@ -581,12 +647,9 @@ async function loadPlayers() {
     const data = await resp.json();
     if (data) {
       const arr = Array.isArray(data) ? data : Object.values(data);
-      // Always apply style from DEFAULT_PLAYERS (source of truth for styles)
-      const defaultMap = {};
-      DEFAULT_PLAYERS.forEach(p => defaultMap[p.id] = p);
       players = arr.map(p => ({
         ...p,
-        style: defaultMap[p.id]?.style || p.style || "all_court"
+        style: PLAYER_STYLES[p.id] || "all_court"
       }));
       showToast(`✓ ${players.length} jogadores carregados`);
     } else {
