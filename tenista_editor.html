@@ -344,6 +344,7 @@ tr.new-row td { background:rgba(90,158,90,0.05); }
 // DEFAULT PLAYER DATA
 // =====================
 const DEFAULT_PLAYERS = [
+  // MODERN ERA (2020s)
   { id: "sinner_20s", name: "Jannik Sinner", decade: "2020s", nat: "🇮🇹", attrs: { forehand:9, backhand:10, saque:8, slice:7, dropshot:7, fisico:10, mental:10, overall:9 } },
   { id: "alcaraz_20s", name: "Carlos Alcaraz", decade: "2020s", nat: "🇪🇸", attrs: { forehand:10, backhand:9, saque:8, slice:8, dropshot:10, fisico:10, mental:9, overall:10 } },
   { id: "djokovic_20s", name: "Novak Djokovic", decade: "2020s", nat: "🇷🇸", attrs: { forehand:9, backhand:10, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
@@ -356,6 +357,8 @@ const DEFAULT_PLAYERS = [
   { id: "shelton_20s", name: "Ben Shelton", decade: "2020s", nat: "🇺🇸", attrs: { forehand:8, backhand:7, saque:10, slice:6, dropshot:6, fisico:8, mental:7, overall:8 } },
   { id: "bublik_20s", name: "Alexander Bublik", decade: "2020s", nat: "🇰🇿", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:10, fisico:7, mental:6, overall:8 } },
   { id: "auger_20s", name: "Félix A.-Aliassime", decade: "2020s", nat: "🇨🇦", attrs: { forehand:9, backhand:8, saque:9, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+
+  // 2010s
   { id: "djokovic_10s", name: "Novak Djokovic", decade: "2010s", nat: "🇷🇸", attrs: { forehand:9, backhand:10, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
   { id: "federer_10s", name: "Roger Federer", decade: "2010s", nat: "🇨🇭", attrs: { forehand:10, backhand:9, saque:9, slice:10, dropshot:9, fisico:8, mental:10, overall:10 } },
   { id: "nadal_10s", name: "Rafael Nadal", decade: "2010s", nat: "🇪🇸", attrs: { forehand:10, backhand:9, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
@@ -368,7 +371,8 @@ const DEFAULT_PLAYERS = [
   { id: "raonic_10s", name: "Milos Raonic", decade: "2010s", nat: "🇨🇦", attrs: { forehand:8, backhand:7, saque:10, slice:6, dropshot:5, fisico:8, mental:7, overall:8 } },
   { id: "nishikori_10s", name: "Kei Nishikori", decade: "2010s", nat: "🇯🇵", attrs: { forehand:9, backhand:8, saque:7, slice:8, dropshot:8, fisico:8, mental:8, overall:8 } },
   { id: "monfils_10s", name: "Gaël Monfils", decade: "2010s", nat: "🇫🇷", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:8, fisico:10, mental:6, overall:8 } },
-  { id: "jaziri_10s", name: "Malek Jaziri", decade: "2010s", nat: "🇹🇳", attrs: { forehand:7, backhand:6, saque:8, slice:6, dropshot:6, fisico:8, mental:7, overall:7 } },
+
+  // 2000s
   { id: "federer_00s", name: "Roger Federer", decade: "2000s", nat: "🇨🇭", attrs: { forehand:10, backhand:9, saque:9, slice:10, dropshot:9, fisico:9, mental:10, overall:10 } },
   { id: "nadal_00s", name: "Rafael Nadal", decade: "2000s", nat: "🇪🇸", attrs: { forehand:10, backhand:8, saque:7, slice:8, dropshot:7, fisico:10, mental:9, overall:9 } },
   { id: "djokovic_00s", name: "Novak Djokovic", decade: "2000s", nat: "🇷🇸", attrs: { forehand:7, backhand:9, saque:7, slice:7, dropshot:6, fisico:8, mental:8, overall:7 } },
@@ -383,7 +387,8 @@ const DEFAULT_PLAYERS = [
   { id: "haas_00s", name: "Tommy Haas", decade: "2000s", nat: "🇩🇪", attrs: { forehand:9, backhand:8, saque:8, slice:9, dropshot:8, fisico:8, mental:7, overall:8 } },
   { id: "bellucci_00s", name: "Thomaz Bellucci", decade: "2000s", nat: "🇧🇷", attrs: { forehand:9, backhand:7, saque:7, slice:8, dropshot:7, fisico:7, mental:7, overall:7 } },
   { id: "youzhny_00s", name: "Mikhail Youzhny", decade: "2000s", nat: "🇷🇺", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:8, overall:7 } },
-  { id: "youla_00s", name: "Hicham Arazi", decade: "2000s", nat: "🇲🇦", attrs: { forehand:8, backhand:7, saque:7, slice:9, dropshot:9, fisico:7, mental:7, overall:7 } },
+
+  // 1990s
   { id: "sampras_90s", name: "Pete Sampras", decade: "1990s", nat: "🇺🇸", attrs: { forehand:9, backhand:7, saque:10, slice:9, dropshot:7, fisico:9, mental:10, overall:10 } },
   { id: "agassi_90s", name: "Andre Agassi", decade: "1990s", nat: "🇺🇸", attrs: { forehand:10, backhand:9, saque:8, slice:8, dropshot:8, fisico:8, mental:9, overall:9 } },
   { id: "courier_90s", name: "Jim Courier", decade: "1990s", nat: "🇺🇸", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:7, fisico:10, mental:9, overall:8 } },
@@ -398,7 +403,8 @@ const DEFAULT_PLAYERS = [
   { id: "rios_90s", name: "Marcelo Ríos", decade: "1990s", nat: "🇨🇱", attrs: { forehand:8, backhand:9, saque:8, slice:9, dropshot:9, fisico:7, mental:7, overall:8 } },
   { id: "kafelnikov_90s", name: "Yevgeny Kafelnikov", decade: "1990s", nat: "🇷🇺", attrs: { forehand:8, backhand:8, saque:8, slice:7, dropshot:7, fisico:9, mental:8, overall:8 } },
   { id: "stich_90s", name: "Michael Stich", decade: "1990s", nat: "🇩🇪", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:7, fisico:8, mental:8, overall:8 } },
-  { id: "amor_90s", name: "Francisco Clavet", decade: "1990s", nat: "🇪🇸", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:8, fisico:7, mental:7, overall:7 } },
+
+  // 1980s
   { id: "mcenroe_80s", name: "John McEnroe", decade: "1980s", nat: "🇺🇸", attrs: { forehand:9, backhand:8, saque:9, slice:10, dropshot:10, fisico:8, mental:8, overall:10 } },
   { id: "connors_80s", name: "Jimmy Connors", decade: "1980s", nat: "🇺🇸", attrs: { forehand:9, backhand:10, saque:7, slice:8, dropshot:7, fisico:10, mental:10, overall:9 } },
   { id: "lendl_80s", name: "Ivan Lendl", decade: "1980s", nat: "🇨🇿", attrs: { forehand:10, backhand:9, saque:8, slice:7, dropshot:7, fisico:10, mental:10, overall:10 } },
@@ -407,12 +413,19 @@ const DEFAULT_PLAYERS = [
   { id: "cash_80s", name: "Pat Cash", decade: "1980s", nat: "🇦🇺", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:7, fisico:9, mental:8, overall:8 } },
   { id: "edberg_80s", name: "Stefan Edberg", decade: "1980s", nat: "🇸🇪", attrs: { forehand:7, backhand:9, saque:9, slice:9, dropshot:8, fisico:8, mental:8, overall:8 } },
   { id: "borg_80s", name: "Björn Borg", decade: "1980s", nat: "🇸🇪", attrs: { forehand:9, backhand:9, saque:7, slice:8, dropshot:7, fisico:10, mental:10, overall:9 } },
+
+  // SPECIAL / WILDCARDS
   { id: "haddad_20s", name: "Botic van de Zandschulp", decade: "2020s", nat: "🇳🇱", attrs: { forehand:7, backhand:7, saque:7, slice:6, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "jaziri_10s", name: "Malek Jaziri", decade: "2010s", nat: "🇹🇳", attrs: { forehand:7, backhand:6, saque:8, slice:6, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "youla_00s", name: "Hicham Arazi", decade: "2000s", nat: "🇲🇦", attrs: { forehand:8, backhand:7, saque:7, slice:9, dropshot:9, fisico:7, mental:7, overall:7 } },
+  { id: "amor_90s", name: "Francisco Clavet", decade: "1990s", nat: "🇪🇸", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:8, fisico:7, mental:7, overall:7 } },
+
   // BRASILEIROS
   { id: "meligeni_90s", name: "Fernando Meligeni", decade: "1990s", nat: "🇧🇷", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:9, fisico:8, mental:8, overall:7 } },
   { id: "oncins_90s", name: "Jaime Oncins", decade: "1990s", nat: "🇧🇷", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:7, fisico:8, mental:8, overall:7 } },
   { id: "koch_80s", name: "Thomaz Koch", decade: "1980s", nat: "🇧🇷", attrs: { forehand:8, backhand:7, saque:7, slice:8, dropshot:8, fisico:7, mental:8, overall:7 } },
   { id: "koch_70s", name: "Thomaz Koch", decade: "1970s", nat: "🇧🇷", attrs: { forehand:8, backhand:7, saque:7, slice:8, dropshot:8, fisico:8, mental:8, overall:8 } },
+
   // 1980s EXTRAS
   { id: "noah_80s", name: "Yannick Noah", decade: "1980s", nat: "🇫🇷", attrs: { forehand:8, backhand:8, saque:8, slice:8, dropshot:8, fisico:9, mental:8, overall:8 } },
   { id: "vilas_80s", name: "Guillermo Vilas", decade: "1980s", nat: "🇦🇷", attrs: { forehand:9, backhand:8, saque:7, slice:7, dropshot:7, fisico:10, mental:9, overall:8 } },
@@ -421,6 +434,7 @@ const DEFAULT_PLAYERS = [
   { id: "forget_80s", name: "Guy Forget", decade: "1980s", nat: "🇫🇷", attrs: { forehand:8, backhand:7, saque:9, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
   { id: "gomez_80s", name: "Andrés Gómez", decade: "1980s", nat: "🇪🇨", attrs: { forehand:9, backhand:8, saque:7, slice:9, dropshot:9, fisico:8, mental:8, overall:8 } },
   { id: "curren_80s", name: "Kevin Curren", decade: "1980s", nat: "🇿🇦", attrs: { forehand:7, backhand:7, saque:10, slice:7, dropshot:6, fisico:8, mental:7, overall:7 } },
+
   // 1970s
   { id: "borg_70s", name: "Björn Borg", decade: "1970s", nat: "🇸🇪", attrs: { forehand:9, backhand:10, saque:7, slice:8, dropshot:8, fisico:10, mental:10, overall:10 } },
   { id: "mcenroe_70s", name: "John McEnroe", decade: "1970s", nat: "🇺🇸", attrs: { forehand:8, backhand:8, saque:8, slice:9, dropshot:9, fisico:8, mental:7, overall:8 } },
@@ -436,8 +450,119 @@ const DEFAULT_PLAYERS = [
   { id: "gerulaitis_70s", name: "Vitas Gerulaitis", decade: "1970s", nat: "🇺🇸", attrs: { forehand:8, backhand:8, saque:8, slice:7, dropshot:8, fisico:9, mental:7, overall:8 } },
   { id: "solomon_70s", name: "Harold Solomon", decade: "1970s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:8, fisico:9, mental:8, overall:7 } },
   { id: "panatta_70s", name: "Adriano Panatta", decade: "1970s", nat: "🇮🇹", attrs: { forehand:9, backhand:8, saque:8, slice:8, dropshot:8, fisico:8, mental:7, overall:8 } },
-];
+  // ── MEEIROS & JOURNEYMEN ──────────────────────────────────
 
+  // 2020s fodder
+  { id: "coric_20s",     name: "Borna Ćorić",         decade: "2020s", nat: "🇭🇷", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "cerundolo_20s", name: "Francisco Cerúndolo",  decade: "2020s", nat: "🇦🇷", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "mpetshi_20s",   name: "Giovanni Perricard",   decade: "2020s", nat: "🇫🇷", attrs: { forehand:7, backhand:6, saque:10, slice:5, dropshot:5, fisico:7, mental:6, overall:7 } },
+  { id: "tabilo_20s",    name: "Alejandro Tabilo",     decade: "2020s", nat: "🇨🇱", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "fils_20s",      name: "Arthur Fils",          decade: "2020s", nat: "🇫🇷", attrs: { forehand:8, backhand:7, saque:7, slice:6, dropshot:7, fisico:9, mental:7, overall:7 } },
+  { id: "struff_20s",    name: "Jan-Lennard Struff",   decade: "2020s", nat: "🇩🇪", attrs: { forehand:8, backhand:7, saque:9, slice:6, dropshot:5, fisico:8, mental:7, overall:7 } },
+  { id: "griekspoor_20s",name: "Tallon Griekspoor",    decade: "2020s", nat: "🇳🇱", attrs: { forehand:8, backhand:7, saque:8, slice:6, dropshot:6, fisico:7, mental:6, overall:7 } },
+  { id: "kotov_20s",     name: "Pavel Kotov",          decade: "2020s", nat: "🇷🇺", attrs: { forehand:7, backhand:7, saque:7, slice:6, dropshot:6, fisico:8, mental:6, overall:6 } },
+  { id: "rinderknech_20s",name:"Arthur Rinderknech",   decade: "2020s", nat: "🇫🇷", attrs: { forehand:7, backhand:6, saque:9, slice:6, dropshot:5, fisico:7, mental:6, overall:6 } },
+  { id: "kokkinakis_20s",name: "Thanasi Kokkinakis",   decade: "2020s", nat: "🇦🇺", attrs: { forehand:8, backhand:7, saque:9, slice:6, dropshot:6, fisico:7, mental:6, overall:7 } },
+  { id: "kyrgios_20s",   name: "Nick Kyrgios",         decade: "2020s", nat: "🇦🇺", attrs: { forehand:9, backhand:7, saque:10, slice:8, dropshot:9, fisico:7, mental:4, overall:7 } },
+  { id: "munar_20s",     name: "Jaume Munar",          decade: "2020s", nat: "🇪🇸", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "davidovich_20s",name: "Alejandro Davidovich", decade: "2020s", nat: "🇪🇸", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:6, overall:7 } },
+  { id: "schoolkate_20s",name: "Learner Tien",         decade: "2020s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:8, slice:6, dropshot:6, fisico:7, mental:6, overall:6 } },
+  { id: "arnaldi_20s",   name: "Matteo Arnaldi",       decade: "2020s", nat: "🇮🇹", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:6, overall:7 } },
+  { id: "navone_20s",    name: "Mariano Navone",       decade: "2020s", nat: "🇦🇷", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+
+  // 2010s fodder
+  { id: "berlocq_10s",   name: "Carlos Berlocq",       decade: "2010s", nat: "🇦🇷", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:7, fisico:8, mental:7, overall:6 } },
+  { id: "delbonis_10s",  name: "Federico Delbonis",    decade: "2010s", nat: "🇦🇷", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:6, fisico:7, mental:7, overall:6 } },
+  { id: "cuevas_10s",    name: "Pablo Cuevas",         decade: "2010s", nat: "🇺🇾", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:9, fisico:7, mental:7, overall:7 } },
+  { id: "almagro_10s",   name: "Nicolás Almagro",      decade: "2010s", nat: "🇪🇸", attrs: { forehand:9, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "granollers_10s",name: "Marcel Granollers",    decade: "2010s", nat: "🇪🇸", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "verdasco_10s",  name: "Fernando Verdasco",    decade: "2010s", nat: "🇪🇸", attrs: { forehand:9, backhand:8, saque:7, slice:7, dropshot:7, fisico:8, mental:6, overall:7 } },
+  { id: "garcia_10s",    name: "Nicolas Mahut",        decade: "2010s", nat: "🇫🇷", attrs: { forehand:7, backhand:6, saque:9, slice:8, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "isner_10s",     name: "John Isner",           decade: "2010s", nat: "🇺🇸", attrs: { forehand:7, backhand:6, saque:10, slice:5, dropshot:5, fisico:7, mental:7, overall:7 } },
+  { id: "karlovic_10s",  name: "Ivo Karlović",         decade: "2010s", nat: "🇭🇷", attrs: { forehand:6, backhand:5, saque:10, slice:6, dropshot:5, fisico:6, mental:6, overall:6 } },
+  { id: "simon_10s",     name: "Gilles Simon",         decade: "2010s", nat: "🇫🇷", attrs: { forehand:7, backhand:8, saque:6, slice:7, dropshot:7, fisico:8, mental:8, overall:7 } },
+  { id: "dolgopolov_10s",name: "Alexandr Dolgopolov",  decade: "2010s", nat: "🇺🇦", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:9, fisico:7, mental:6, overall:7 } },
+  { id: "benneteau_10s", name: "Julien Benneteau",     decade: "2010s", nat: "🇫🇷", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:6, overall:6 } },
+  { id: "troicki_10s",   name: "Viktor Troicki",       decade: "2010s", nat: "🇷🇸", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:6, fisico:7, mental:7, overall:7 } },
+  { id: "melzer_10s",    name: "Jürgen Melzer",        decade: "2010s", nat: "🇦🇹", attrs: { forehand:7, backhand:8, saque:7, slice:8, dropshot:8, fisico:7, mental:7, overall:7 } },
+  { id: "tomic_10s",     name: "Bernard Tomic",        decade: "2010s", nat: "🇦🇺", attrs: { forehand:7, backhand:7, saque:7, slice:8, dropshot:8, fisico:6, mental:4, overall:6 } },
+  { id: "kukushkin_10s", name: "Mikhail Kukushkin",    decade: "2010s", nat: "🇰🇿", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:6 } },
+  { id: "paire_10s",     name: "Benoît Paire",         decade: "2010s", nat: "🇫🇷", attrs: { forehand:8, backhand:7, saque:8, slice:7, dropshot:8, fisico:7, mental:4, overall:6 } },
+  { id: "seppi_10s",     name: "Andreas Seppi",        decade: "2010s", nat: "🇮🇹", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "lorenzi_10s",   name: "Paolo Lorenzi",        decade: "2010s", nat: "🇮🇹", attrs: { forehand:7, backhand:6, saque:6, slice:7, dropshot:7, fisico:7, mental:8, overall:6 } },
+  { id: "robredo_10s",   name: "Tommy Robredo",        decade: "2010s", nat: "🇪🇸", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:7, fisico:8, mental:8, overall:7 } },
+
+  // 2000s fodder
+  { id: "canas_00s",     name: "Guillermo Cañas",      decade: "2000s", nat: "🇦🇷", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "chela_00s",     name: "Juan Ignacio Chela",   decade: "2000s", nat: "🇦🇷", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:8, fisico:8, mental:7, overall:7 } },
+  { id: "acasuso_00s",   name: "José Acasuso",         decade: "2000s", nat: "🇦🇷", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:6, overall:7 } },
+  { id: "calleri_00s",   name: "Agustín Calleri",      decade: "2000s", nat: "🇦🇷", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:6 } },
+  { id: "massu_00s",     name: "Nicolás Massú",        decade: "2000s", nat: "🇨🇱", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:8, fisico:8, mental:8, overall:7 } },
+  { id: "clément_00s",   name: "Arnaud Clément",       decade: "2000s", nat: "🇫🇷", attrs: { forehand:7, backhand:7, saque:7, slice:8, dropshot:8, fisico:7, mental:7, overall:7 } },
+  { id: "grosjean_00s",  name: "Sébastien Grosjean",   decade: "2000s", nat: "🇫🇷", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "escude_00s",    name: "Nicolas Escudé",       decade: "2000s", nat: "🇫🇷", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:7, fisico:7, mental:6, overall:6 } },
+  { id: "santoro_00s",   name: "Fabrice Santoro",      decade: "2000s", nat: "🇫🇷", attrs: { forehand:7, backhand:7, saque:6, slice:9, dropshot:10, fisico:7, mental:8, overall:7 } },
+  { id: "boutter_00s",   name: "Julien Boutter",       decade: "2000s", nat: "🇫🇷", attrs: { forehand:7, backhand:6, saque:8, slice:7, dropshot:6, fisico:7, mental:6, overall:6 } },
+  { id: "kiefer_00s",    name: "Nicolas Kiefer",       decade: "2000s", nat: "🇩🇪", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:6, overall:7 } },
+  { id: "schuettler_00s",name: "Rainer Schüttler",     decade: "2000s", nat: "🇩🇪", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "nalbandian_00s",name: "David Nalbandian",     decade: "2000s", nat: "🇦🇷", attrs: { forehand:9, backhand:9, saque:7, slice:8, dropshot:8, fisico:8, mental:8, overall:8 } },
+  { id: "robredo_00s",   name: "Tommy Robredo",        decade: "2000s", nat: "🇪🇸", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:7, fisico:8, mental:8, overall:7 } },
+  { id: "popp_00s",      name: "Mikhail Youzhny",      decade: "2000s", nat: "🇷🇺", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "ancic_00s",     name: "Mario Ančić",          decade: "2000s", nat: "🇭🇷", attrs: { forehand:8, backhand:7, saque:9, slice:7, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "labadze_00s",   name: "Irakli Labadze",       decade: "2000s", nat: "🇬🇪", attrs: { forehand:7, backhand:6, saque:7, slice:7, dropshot:7, fisico:7, mental:6, overall:6 } },
+  { id: "phau_00s",      name: "Björn Phau",           decade: "2000s", nat: "🇩🇪", attrs: { forehand:7, backhand:6, saque:7, slice:6, dropshot:6, fisico:7, mental:6, overall:6 } },
+  { id: "koubek_00s",    name: "Stefan Koubek",        decade: "2000s", nat: "🇦🇹", attrs: { forehand:7, backhand:6, saque:7, slice:8, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "garcia_l_00s",  name: "Luis Horna",           decade: "2000s", nat: "🇵🇪", attrs: { forehand:7, backhand:6, saque:6, slice:7, dropshot:8, fisico:7, mental:7, overall:6 } },
+
+  // 1990s fodder
+  { id: "vacek_90s",     name: "Daniel Vacek",         decade: "1990s", nat: "🇨🇿", attrs: { forehand:7, backhand:7, saque:8, slice:8, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "washington_90s",name: "MaliVai Washington",   decade: "1990s", nat: "🇺🇸", attrs: { forehand:8, backhand:7, saque:8, slice:7, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "forget_90s",    name: "Guy Forget",           decade: "1990s", nat: "🇫🇷", attrs: { forehand:7, backhand:7, saque:9, slice:7, dropshot:6, fisico:7, mental:7, overall:7 } },
+  { id: "leconte_90s",   name: "Henri Leconte",        decade: "1990s", nat: "🇫🇷", attrs: { forehand:8, backhand:7, saque:7, slice:8, dropshot:8, fisico:6, mental:5, overall:6 } },
+  { id: "rosset_90s",    name: "Marc Rosset",          decade: "1990s", nat: "🇨🇭", attrs: { forehand:7, backhand:6, saque:10, slice:6, dropshot:5, fisico:7, mental:6, overall:7 } },
+  { id: "volkov_90s",    name: "Alexander Volkov",     decade: "1990s", nat: "🇷🇺", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:6, fisico:7, mental:7, overall:6 } },
+  { id: "pescosolido_90s",name:"Stefano Pescosolido",  decade: "1990s", nat: "🇮🇹", attrs: { forehand:7, backhand:6, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "ondruska_90s",  name: "Marcos Ondruska",      decade: "1990s", nat: "🇿🇦", attrs: { forehand:7, backhand:6, saque:7, slice:6, dropshot:6, fisico:7, mental:6, overall:6 } },
+  { id: "medvedev_d_90s",name: "Andrei Medvedev",      decade: "1990s", nat: "🇺🇦", attrs: { forehand:8, backhand:8, saque:7, slice:7, dropshot:7, fisico:8, mental:6, overall:7 } },
+  { id: "costa_90s",     name: "Albert Costa",         decade: "1990s", nat: "🇪🇸", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:8, fisico:8, mental:7, overall:7 } },
+  { id: "corretja_90s",  name: "Àlex Corretja",        decade: "1990s", nat: "🇪🇸", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:8, fisico:8, mental:8, overall:7 } },
+  { id: "berasategui_90s",name:"Alberto Berasategui",  decade: "1990s", nat: "🇪🇸", attrs: { forehand:9, backhand:6, saque:6, slice:7, dropshot:8, fisico:8, mental:7, overall:7 } },
+  { id: "frana_90s",     name: "Javier Frana",         decade: "1990s", nat: "🇦🇷", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "clavet_90s",    name: "Francisco Clavet",     decade: "1990s", nat: "🇪🇸", attrs: { forehand:7, backhand:7, saque:6, slice:8, dropshot:8, fisico:7, mental:7, overall:6 } },
+  { id: "pavel_90s",     name: "Andrei Pavel",         decade: "1990s", nat: "🇷🇴", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "goellner_90s",  name: "Marc-Kevin Goellner",  decade: "1990s", nat: "🇩🇪", attrs: { forehand:7, backhand:6, saque:8, slice:6, dropshot:6, fisico:7, mental:6, overall:6 } },
+  { id: "siemerink_90s", name: "Jan Siemerink",        decade: "1990s", nat: "🇳🇱", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "filippini_90s", name: "Marcelo Filippini",    decade: "1990s", nat: "🇺🇾", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:8, fisico:7, mental:7, overall:6 } },
+  { id: "muster_l_90s",  name: "Petr Korda",           decade: "1990s", nat: "🇨🇿", attrs: { forehand:8, backhand:8, saque:7, slice:8, dropshot:8, fisico:8, mental:7, overall:7 } },
+
+  // 1980s fodder
+  { id: "annacone_80s",  name: "Paul Annacone",        decade: "1980s", nat: "🇺🇸", attrs: { forehand:7, backhand:6, saque:8, slice:8, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "teltscher_80s", name: "Eliot Teltscher",      decade: "1980s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "denton_80s",    name: "Steve Denton",         decade: "1980s", nat: "🇺🇸", attrs: { forehand:7, backhand:6, saque:9, slice:6, dropshot:5, fisico:7, mental:6, overall:6 } },
+  { id: "sundstrom_80s", name: "Henrik Sundström",     decade: "1980s", nat: "🇸🇪", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "jarryd_80s",    name: "Anders Järryd",        decade: "1980s", nat: "🇸🇪", attrs: { forehand:7, backhand:7, saque:7, slice:8, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "nystrom_80s",   name: "Joakim Nyström",       decade: "1980s", nat: "🇸🇪", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "mecir_80s",     name: "Miloslav Mečíř",       decade: "1980s", nat: "🇸🇰", attrs: { forehand:8, backhand:8, saque:7, slice:9, dropshot:9, fisico:7, mental:8, overall:8 } },
+  { id: "pernfors_80s",  name: "Mikael Pernfors",      decade: "1980s", nat: "🇸🇪", attrs: { forehand:7, backhand:7, saque:6, slice:7, dropshot:8, fisico:7, mental:7, overall:6 } },
+  { id: "mayotte_80s",   name: "Tim Mayotte",          decade: "1980s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:8, slice:8, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "seguso_80s",    name: "Robert Seguso",        decade: "1980s", nat: "🇺🇸", attrs: { forehand:6, backhand:6, saque:8, slice:8, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "kriek_80s",     name: "Johan Kriek",          decade: "1980s", nat: "🇿🇦", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "fitzgerald_80s",name: "John Fitzgerald",      decade: "1980s", nat: "🇦🇺", attrs: { forehand:7, backhand:7, saque:7, slice:8, dropshot:7, fisico:7, mental:7, overall:6 } },
+
+  // 1970s fodder
+  { id: "okker_70s",     name: "Tom Okker",            decade: "1970s", nat: "🇳🇱", attrs: { forehand:8, backhand:7, saque:7, slice:8, dropshot:8, fisico:8, mental:7, overall:7 } },
+  { id: "riessen_70s",   name: "Marty Riessen",        decade: "1970s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "gorman_70s",    name: "Tom Gorman",           decade: "1970s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:6, fisico:7, mental:7, overall:6 } },
+  { id: "dibbs_70s",     name: "Eddie Dibbs",          decade: "1970s", nat: "🇺🇸", attrs: { forehand:7, backhand:8, saque:6, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "gottfried_70s", name: "Brian Gottfried",      decade: "1970s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:8, overall:7 } },
+  { id: "ramirez_70s",   name: "Raúl Ramírez",         decade: "1970s", nat: "🇲🇽", attrs: { forehand:7, backhand:7, saque:7, slice:8, dropshot:8, fisico:8, mental:7, overall:7 } },
+  { id: "fibak_70s",     name: "Wojtek Fibak",         decade: "1970s", nat: "🇵🇱", attrs: { forehand:7, backhand:7, saque:6, slice:8, dropshot:8, fisico:7, mental:8, overall:7 } },
+  { id: "tanner_70s",    name: "Roscoe Tanner",        decade: "1970s", nat: "🇺🇸", attrs: { forehand:7, backhand:6, saque:10, slice:6, dropshot:5, fisico:7, mental:6, overall:7 } },
+  { id: "parun_70s",     name: "Onny Parun",           decade: "1970s", nat: "🇳🇿", attrs: { forehand:7, backhand:6, saque:7, slice:6, dropshot:6, fisico:8, mental:7, overall:6 } },
+  { id: "tiriac_70s",    name: "Ion Țiriac",           decade: "1970s", nat: "🇷🇴", attrs: { forehand:7, backhand:7, saque:6, slice:8, dropshot:7, fisico:8, mental:9, overall:7 } },
+  { id: "lutz_70s",      name: "Bob Lutz",             decade: "1970s", nat: "🇺🇸", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+  { id: "taygan_70s",    name: "Sherwood Stewart",     decade: "1970s", nat: "🇺🇸", attrs: { forehand:6, backhand:6, saque:7, slice:7, dropshot:7, fisico:7, mental:7, overall:6 } },
+];
 const ATTR_KEYS = ["forehand","backhand","saque","slice","dropshot","fisico","mental","overall"];
 
 // =====================
