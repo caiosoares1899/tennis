@@ -337,29 +337,8 @@ tr.new-row td { background:rgba(90,158,90,0.05); }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<div class="version-tag">editor v1.1</div>
+<div class="version-tag">editor v1.2</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCc3eWmWMvQdt8w61KazKxVbj6MwE-jkrU",
-    authDomain: "teninis.firebaseapp.com",
-    databaseURL: "https://teninis-default-rtdb.firebaseio.com",
-    projectId: "teninis",
-    storageBucket: "teninis.firebasestorage.app",
-    messagingSenderId: "83371650381",
-    appId: "1:83371650381:web:18401d7c71ae38acba1b04"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  window._db = db;
-  window._ref = ref;
-  window._set = set;
-  window._get = get;
-</script>
 <script>
 // =====================
 // DEFAULT PLAYER DATA
@@ -468,29 +447,36 @@ let players = [];
 let dirty = false;
 
 async function loadPlayers() {
-  showToast("⏳ Conectando ao Firebase...");
+  const PROXY = "https://sweet-hat-44d3.kicaio97.workers.dev";
+  showToast("⏳ Carregando do Firebase...");
   try {
-    const snap = await window._get(window._ref(window._db, "tenista/players"));
-    if (snap.exists()) {
-      const data = snap.val();
+    const resp = await fetch(PROXY + "/tenista/players.json");
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    const data = await resp.json();
+    if (data) {
       players = Array.isArray(data) ? data : Object.values(data);
-      showToast(`✓ ${players.length} jogadores carregados do Firebase`);
+      showToast("✓ " + players.length + " jogadores carregados");
     } else {
       players = JSON.parse(JSON.stringify(DEFAULT_PLAYERS));
       showToast("Firebase vazio — usando dados padrão");
     }
   } catch(e) {
     players = JSON.parse(JSON.stringify(DEFAULT_PLAYERS));
-    showToast("⚠ Erro Firebase: " + e.message);
+    showToast("⚠ Erro: " + e.message + " — usando padrão");
   }
   renderTable();
 }
 
 async function saveToLocalStorage() {
-  const btn = document.querySelector(".btn-primary");
-  showToast("⏳ Salvando no Firebase...");
+  const PROXY = "https://sweet-hat-44d3.kicaio97.workers.dev";
+  showToast("⏳ Salvando...");
   try {
-    await window._set(window._ref(window._db, "tenista/players"), players);
+    const resp = await fetch(PROXY + "/tenista/players.json", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(players)
+    });
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
     dirty = false;
     updateDirtyBadge();
     showToast("✓ Salvo no Firebase com sucesso");
