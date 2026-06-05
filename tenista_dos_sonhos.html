@@ -642,6 +642,116 @@ footer {
 .odds-fill.bad { background: #c04040; }
 
 .highlight { color: var(--accent); transition: color 0.6s; }
+
+/* ===========================
+   MOBILE OPTIMIZATIONS
+   =========================== */
+
+/* Base touch targets */
+button { -webkit-tap-highlight-color: transparent; }
+
+@media (max-width: 600px) {
+  /* Header */
+  header { padding: 36px 16px 28px; }
+  header h1 { font-size: 42px; }
+  .subtitle { font-size: 11px; }
+  .gs-label { font-size: 8px; letter-spacing: 0.25em; }
+
+  /* Steps nav */
+  .steps { margin: 24px 0 36px; }
+  .step { padding: 10px 4px; font-size: 7px; letter-spacing: 0.1em; }
+  .step .num { font-size: 16px; }
+
+  /* Container padding */
+  .container { padding: 0 14px; }
+
+  /* Section titles */
+  .section-title { font-size: 11px; letter-spacing: 0.2em; }
+  .section-sub { font-size: 12px; }
+
+  /* Roll info bar */
+  .roll-info { font-size: 13px; padding: 12px 14px; gap: 10px; }
+  .roll-info span { font-size: 28px !important; }
+
+  /* Attrs grid — 2 columns on mobile */
+  .attrs-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  /* Attr slot */
+  .attr-slot { padding: 12px; min-height: 90px; }
+  .attr-value { font-size: 24px; }
+  .attr-player { font-size: 9px; }
+  .attr-decade { font-size: 8px; }
+
+  /* Roll buttons inside slots — stack vertically, full width */
+  .attr-slot > div[style*="margin-top:10px"] {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px !important;
+  }
+  .roll-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 8px;
+    font-size: 8px;
+  }
+
+  /* Roll all btn */
+  #roll-all-btn { width: 100%; justify-content: center; }
+
+  /* Style grid — 1 column */
+  .style-grid { grid-template-columns: 1fr; gap: 10px; }
+  .style-name { font-size: 12px; }
+  .style-desc { font-size: 10px; }
+
+  /* GS grid — 2 columns stacked */
+  .gs-grid { grid-template-columns: 1fr 1fr; gap: 10px; max-width: 100%; }
+  .gs-card { padding: 16px 10px 14px; }
+  .gs-card-surface img { height: 52px !important; }
+  .gs-card-surface { min-height: 58px; }
+  .gs-card-name { font-size: 9px; }
+  .gs-card-city { font-size: 8px; }
+
+  /* Player card */
+  .player-card { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px; }
+  .player-name-display { font-size: 32px; }
+  .overall-score { font-size: 56px; }
+
+  /* Action bars */
+  .action-bar { flex-direction: column; gap: 10px; }
+  .action-bar .btn-primary,
+  .action-bar .btn-ghost { width: 100%; text-align: center; justify-content: center; padding: 16px; font-size: 10px; }
+
+  /* Campaign timeline */
+  .round-row { padding-left: 16px; padding-bottom: 20px; }
+  .round-label { font-size: 8px; }
+  .round-opponent { font-size: 12px; }
+  .round-score { font-size: 14px; }
+  .round-narrative { font-size: 10px; }
+
+  /* Result banner */
+  .result-title { font-size: 36px; }
+  .result-subtitle { font-size: 10px; }
+
+  /* Footer */
+  footer { padding: 20px 16px; font-size: 8px; }
+  .version-tag { font-size: 7px; bottom: 6px; right: 8px; }
+}
+
+@media (max-width: 380px) {
+  header h1 { font-size: 34px; }
+  .attrs-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .attr-slot { padding: 10px; }
+  .attr-value { font-size: 20px; }
+  .gs-grid { grid-template-columns: 1fr 1fr; }
+  .gs-card-surface img { height: 44px !important; }
+  .step .num { font-size: 14px; }
+  .step { font-size: 6px; }
+}
+
 </style>
 </head>
 <body>
@@ -763,7 +873,7 @@ footer {
 </div>
 
 <footer>Tenista dos Sonhos · dados baseados em estatísticas ATP históricas</footer>
-<div class="version-tag">v1.5</div>
+<div class="version-tag">v1.6</div>
 
 <script>
 // ===========================
