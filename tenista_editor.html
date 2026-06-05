@@ -38,9 +38,20 @@ header { border-bottom:1px solid var(--border); padding:28px 30px; display:flex;
 .stat-badge span { color:var(--text); }
 
 /* TABLE */
-.table-wrap { overflow-x:auto; padding:0 0 80px; }
+.table-wrap {
+  overflow: auto;
+  padding:0 0 80px;
+  max-height: calc(100vh - 160px);
+  position: relative;
+}
 table { width:100%; border-collapse:collapse; min-width:900px; }
-thead { position:sticky; top:0; z-index:10; background:var(--surface); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+thead tr th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  box-shadow: 0 2px 0 var(--border);
+}
 th {
   background:var(--surface);
   border-bottom:1px solid var(--border);
@@ -338,7 +349,7 @@ tr.new-row td { background:rgba(90,158,90,0.05); }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<div class="version-tag">editor v1.9</div>
+<div class="version-tag">editor v2.0</div>
 
 <script>
 // =====================
