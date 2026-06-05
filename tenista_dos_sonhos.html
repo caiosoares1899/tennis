@@ -873,7 +873,7 @@ button { -webkit-tap-highlight-color: transparent; }
 </div>
 
 <footer>Tenista dos Sonhos · dados baseados em estatísticas ATP históricas</footer>
-<div class="version-tag">v2.1</div>
+<div class="version-tag">v2.2</div>
 
 <script>
 // ===========================
@@ -1634,8 +1634,14 @@ function restart() {
       const data = await resp.json();
       if (data) {
         const arr = Array.isArray(data) ? data : Object.values(data);
+        // Build default style map for fallback
+        const defaultStyleMap = {};
+        window.PLAYERS.forEach(p => { if (p.style) defaultStyleMap[p.id] = p.style; });
         window.PLAYERS.length = 0;
-        arr.forEach(p => window.PLAYERS.push(p));
+        arr.forEach(p => {
+          if (!p.style && defaultStyleMap[p.id]) p.style = defaultStyleMap[p.id];
+          window.PLAYERS.push(p);
+        });
         console.log("[Proxy] " + arr.length + " jogadores carregados");
       }
     } catch(e) {
