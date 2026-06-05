@@ -873,7 +873,7 @@ button { -webkit-tap-highlight-color: transparent; }
 </div>
 
 <footer>Tenista dos Sonhos · dados baseados em estatísticas ATP históricas</footer>
-<div class="version-tag">v2.6</div>
+<div class="version-tag">v2.7</div>
 
 <script>
 // ===========================
@@ -1640,12 +1640,20 @@ async function simulate() {
 
     const row = document.createElement("div");
     row.className = `round-row`;
-    const setsStr = result.sets.join("  ");
+    // Color each set individually: green if I won that set, red if I lost
+    const setsStr = result.sets.map(s => {
+      const [a, b] = s.split('/').map(Number);
+      const iWonSet = a > b;
+      const color = iWonSet ? 'var(--accent)' : '#c04040';
+      return `<span style="color:${color}">${s}</span>`;
+    }).join('<span style="color:var(--muted)"> · </span>');
+    const matchIcon = result.won ? '✓' : '✗';
+    const matchColor = result.won ? 'var(--accent)' : '#c04040';
     const oppLabel = `${opp.nat} ${opp.name} <span style="color:var(--muted);font-size:9px">${opp.decade}</span>`;
     row.innerHTML = `
       <div class="round-label">${ROUNDS[i].toUpperCase()}</div>
       <div class="round-opponent">vs ${oppLabel}</div>
-      <div class="round-score ${result.won ? 'win' : 'loss'}">${result.won ? '✓' : '✗'} ${setsStr}</div>
+      <div class="round-score" style="color:${matchColor}">${matchIcon} ${setsStr}</div>
       <div class="odds-bar"><div class="odds-fill ${result.winProb < 0.4 ? 'bad' : ''}" style="width:${Math.round(result.winProb*100)}%"></div></div>
       <div class="round-narrative">${getNarrative(state.gs, result.won, result.sets)}</div>
     `;
