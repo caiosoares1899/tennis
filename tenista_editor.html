@@ -338,7 +338,7 @@ tr.new-row td { background:rgba(90,158,90,0.05); }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<div class="version-tag">editor v1.3</div>
+<div class="version-tag">editor v1.4</div>
 
 <script>
 // =====================
@@ -666,8 +666,9 @@ function renderTable() {
       { key: "serve_volley",        label: "S&V"       },
       { key: "serverbot",           label: "Serverbot" },
     ];
+    const playerStyle = p.style || "all_court";
     const styleOpts = STYLE_OPTIONS.map(s =>
-      `<option value="${s.key}" ${p.style === s.key ? 'selected' : ''}>${s.label}</option>`
+      `<option value="${s.key}" ${playerStyle === s.key ? 'selected' : ''}>${s.label}</option>`
     ).join('');
     const styleCell = `<td><select class="filter-select" style="font-size:10px;padding:4px 6px;width:100%"
       onchange="updateStyle('${p.id}', this.value)">${styleOpts}</select></td>`;
@@ -822,12 +823,12 @@ function importJSON() {
   }
 }
 
-function resetToDefault() {
-  if (!confirm("Restaurar todos os jogadores para o padrão? Suas edições serão perdidas.")) return;
+async function resetToDefault() {
+  if (!confirm("Restaurar todos os jogadores para o padrão e salvar no Firebase?")) return;
   players = JSON.parse(JSON.stringify(DEFAULT_PLAYERS));
   renderTable();
-  markDirty();
-  showToast("↺ Banco restaurado ao padrão");
+  await saveToLocalStorage();
+  showToast("↺ Padrão restaurado e salvo no Firebase");
 }
 
 // =====================
