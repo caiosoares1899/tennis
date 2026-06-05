@@ -338,7 +338,7 @@ tr.new-row td { background:rgba(90,158,90,0.05); }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<div class="version-tag">editor v1.4</div>
+<div class="version-tag">editor v1.5</div>
 
 <script>
 // =====================
@@ -580,8 +580,18 @@ async function loadPlayers() {
     if (!resp.ok) throw new Error("HTTP " + resp.status);
     const data = await resp.json();
     if (data) {
-      players = Array.isArray(data) ? data : Object.values(data);
-      showToast("✓ " + players.length + " jogadores carregados");
+      const arr = Array.isArray(data) ? data : Object.values(data);
+      // Merge: apply style from DEFAULT_PLAYERS if missing in Firebase
+      const defaultMap = {};
+      DEFAULT_PLAYERS.forEach(p => defaultMap[p.id] = p);
+      players = arr.map(p => {
+        if (!p.style && defaultMap[p.id]) {
+          return { ...p, style: defaultMap[p.id].style };
+        }
+        return p;
+      });
+      const patched = players.filter((p,i) => !arr[i]?.style).length;
+      showToast(`✓ ${players.length} jogadores carregados${patched ? ` (${patched} estilos corrigidos)` : ''}`);
     } else {
       players = JSON.parse(JSON.stringify(DEFAULT_PLAYERS));
       showToast("Firebase vazio — usando dados padrão");
