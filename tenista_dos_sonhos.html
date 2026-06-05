@@ -873,7 +873,7 @@ button { -webkit-tap-highlight-color: transparent; }
 </div>
 
 <footer>Tenista dos Sonhos · dados baseados em estatísticas ATP históricas</footer>
-<div class="version-tag">v2.5</div>
+<div class="version-tag">v2.6</div>
 
 <script>
 // ===========================
@@ -1588,28 +1588,36 @@ function genSets(iWon) {
 
 function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
 
-const NARRATIVES = {
-  rg: {
-    win: ["Jogo longo no saibro. Minha consistência no rally foi decisiva.", "Troca de bolas intensa até o último ponto.", "Usou o ângulo e a paciência para desgastar o adversário."],
-    loss: ["O saibro favoreceu quem aguenta mais. Não foi hoje.", "Erros não forçados custaram caro nos pontos decisivos.", "Pressão no terceiro set foi difícil de sustentar."]
-  },
-  wb: {
-    win: ["A grama acelerou meu jogo. Pontos rápidos e objetivos.", "Serviço e voleio funcionaram à perfeição no All England.", "Aproveitou bem as oportunidades na grama."],
-    loss: ["O bounce baixo criou problemas no retorno.", "O adversário explorou muito bem as características da grama.", "Não consegui me adaptar à velocidade da quadra."]
-  },
-  ao: {
-    win: ["Condições rápidas de Melbourne. Explosão e velocidade.", "Rally consistente sob o calor australiano.", "Mental forte nos momentos decisivos."],
-    loss: ["O calor de Melbourne pesou no quinto set.", "Perdi o ritmo do baseline no momento errado.", "Não consegui converter as break points."]
-  },
-  uso: {
-    win: ["New York foi minha. O público do Ashe do meu lado.", "Hard court rápido, jogo direto e sem concessões.", "Não dei chances ao adversário nos momentos cruciais."],
-    loss: ["A pressão do US Open no set decisivo foi grande demais.", "O adversário encontrou seu ritmo no quinto set.", "Noite difícil no Arthur Ashe."]
-  }
-};
+function getNarrative(gs, won, sets) {
+  const nSets = sets.length;
+  const lastSet = sets[nSets - 1];
+  const isTiebreak = lastSet.includes('7/6') || lastSet.includes('6/7');
+  const isDominant = won && nSets <= 3 && !sets.some(s => {
+    const [a,b] = s.split('/').map(Number); return Math.max(a,b) - Math.min(a,b) <= 1;
+  });
+  const isEpic = nSets === 5;
+  const isClose = nSets >= 4 || isTiebreak;
 
-function getNarrative(gs, won) {
-  const pool = NARRATIVES[gs][won ? "win" : "loss"];
-  return pool[Math.floor(Math.random() * pool.length)];
+  const surface = {
+    rg: { name: "saibro", place: "Roland Garros" },
+    wb: { name: "grama", place: "Wimbledon" },
+    ao: { name: "quadra dura", place: "Melbourne" },
+    uso: { name: "quadra dura", place: "Arthur Ashe" },
+  }[gs] || { name: "quadra", place: "torneio" };
+
+  if (won) {
+    if (isDominant) return `Partida dominante. O ${surface.name} favoreceu meu estilo do início ao fim.`;
+    if (isEpic)    return `Batalha épica de cinco sets em ${surface.place}. Mental venceu o físico.`;
+    if (isTiebreak) return `Tiebreak no set decisivo. Um ponto separou as duas campanhas.`;
+    if (isClose)   return `Jogo duro em ${nSets} sets. O adversário não facilitou, mas a consistência prevaleceu.`;
+    return `Vitória consistente no ${surface.name}. Controlei o ritmo nos momentos certos.`;
+  } else {
+    if (isEpic)    return `Cinco sets de alto nível. Saio de cabeça erguida de ${surface.place}.`;
+    if (isTiebreak) return `Tiebreak cruel. Um ponto a menos e a campanha termina aqui.`;
+    if (isClose)   return `Jogo equilibrado em ${nSets} sets. A diferença foi mínima.`;
+    if (nSets === 3 && !isClose) return `Derrota seca. O adversário foi superior hoje no ${surface.name}.`;
+    return `Não consegui impor meu jogo. O adversário foi mais consistente nos pontos decisivos.`;
+  }
 }
 
 async function simulate() {
@@ -1639,7 +1647,7 @@ async function simulate() {
       <div class="round-opponent">vs ${oppLabel}</div>
       <div class="round-score ${result.won ? 'win' : 'loss'}">${result.won ? '✓' : '✗'} ${setsStr}</div>
       <div class="odds-bar"><div class="odds-fill ${result.winProb < 0.4 ? 'bad' : ''}" style="width:${Math.round(result.winProb*100)}%"></div></div>
-      <div class="round-narrative">${getNarrative(state.gs, result.won)}</div>
+      <div class="round-narrative">${getNarrative(state.gs, result.won, result.sets)}</div>
     `;
     timeline.appendChild(row);
     setTimeout(() => row.classList.add(result.won ? "win" : "loss", "revealed"), 50);
