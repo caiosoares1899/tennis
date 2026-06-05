@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor · Tenista dos Sonhos</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=DM+Mono:wght@300;400&family=Fraunces:ital,wght@1,400;0,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --border: #1e1e2e;
+  --text: #e8e8f0;
+  --muted: #6b6b8a;
+  --accent: #c8a96e;
+  --card: #14141c;
+  --input-bg: #0f0f18;
+  --red: #c04040;
+  --green: #5a9e5a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Mono',monospace; min-height:100vh; }
+
+/* HEADER */
+header { border-bottom:1px solid var(--border); padding:28px 30px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.logo { font-family:'Fraunces',serif; font-style:italic; font-size:22px; color:var(--accent); }
+.logo span { font-family:'Unbounded',sans-serif; font-style:normal; font-size:9px; font-weight:600; letter-spacing:0.25em; color:var(--muted); display:block; }
+.header-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+/* TOOLBAR */
+.toolbar { padding:14px 30px; border-bottom:1px solid var(--border); display:flex; gap:10px; align-items:center; flex-wrap:wrap; background:var(--surface); }
+.search-box { background:var(--input-bg); border:1px solid var(--border); color:var(--text); font-family:'DM Mono',monospace; font-size:11px; padding:8px 12px; border-radius:2px; width:220px; outline:none; }
+.search-box:focus { border-color:var(--accent); }
+.filter-select { background:var(--input-bg); border:1px solid var(--border); color:var(--text); font-family:'DM Mono',monospace; font-size:11px; padding:8px 12px; border-radius:2px; outline:none; cursor:pointer; }
+.filter-select:focus { border-color:var(--accent); }
+.toolbar-spacer { flex:1; }
+.stat-badge { font-size:9px; color:var(--muted); letter-spacing:0.15em; }
+.stat-badge span { color:var(--text); }
+
+/* TABLE */
+.table-wrap { overflow-x:auto; padding:0 0 80px; }
+table { width:100%; border-collapse:collapse; min-width:900px; }
+thead { position:sticky; top:0; z-index:10; }
+th {
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  border-right:1px solid var(--border);
+  padding:10px 12px;
+  text-align:left;
+  font-family:'Unbounded',sans-serif;
+  font-size:8px;
+  font-weight:600;
+  letter-spacing:0.2em;
+  color:var(--muted);
+  white-space:nowrap;
+  cursor:pointer;
+  user-select:none;
+}
+th:hover { color:var(--text); }
+th.sorted { color:var(--accent); }
+th.sorted::after { content:' ↓'; }
+th.sorted.asc::after { content:' ↑'; }
+th:last-child { border-right:none; }
+
+td {
+  border-bottom:1px solid var(--border);
+  border-right:1px solid var(--border);
+  padding:10px 12px;
+  font-size:11px;
+  vertical-align:middle;
+  white-space:nowrap;
+}
+td:last-child { border-right:none; }
+tr:hover td { background:rgba(255,255,255,0.02); }
+tr.new-row td { background:rgba(90,158,90,0.05); }
+
+.player-name-cell { font-weight:400; color:var(--text); }
+.player-nat { font-size:14px; margin-right:6px; }
+.player-decade { font-size:9px; color:var(--muted); background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:2px; }
+
+/* EDITABLE CELL */
+.attr-cell { position:relative; cursor:pointer; }
+.attr-cell:hover .cell-val { background:var(--input-bg); border-color:var(--accent); }
+.cell-val {
+  display:inline-block;
+  width:36px;
+  text-align:center;
+  background:transparent;
+  border:1px solid transparent;
+  border-radius:2px;
+  padding:3px 4px;
+  font-family:'DM Mono',monospace;
+  font-size:12px;
+  color:var(--text);
+  cursor:pointer;
+  transition:all 0.15s;
+}
+.cell-val:focus { outline:none; background:var(--input-bg); border-color:var(--accent); color:var(--text); }
+
+/* Score color coding */
+.score-10 { color:#f0d070; }
+.score-9  { color:#c8a96e; }
+.score-8  { color:#9ec870; }
+.score-7  { color:#7eb8c9; }
+.score-6  { color:#9090a0; }
+.score-low{ color:var(--muted); }
+
+.overall-cell { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--accent); text-align:center; }
+
+/* ACTIONS CELL */
+.row-actions { display:flex; gap:6px; }
+.btn-del { background:transparent; border:1px solid var(--border); color:var(--red); font-size:10px; padding:4px 8px; cursor:pointer; border-radius:2px; font-family:'DM Mono',monospace; transition:all 0.15s; }
+.btn-del:hover { background:rgba(192,64,64,0.1); border-color:var(--red); }
+.btn-dup { background:transparent; border:1px solid var(--border); color:var(--muted); font-size:10px; padding:4px 8px; cursor:pointer; border-radius:2px; font-family:'DM Mono',monospace; transition:all 0.15s; }
+.btn-dup:hover { border-color:var(--muted); color:var(--text); }
+
+/* BUTTONS */
+.btn { font-family:'Unbounded',sans-serif; font-size:9px; font-weight:600; letter-spacing:0.18em; padding:10px 18px; border-radius:2px; cursor:pointer; border:none; transition:all 0.2s; }
+.btn-primary { background:var(--accent); color:#0a0a0f; }
+.btn-primary:hover { opacity:0.85; }
+.btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--border); }
+.btn-ghost:hover { border-color:var(--muted); color:var(--text); }
+.btn-danger { background:transparent; color:var(--red); border:1px solid var(--border); }
+.btn-danger:hover { border-color:var(--red); background:rgba(192,64,64,0.1); }
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+  background:var(--surface); border:1px solid var(--accent); color:var(--text);
+  font-family:'DM Mono',monospace; font-size:11px; padding:12px 24px;
+  border-radius:2px; z-index:999; opacity:0; transition:opacity 0.3s;
+  white-space:nowrap;
+}
+.toast.show { opacity:1; }
+
+/* MODAL (add player) */
+.modal-overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.7); z-index:100;
+  align-items:center; justify-content:center;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:2px; padding:32px; width:100%; max-width:520px;
+  max-height:90vh; overflow-y:auto;
+}
+.modal h2 { font-family:'Unbounded',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.2em; color:var(--text); margin-bottom:24px; }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group.full { grid-column:1/-1; }
+.form-label { font-size:8px; font-family:'Unbounded',sans-serif; font-weight:600; letter-spacing:0.2em; color:var(--muted); }
+.form-input {
+  background:var(--input-bg); border:1px solid var(--border);
+  color:var(--text); font-family:'DM Mono',monospace; font-size:12px;
+  padding:9px 12px; border-radius:2px; outline:none;
+}
+.form-input:focus { border-color:var(--accent); }
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+
+/* Export area */
+.export-modal { max-width:700px; }
+.export-textarea {
+  width:100%; height:300px; background:var(--input-bg); border:1px solid var(--border);
+  color:var(--muted); font-family:'DM Mono',monospace; font-size:10px;
+  padding:12px; border-radius:2px; resize:vertical; outline:none;
+  line-height:1.5;
+}
+
+/* FOOTER */
+.bottom-bar {
+  position:fixed; bottom:0; left:0; right:0;
+  background:var(--surface); border-top:1px solid var(--border);
+  padding:12px 30px; display:flex; align-items:center; gap:12px;
+  flex-wrap:wrap; z-index:50;
+}
+.dirty-badge {
+  font-size:9px; color:var(--accent); letter-spacing:0.15em;
+  display:none;
+}
+.dirty-badge.show { display:inline; }
+
+.version-tag { position:fixed; bottom:10px; right:14px; font-size:8px; font-family:'DM Mono',monospace; color:var(--border); letter-spacing:0.1em; z-index:999; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    Tenista dos Sonhos
+    <span>EDITOR DE BANCO DE DADOS</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost" onclick="openAddModal()">+ Adicionar Jogador</button>
+    <button class="btn btn-ghost" onclick="openExportModal()">↓ Exportar JSON</button>
+    <button class="btn btn-primary" onclick="saveToLocalStorage()">💾 Salvar</button>
+  </div>
+</header>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <input class="search-box" type="text" placeholder="Buscar jogador..." id="search-input" oninput="renderTable()">
+  <select class="filter-select" id="decade-filter" onchange="renderTable()">
+    <option value="">Todas as décadas</option>
+    <option value="2020s">2020s</option>
+    <option value="2010s">2010s</option>
+    <option value="2000s">2000s</option>
+    <option value="1990s">1990s</option>
+    <option value="1980s">1980s</option>
+  </select>
+  <select class="filter-select" id="sort-col" onchange="renderTable()">
+    <option value="overall">Ordenar: Overall</option>
+    <option value="forehand">Ordenar: Forehand</option>
+    <option value="backhand">Ordenar: Backhand</option>
+    <option value="saque">Ordenar: Saque</option>
+    <option value="slice">Ordenar: Slice</option>
+    <option value="dropshot">Ordenar: Dropshot</option>
+    <option value="fisico">Ordenar: Físico</option>
+    <option value="mental">Ordenar: Mental</option>
+    <option value="name">Ordenar: Nome</option>
+  </select>
+  <div class="toolbar-spacer"></div>
+  <div class="stat-badge">Jogadores: <span id="count-badge">—</span></div>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table id="main-table">
+    <thead>
+      <tr>
+        <th style="width:200px">JOGADOR</th>
+        <th style="width:80px">DÉCADA</th>
+        <th>FH</th>
+        <th>BH</th>
+        <th>SAQUE</th>
+        <th>SLICE</th>
+        <th>DROP</th>
+        <th>FÍSICO</th>
+        <th>MENTAL</th>
+        <th style="width:60px">OVR</th>
+        <th style="width:100px">AÇÕES</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <span class="dirty-badge" id="dirty-badge">● Alterações não salvas</span>
+  <button class="btn btn-ghost" onclick="resetToDefault()" style="margin-left:auto">↺ Restaurar padrão</button>
+  <button class="btn btn-primary" onclick="saveToLocalStorage()">💾 Salvar</button>
+</div>
+
+<!-- ADD PLAYER MODAL -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h2>ADICIONAR JOGADOR</h2>
+    <div class="form-grid">
+      <div class="form-group full">
+        <div class="form-label">NOME DO JOGADOR</div>
+        <input class="form-input" id="new-name" placeholder="Ex: Rafael Nadal" type="text">
+      </div>
+      <div class="form-group">
+        <div class="form-label">NACIONALIDADE (emoji)</div>
+        <input class="form-input" id="new-nat" placeholder="🇧🇷" type="text" maxlength="4">
+      </div>
+      <div class="form-group">
+        <div class="form-label">DÉCADA</div>
+        <select class="form-input" id="new-decade">
+          <option value="2020s">2020s</option>
+          <option value="2010s">2010s</option>
+          <option value="2000s" selected>2000s</option>
+          <option value="1990s">1990s</option>
+          <option value="1980s">1980s</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <div class="form-label">FOREHAND (0-10)</div>
+        <input class="form-input" id="new-forehand" type="number" min="0" max="10" value="7">
+      </div>
+      <div class="form-group">
+        <div class="form-label">BACKHAND (0-10)</div>
+        <input class="form-input" id="new-backhand" type="number" min="0" max="10" value="7">
+      </div>
+      <div class="form-group">
+        <div class="form-label">SAQUE (0-10)</div>
+        <input class="form-input" id="new-saque" type="number" min="0" max="10" value="7">
+      </div>
+      <div class="form-group">
+        <div class="form-label">SLICE (0-10)</div>
+        <input class="form-input" id="new-slice" type="number" min="0" max="10" value="7">
+      </div>
+      <div class="form-group">
+        <div class="form-label">DROPSHOT (0-10)</div>
+        <input class="form-input" id="new-dropshot" type="number" min="0" max="10" value="7">
+      </div>
+      <div class="form-group">
+        <div class="form-label">FÍSICO (0-10)</div>
+        <input class="form-input" id="new-fisico" type="number" min="0" max="10" value="7">
+      </div>
+      <div class="form-group">
+        <div class="form-label">MENTAL (0-10)</div>
+        <input class="form-input" id="new-mental" type="number" min="0" max="10" value="7">
+      </div>
+      <div class="form-group">
+        <div class="form-label">OVERALL (0-10)</div>
+        <input class="form-input" id="new-overall" type="number" min="0" max="10" value="7">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeAddModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="addPlayer()">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="modal-overlay" id="export-modal">
+  <div class="modal export-modal">
+    <h2>EXPORTAR / IMPORTAR JSON</h2>
+    <p style="font-size:10px;color:var(--muted);margin-bottom:16px;line-height:1.7">
+      Copie o JSON abaixo para usar no jogo principal, ou cole um JSON para importar.
+    </p>
+    <textarea class="export-textarea" id="export-textarea"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="importJSON()">↑ Importar</button>
+      <button class="btn btn-ghost" onclick="copyJSON()">Copiar</button>
+      <button class="btn btn-primary" onclick="closeExportModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<div class="version-tag">editor v1.1</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCc3eWmWMvQdt8w61KazKxVbj6MwE-jkrU",
+    authDomain: "teninis.firebaseapp.com",
+    databaseURL: "https://teninis-default-rtdb.firebaseio.com",
+    projectId: "teninis",
+    storageBucket: "teninis.firebasestorage.app",
+    messagingSenderId: "83371650381",
+    appId: "1:83371650381:web:18401d7c71ae38acba1b04"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  window._db = db;
+  window._ref = ref;
+  window._set = set;
+  window._get = get;
+</script>
+<script>
+// =====================
+// DEFAULT PLAYER DATA
+// =====================
+const DEFAULT_PLAYERS = [
+  { id: "sinner_20s", name: "Jannik Sinner", decade: "2020s", nat: "🇮🇹", attrs: { forehand:9, backhand:10, saque:8, slice:7, dropshot:7, fisico:10, mental:10, overall:9 } },
+  { id: "alcaraz_20s", name: "Carlos Alcaraz", decade: "2020s", nat: "🇪🇸", attrs: { forehand:10, backhand:9, saque:8, slice:8, dropshot:10, fisico:10, mental:9, overall:10 } },
+  { id: "djokovic_20s", name: "Novak Djokovic", decade: "2020s", nat: "🇷🇸", attrs: { forehand:9, backhand:10, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
+  { id: "medvedev_20s", name: "Daniil Medvedev", decade: "2020s", nat: "🇷🇺", attrs: { forehand:8, backhand:9, saque:9, slice:8, dropshot:7, fisico:9, mental:9, overall:9 } },
+  { id: "zverev_20s", name: "Alexander Zverev", decade: "2020s", nat: "🇩🇪", attrs: { forehand:9, backhand:8, saque:9, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+  { id: "fonseca_20s", name: "João Fonseca", decade: "2020s", nat: "🇧🇷", attrs: { forehand:10, backhand:8, saque:9, slice:6, dropshot:7, fisico:8, mental:8, overall:8 } },
+  { id: "musetti_20s", name: "Lorenzo Musetti", decade: "2020s", nat: "🇮🇹", attrs: { forehand:8, backhand:7, saque:7, slice:9, dropshot:9, fisico:7, mental:7, overall:8 } },
+  { id: "draper_20s", name: "Jack Draper", decade: "2020s", nat: "🇬🇧", attrs: { forehand:8, backhand:9, saque:8, slice:8, dropshot:7, fisico:8, mental:7, overall:8 } },
+  { id: "rune_20s", name: "Holger Rune", decade: "2020s", nat: "🇩🇰", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:8, fisico:8, mental:7, overall:8 } },
+  { id: "shelton_20s", name: "Ben Shelton", decade: "2020s", nat: "🇺🇸", attrs: { forehand:8, backhand:7, saque:10, slice:6, dropshot:6, fisico:8, mental:7, overall:8 } },
+  { id: "bublik_20s", name: "Alexander Bublik", decade: "2020s", nat: "🇰🇿", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:10, fisico:7, mental:6, overall:8 } },
+  { id: "auger_20s", name: "Félix A.-Aliassime", decade: "2020s", nat: "🇨🇦", attrs: { forehand:9, backhand:8, saque:9, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+  { id: "djokovic_10s", name: "Novak Djokovic", decade: "2010s", nat: "🇷🇸", attrs: { forehand:9, backhand:10, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
+  { id: "federer_10s", name: "Roger Federer", decade: "2010s", nat: "🇨🇭", attrs: { forehand:10, backhand:9, saque:9, slice:10, dropshot:9, fisico:8, mental:10, overall:10 } },
+  { id: "nadal_10s", name: "Rafael Nadal", decade: "2010s", nat: "🇪🇸", attrs: { forehand:10, backhand:9, saque:8, slice:9, dropshot:8, fisico:10, mental:10, overall:10 } },
+  { id: "murray_10s", name: "Andy Murray", decade: "2010s", nat: "🇬🇧", attrs: { forehand:8, backhand:9, saque:7, slice:9, dropshot:7, fisico:9, mental:10, overall:9 } },
+  { id: "wawrinka_10s", name: "Stan Wawrinka", decade: "2010s", nat: "🇨🇭", attrs: { forehand:10, backhand:10, saque:8, slice:7, dropshot:7, fisico:8, mental:8, overall:9 } },
+  { id: "tsitsipas_10s", name: "Stefanos Tsitsipas", decade: "2010s", nat: "🇬🇷", attrs: { forehand:9, backhand:7, saque:8, slice:9, dropshot:9, fisico:8, mental:8, overall:9 } },
+  { id: "thiem_10s", name: "Dominic Thiem", decade: "2010s", nat: "🇦🇹", attrs: { forehand:10, backhand:9, saque:8, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+  { id: "zverev_10s", name: "Alexander Zverev", decade: "2010s", nat: "🇩🇪", attrs: { forehand:8, backhand:8, saque:9, slice:7, dropshot:7, fisico:9, mental:7, overall:8 } },
+  { id: "cilic_10s", name: "Marin Čilić", decade: "2010s", nat: "🇭🇷", attrs: { forehand:8, backhand:7, saque:10, slice:7, dropshot:6, fisico:8, mental:8, overall:8 } },
+  { id: "raonic_10s", name: "Milos Raonic", decade: "2010s", nat: "🇨🇦", attrs: { forehand:8, backhand:7, saque:10, slice:6, dropshot:5, fisico:8, mental:7, overall:8 } },
+  { id: "nishikori_10s", name: "Kei Nishikori", decade: "2010s", nat: "🇯🇵", attrs: { forehand:9, backhand:8, saque:7, slice:8, dropshot:8, fisico:8, mental:8, overall:8 } },
+  { id: "monfils_10s", name: "Gaël Monfils", decade: "2010s", nat: "🇫🇷", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:8, fisico:10, mental:6, overall:8 } },
+  { id: "jaziri_10s", name: "Malek Jaziri", decade: "2010s", nat: "🇹🇳", attrs: { forehand:7, backhand:6, saque:8, slice:6, dropshot:6, fisico:8, mental:7, overall:7 } },
+  { id: "federer_00s", name: "Roger Federer", decade: "2000s", nat: "🇨🇭", attrs: { forehand:10, backhand:9, saque:9, slice:10, dropshot:9, fisico:9, mental:10, overall:10 } },
+  { id: "nadal_00s", name: "Rafael Nadal", decade: "2000s", nat: "🇪🇸", attrs: { forehand:10, backhand:8, saque:7, slice:8, dropshot:7, fisico:10, mental:9, overall:9 } },
+  { id: "djokovic_00s", name: "Novak Djokovic", decade: "2000s", nat: "🇷🇸", attrs: { forehand:7, backhand:9, saque:7, slice:7, dropshot:6, fisico:8, mental:8, overall:7 } },
+  { id: "roddick_00s", name: "Andy Roddick", decade: "2000s", nat: "🇺🇸", attrs: { forehand:9, backhand:7, saque:10, slice:6, dropshot:6, fisico:8, mental:8, overall:8 } },
+  { id: "hewitt_00s", name: "Lleyton Hewitt", decade: "2000s", nat: "🇦🇺", attrs: { forehand:8, backhand:8, saque:7, slice:8, dropshot:7, fisico:9, mental:10, overall:8 } },
+  { id: "ferrero_00s", name: "Juan Carlos Ferrero", decade: "2000s", nat: "🇪🇸", attrs: { forehand:9, backhand:8, saque:7, slice:8, dropshot:8, fisico:9, mental:8, overall:8 } },
+  { id: "safin_00s", name: "Marat Safin", decade: "2000s", nat: "🇷🇺", attrs: { forehand:10, backhand:9, saque:9, slice:7, dropshot:7, fisico:8, mental:6, overall:8 } },
+  { id: "guga_00s", name: "Gustavo Kuerten", decade: "2000s", nat: "🇧🇷", attrs: { forehand:10, backhand:8, saque:7, slice:7, dropshot:8, fisico:7, mental:9, overall:8 } },
+  { id: "davydenko_00s", name: "Nikolay Davydenko", decade: "2000s", nat: "🇷🇺", attrs: { forehand:8, backhand:9, saque:7, slice:7, dropshot:7, fisico:8, mental:8, overall:8 } },
+  { id: "hrbaty_00s", name: "Dominik Hrbatý", decade: "2000s", nat: "🇸🇰", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:8, mental:7, overall:7 } },
+  { id: "gasquet_00s", name: "Richard Gasquet", decade: "2000s", nat: "🇫🇷", attrs: { forehand:8, backhand:10, saque:7, slice:9, dropshot:8, fisico:7, mental:7, overall:8 } },
+  { id: "haas_00s", name: "Tommy Haas", decade: "2000s", nat: "🇩🇪", attrs: { forehand:9, backhand:8, saque:8, slice:9, dropshot:8, fisico:8, mental:7, overall:8 } },
+  { id: "bellucci_00s", name: "Thomaz Bellucci", decade: "2000s", nat: "🇧🇷", attrs: { forehand:9, backhand:7, saque:7, slice:8, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "youzhny_00s", name: "Mikhail Youzhny", decade: "2000s", nat: "🇷🇺", attrs: { forehand:8, backhand:7, saque:7, slice:7, dropshot:7, fisico:7, mental:8, overall:7 } },
+  { id: "youla_00s", name: "Hicham Arazi", decade: "2000s", nat: "🇲🇦", attrs: { forehand:8, backhand:7, saque:7, slice:9, dropshot:9, fisico:7, mental:7, overall:7 } },
+  { id: "sampras_90s", name: "Pete Sampras", decade: "1990s", nat: "🇺🇸", attrs: { forehand:9, backhand:7, saque:10, slice:9, dropshot:7, fisico:9, mental:10, overall:10 } },
+  { id: "agassi_90s", name: "Andre Agassi", decade: "1990s", nat: "🇺🇸", attrs: { forehand:10, backhand:9, saque:8, slice:8, dropshot:8, fisico:8, mental:9, overall:9 } },
+  { id: "courier_90s", name: "Jim Courier", decade: "1990s", nat: "🇺🇸", attrs: { forehand:9, backhand:8, saque:8, slice:7, dropshot:7, fisico:10, mental:9, overall:8 } },
+  { id: "chang_90s", name: "Michael Chang", decade: "1990s", nat: "🇺🇸", attrs: { forehand:8, backhand:8, saque:7, slice:7, dropshot:8, fisico:10, mental:9, overall:8 } },
+  { id: "becker_90s", name: "Boris Becker", decade: "1990s", nat: "🇩🇪", attrs: { forehand:9, backhand:8, saque:10, slice:7, dropshot:7, fisico:9, mental:9, overall:9 } },
+  { id: "edberg_90s", name: "Stefan Edberg", decade: "1990s", nat: "🇸🇪", attrs: { forehand:8, backhand:9, saque:9, slice:9, dropshot:8, fisico:8, mental:9, overall:9 } },
+  { id: "muster_90s", name: "Thomas Muster", decade: "1990s", nat: "🇦🇹", attrs: { forehand:9, backhand:8, saque:7, slice:7, dropshot:7, fisico:10, mental:9, overall:8 } },
+  { id: "guga_90s", name: "Gustavo Kuerten", decade: "1990s", nat: "🇧🇷", attrs: { forehand:9, backhand:7, saque:7, slice:6, dropshot:7, fisico:8, mental:9, overall:8 } },
+  { id: "bruguera_90s", name: "Sergi Bruguera", decade: "1990s", nat: "🇪🇸", attrs: { forehand:9, backhand:7, saque:7, slice:8, dropshot:8, fisico:9, mental:8, overall:8 } },
+  { id: "ivanisevic_90s", name: "Goran Ivanišević", decade: "1990s", nat: "🇭🇷", attrs: { forehand:8, backhand:7, saque:10, slice:7, dropshot:6, fisico:8, mental:7, overall:8 } },
+  { id: "pioline_90s", name: "Cédric Pioline", decade: "1990s", nat: "🇫🇷", attrs: { forehand:7, backhand:7, saque:8, slice:7, dropshot:7, fisico:7, mental:7, overall:7 } },
+  { id: "rios_90s", name: "Marcelo Ríos", decade: "1990s", nat: "🇨🇱", attrs: { forehand:8, backhand:9, saque:8, slice:9, dropshot:9, fisico:7, mental:7, overall:8 } },
+  { id: "kafelnikov_90s", name: "Yevgeny Kafelnikov", decade: "1990s", nat: "🇷🇺", attrs: { forehand:8, backhand:8, saque:8, slice:7, dropshot:7, fisico:9, mental:8, overall:8 } },
+  { id: "stich_90s", name: "Michael Stich", decade: "1990s", nat: "🇩🇪", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:7, fisico:8, mental:8, overall:8 } },
+  { id: "amor_90s", name: "Francisco Clavet", decade: "1990s", nat: "🇪🇸", attrs: { forehand:8, backhand:7, saque:6, slice:8, dropshot:8, fisico:7, mental:7, overall:7 } },
+  { id: "mcenroe_80s", name: "John McEnroe", decade: "1980s", nat: "🇺🇸", attrs: { forehand:9, backhand:8, saque:9, slice:10, dropshot:10, fisico:8, mental:8, overall:10 } },
+  { id: "connors_80s", name: "Jimmy Connors", decade: "1980s", nat: "🇺🇸", attrs: { forehand:9, backhand:10, saque:7, slice:8, dropshot:7, fisico:10, mental:10, overall:9 } },
+  { id: "lendl_80s", name: "Ivan Lendl", decade: "1980s", nat: "🇨🇿", attrs: { forehand:10, backhand:9, saque:8, slice:7, dropshot:7, fisico:10, mental:10, overall:10 } },
+  { id: "wilander_80s", name: "Mats Wilander", decade: "1980s", nat: "🇸🇪", attrs: { forehand:8, backhand:8, saque:7, slice:8, dropshot:8, fisico:9, mental:9, overall:8 } },
+  { id: "becker_80s", name: "Boris Becker", decade: "1980s", nat: "🇩🇪", attrs: { forehand:9, backhand:7, saque:10, slice:7, dropshot:7, fisico:9, mental:8, overall:9 } },
+  { id: "cash_80s", name: "Pat Cash", decade: "1980s", nat: "🇦🇺", attrs: { forehand:8, backhand:7, saque:9, slice:8, dropshot:7, fisico:9, mental:8, overall:8 } },
+  { id: "edberg_80s", name: "Stefan Edberg", decade: "1980s", nat: "🇸🇪", attrs: { forehand:7, backhand:9, saque:9, slice:9, dropshot:8, fisico:8, mental:8, overall:8 } },
+  { id: "borg_80s", name: "Björn Borg", decade: "1980s", nat: "🇸🇪", attrs: { forehand:9, backhand:9, saque:7, slice:8, dropshot:7, fisico:10, mental:10, overall:9 } },
+  { id: "haddad_20s", name: "Botic van de Zandschulp", decade: "2020s", nat: "🇳🇱", attrs: { forehand:7, backhand:7, saque:7, slice:6, dropshot:6, fisico:8, mental:7, overall:7 } },
+];
+
+const ATTR_KEYS = ["forehand","backhand","saque","slice","dropshot","fisico","mental","overall"];
+
+// =====================
+// STATE
+// =====================
+let players = [];
+let dirty = false;
+
+async function loadPlayers() {
+  showToast("⏳ Conectando ao Firebase...");
+  try {
+    const snap = await window._get(window._ref(window._db, "tenista/players"));
+    if (snap.exists()) {
+      const data = snap.val();
+      players = Array.isArray(data) ? data : Object.values(data);
+      showToast(`✓ ${players.length} jogadores carregados do Firebase`);
+    } else {
+      players = JSON.parse(JSON.stringify(DEFAULT_PLAYERS));
+      showToast("Firebase vazio — usando dados padrão");
+    }
+  } catch(e) {
+    players = JSON.parse(JSON.stringify(DEFAULT_PLAYERS));
+    showToast("⚠ Erro Firebase: " + e.message);
+  }
+  renderTable();
+}
+
+async function saveToLocalStorage() {
+  const btn = document.querySelector(".btn-primary");
+  showToast("⏳ Salvando no Firebase...");
+  try {
+    await window._set(window._ref(window._db, "tenista/players"), players);
+    dirty = false;
+    updateDirtyBadge();
+    showToast("✓ Salvo no Firebase com sucesso");
+  } catch(e) {
+    showToast("⚠ Erro ao salvar: " + e.message);
+  }
+}
+
+function updateDirtyBadge() {
+  document.getElementById("dirty-badge").classList.toggle("show", dirty);
+}
+
+function markDirty() {
+  dirty = true;
+  updateDirtyBadge();
+}
+
+// =====================
+// TABLE RENDER
+// =====================
+function scoreClass(v) {
+  if (v >= 10) return "score-10";
+  if (v >= 9)  return "score-9";
+  if (v >= 8)  return "score-8";
+  if (v >= 7)  return "score-7";
+  if (v >= 6)  return "score-6";
+  return "score-low";
+}
+
+function renderTable() {
+  const q = document.getElementById("search-input").value.toLowerCase();
+  const dec = document.getElementById("decade-filter").value;
+  const sortKey = document.getElementById("sort-col").value;
+
+  let filtered = players.filter(p => {
+    const matchQ = p.name.toLowerCase().includes(q) || p.nat.includes(q);
+    const matchDec = !dec || p.decade === dec;
+    return matchQ && matchDec;
+  });
+
+  filtered.sort((a, b) => {
+    if (sortKey === "name") return a.name.localeCompare(b.name);
+    return (b.attrs[sortKey] || 0) - (a.attrs[sortKey] || 0);
+  });
+
+  document.getElementById("count-badge").textContent = filtered.length;
+
+  const tbody = document.getElementById("table-body");
+  tbody.innerHTML = "";
+
+  filtered.forEach(p => {
+    const tr = document.createElement("tr");
+    tr.id = `row-${p.id}`;
+
+    const attrCells = ATTR_KEYS.map(k => {
+      if (k === "overall") {
+        return `<td class="overall-cell ${scoreClass(p.attrs[k])}">${p.attrs[k]}</td>`;
+      }
+      return `<td class="attr-cell">
+        <input class="cell-val ${scoreClass(p.attrs[k])}"
+          type="number" min="0" max="10"
+          value="${p.attrs[k]}"
+          data-pid="${p.id}" data-attr="${k}"
+          onchange="updateAttr('${p.id}','${k}',this.value)"
+          onfocus="this.select()">
+      </td>`;
+    }).join("");
+
+    tr.innerHTML = `
+      <td class="player-name-cell">
+        <span class="player-nat">${p.nat}</span>${p.name}
+      </td>
+      <td><span class="player-decade">${p.decade}</span></td>
+      ${attrCells}
+      <td>
+        <div class="row-actions">
+          <button class="btn-dup" onclick="duplicatePlayer('${p.id}')" title="Duplicar">⊕</button>
+          <button class="btn-del" onclick="deletePlayer('${p.id}')" title="Deletar">✕</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// =====================
+// CRUD OPERATIONS
+// =====================
+function updateAttr(pid, attr, val) {
+  const p = players.find(x => x.id === pid);
+  if (!p) return;
+  const v = Math.max(0, Math.min(10, parseInt(val) || 0));
+  p.attrs[attr] = v;
+  // Re-render just this cell's color
+  const inp = document.querySelector(`[data-pid="${pid}"][data-attr="${attr}"]`);
+  if (inp) { inp.className = `cell-val ${scoreClass(v)}`; inp.value = v; }
+  // If not overall, recalc overall suggestion
+  if (attr !== "overall") {
+    const keys = ATTR_KEYS.filter(k => k !== "overall");
+    const avg = keys.reduce((s,k) => s + p.attrs[k], 0) / keys.length;
+    // Don't auto-update overall — user controls it
+  }
+  markDirty();
+}
+
+function deletePlayer(pid) {
+  if (!confirm("Remover este jogador?")) return;
+  players = players.filter(p => p.id !== pid);
+  renderTable();
+  markDirty();
+  showToast("Jogador removido");
+}
+
+function duplicatePlayer(pid) {
+  const orig = players.find(p => p.id === pid);
+  if (!orig) return;
+  const dup = JSON.parse(JSON.stringify(orig));
+  dup.id = pid + "_copy_" + Date.now();
+  dup.name = orig.name + " (cópia)";
+  players.push(dup);
+  renderTable();
+  markDirty();
+  showToast("Jogador duplicado");
+}
+
+// =====================
+// ADD PLAYER MODAL
+// =====================
+function openAddModal() {
+  document.getElementById("add-modal").classList.add("open");
+}
+function closeAddModal() {
+  document.getElementById("add-modal").classList.remove("open");
+}
+
+function addPlayer() {
+  const name = document.getElementById("new-name").value.trim();
+  if (!name) { showToast("⚠ Informe o nome do jogador"); return; }
+
+  const decade = document.getElementById("new-decade").value;
+  const nat = document.getElementById("new-nat").value || "🏳";
+  const id = name.toLowerCase().replace(/\s+/g,"_").replace(/[^a-z0-9_]/g,"") + "_" + decade.replace("s","") + "_" + Date.now();
+
+  const getVal = (id) => Math.max(0, Math.min(10, parseInt(document.getElementById(id).value) || 7));
+
+  const p = {
+    id,
+    name,
+    nat,
+    decade,
+    attrs: {
+      forehand: getVal("new-forehand"),
+      backhand: getVal("new-backhand"),
+      saque: getVal("new-saque"),
+      slice: getVal("new-slice"),
+      dropshot: getVal("new-dropshot"),
+      fisico: getVal("new-fisico"),
+      mental: getVal("new-mental"),
+      overall: getVal("new-overall"),
+    }
+  };
+  players.push(p);
+  renderTable();
+  markDirty();
+  closeAddModal();
+  showToast(`✓ ${name} adicionado`);
+}
+
+// =====================
+// EXPORT / IMPORT
+// =====================
+function openExportModal() {
+  document.getElementById("export-textarea").value = JSON.stringify(players, null, 2);
+  document.getElementById("export-modal").classList.add("open");
+}
+function closeExportModal() {
+  document.getElementById("export-modal").classList.remove("open");
+}
+function copyJSON() {
+  navigator.clipboard.writeText(document.getElementById("export-textarea").value);
+  showToast("✓ JSON copiado");
+}
+function importJSON() {
+  try {
+    const data = JSON.parse(document.getElementById("export-textarea").value);
+    if (!Array.isArray(data)) throw new Error("Formato inválido");
+    players = data;
+    renderTable();
+    markDirty();
+    closeExportModal();
+    showToast(`✓ ${data.length} jogadores importados`);
+  } catch(e) {
+    showToast("⚠ JSON inválido: " + e.message);
+  }
+}
+
+function resetToDefault() {
+  if (!confirm("Restaurar todos os jogadores para o padrão? Suas edições serão perdidas.")) return;
+  players = JSON.parse(JSON.stringify(DEFAULT_PLAYERS));
+  renderTable();
+  markDirty();
+  showToast("↺ Banco restaurado ao padrão");
+}
+
+// =====================
+// TOAST
+// =====================
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// Close modals on overlay click
+document.querySelectorAll(".modal-overlay").forEach(el => {
+  el.addEventListener("click", e => { if (e.target === el) el.classList.remove("open"); });
+});
+
+// =====================
+// BOOT
+// =====================
+loadPlayers(); // async — renderTable called inside after load
+</script>
+</body>
+</html>
